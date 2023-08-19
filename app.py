@@ -1,73 +1,66 @@
 import genDataSets
 import sorts
+import operation
 
 def commandLoop():
-    print(formatPrompt("input: "), end="")
+    print(formatPrompt("operation: "), end="")
     command = input()
     while(command != "q" and command != "Q"):
         match command:
             case "h":
-                help_pySort()
-            case "sel":
-                print("n: ", end='')
-                print(sorts.selectionSort(genDataSets.genRandArr(int(input()))))
-            case "bub":
-                print("n: ", end='')
-                print(sorts.bubbleSort(genDataSets.genRandArr(int(input()))))
-            case "ins":
-                print("n: ", end='')
-                print(sorts.insertionSort(genDataSets.genRandArr(int(input()))))
-            case "hep":
-                print("n: ", end='')
-                print(sorts.heapSort(genDataSets.genRandArr(int(input()))))
-            case "qck":
-                print("n: ", end='')
-                print(sorts.quickSort(genDataSets.genRandArr(int(input()))))
-            case "mrg":
-                print("n: ", end='')
-                print(sorts.mergeSort(genDataSets.genRandArr(int(input()))))
-            case "bck":
-                print("n: ", end='')
-                print(sorts.bucketSort(genDataSets.genRandArr(int(input()))))
-            case "rdx":
-                print("n: ", end='')
-                print(sorts.radixSort(genDataSets.genRandArr(int(input()))))
-            case "cnt":
-                print("n: ", end='')
-                print(sorts.countSort(genDataSets.genRandArr(int(input()))))
-            case "shl":
-                print("n: ", end='')
-                print(sorts.shellSort(genDataSets.genRandArr(int(input()))))
-            case "tim":
-                print("n: ", end='')
-                print(sorts.timSort(genDataSets.genRandArr(int(input()))))
-            case "tre":
-                print("n: ", end='')
-                print(sorts.treeSort(genDataSets.genRandArr(int(input()))))
-            case "cbe":
-                print("n: ", end='')
-                print(sorts.cubeSort(genDataSets.genRandArr(int(input()))))
+                helpPySort()
+            case "time":
+                operation.timeSortAlgo()
+            case "race":
+                operation.raceSortAlgos()
+            # eventually have each of the following non-default calls be handled by a handler that
+            # takes n the sort function (https://www.geeksforgeeks.org/passing-function-as-an-argument-in-python/),
+            # sorted-ness of the input array and returns the
+
+            # ideal eventual control flow:
+            #              ask user for operation (time, race, etc.?)
+            #                  /                            \
+            #       time = ask for algo, n,         race = ask for algos as a space seperated string of strings
+            #       input sortedness                         |
+            #                  \                       ask for algo names (3 letter codes)
+            #                   \                            |
+            #                    \                   ask for input sortedness
+            #                     \                         /
+            # generate printout for all run algos format: algoName\t\t<time_taken in ms (timeit)>
+            # (consider sorting this output for fastest runtime to slowest)
             case _:
-                print("command not recognised")
-        print(formatPrompt("input: "), end="")
+                print("operation not recognised")
+        print(formatPrompt("operation: "), end="")
         command = input()
 
-def help_pySort():
-    print("\nAvailable commands include:")
+def helpPySort():
+    print("\nAvailable operations include:")
+    print("  - time: times one algorithm")
+    print("  - race: compares runtimes of two algorithms")
+
+    print("\nAvailable input array configurations include:")
+    print("  - sorted: pre-sorted array of n ints")
+    print("  - reverse: reverse-sorted array of n ints")
+    print("  - rand: randomly generated array of n ints")
+    print("  - manyRep: array of n ints which is randomly distributed but has many repeated values")
+    print("  - posSkew: randomly generated array of n ints with more smaller numbers")
+    print("  - negSkew: randomly generated array of n ints with more larger numbers")
+
+    print("\nAvailable sorting algorithms include:")
     print("  - h: print this message")
     print("  - q or Q: quit the program")
     print("  - sel: selection sort")
-    print("  - ins: selection sort")
-    print("  - hep: selection sort")
-    print("  - qck: selection sort")
-    print("  - mrg: selection sort")
-    print("  - bck: bucket sort")
-    print("  - rdx: selection sort")
-    print("  - cnt: selection sort")
-    print("  - shl: selection sort")
-    print("  - tim: selection sort")
-    print("  - tre: selection sort")
-    print("  - cbe: selection sort")
+    print("  - ins: insertion sort")
+    print("  - hep: heap sort")
+    print("  - qck: quick sort")
+    print("  - mrg: merge sort")
+    print("  - bct: bucket sort")
+    print("  - rdx: radix sort")
+    print("  - cnt: count sort")
+    print("  - shl: shell sort")
+    print("  - tim: tim sort")
+    print("  - tre: tree sort")
+    print("  - cbe: cube sort")
 
 def formatPrompt(promptMsg):
     return ("\033[94m {}\033[00m".format(promptMsg)).strip()

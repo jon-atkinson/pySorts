@@ -7,7 +7,7 @@ def selectionSort(arr):
         arr[minIdx], arr[currIdx] = arr[currIdx], arr[minIdx]
         minIdx, currIdx = currIdx + 1, currIdx + 1
     return arr
-        
+
 def bubbleSort(arr):
     print("TODO - implement this sort")
     return arr
