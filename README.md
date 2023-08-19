@@ -1,5 +1,5 @@
 # pySorts
-Simple collection of sorts, getting back into python, will add testing framework and comparison system eventually. 
+Simple collection of sorts, testing and comparison CLI for comparing the implementations of many commonly used simple sorting algorithms implemented in python. 
 
 Not really feasible for actual use, more to see how python implementation of different data structures and memory allocation changes the performance of each of the implemented sorts. 
 
