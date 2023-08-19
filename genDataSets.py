@@ -1,32 +1,32 @@
 import random
 import time
 
-def genRandArr(size):
+def gen_rand_arr(size):
     array = []
     random.seed(time.time())
     for num in range(size):
         array.append(random.randint(0,size))
     return array
 
-def genPosSkewArr(size):
+def gen_pos_skew_arr(size):
     print("TODO")
     return []
 
-def genNegSkewArr(size):
+def gen_neg_skew_arr(size):
     print("TODO")
     return []
 
-def genManyRepArr(size):
+def gen_many_rep_arr(size):
     print("TODO")
     return []
 
-def genPreSortedArr(size):
+def gen_pre_sorted_arr(size):
     arr = []
     for i in range(size):
         arr.append(i)
     return arr
 
-def genRevSortedArr(size):
+def gen_rev_sorted_arr(size):
     arr = []
     for i in range(size):
         arr.append(size - i)

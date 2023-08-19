@@ -2,64 +2,95 @@ import sorts
 import genDataSets
 import timeit
 
-def timeSortAlgo():
+def time_sort_algo():
     print("Enter Algorithm: ", end = "")
-    inStr = input().strip()
-    algo = getAlgo(inStr)
+    in_str = input().strip()
+    algo = get_algo(in_str)
     print("Enter n: ", end = "")
     n = int(input())
     print("Enter input sortedness: ", end = "")
-    arr = getArr(input().strip(), n)
+    arr = get_arr(input().strip(), n)
     if (algo == None or arr == None):
         print("Error: algo or arr didn't populate correctly")
         return None
-    print(inStr + "\t\t" + str(timeit.timeit(lambda: algo(arr), number=1)))
+    print(in_str + "\t\t" + str(timeit.timeit(lambda: algo(arr), number=1)))
     
-def raceSortAlgos():
+
+def race_sort_algos():
+    print("Enter Algorithms (single line, split on spaces): ", end = "")
+    in_strs = input().strip().split()
+    print("Enter n: ", end = "")
+    n = int(input())
+    print("Enter input sortedness: ", end = "")
+    arr = get_arr(input().strip(), n)
+    algos = []
+    for in_str in in_strs:
+        algos.append(get_algo(in_str))
+    if (None in algos):
+        print("Error: an algo or arr didn't populate correctly")
+        return None
+    for i in range(len(algos)):
+        print(in_strs[i] + "\t\t" + str(timeit.timeit(lambda: algos[i](arr), number=1)))
     return
-    
-def getAlgo(matchStr):
-    match matchStr:
+
+
+def plot_sort_algos():
+    print("TODO - implement this operation")
+    return
+
+
+    """ takes a string refering to the desired algorithm
+    returns a reference to the function of the desired algorithm
+    """
+def get_algo(inStr):
+    match inStr:
         case "sel":
-            return sorts.selectionSort
+            return sorts.selection_sort
+        case "bub":
+            return sorts.bubble_sort
         case "ins":
-            return sorts.insertionSort
+            return sorts.insertion_sort
         case "hep":
-            return sorts.heapSort
+            return sorts.heap_sort
         case "qck":
-            return sorts.quickSort
+            return sorts.quick_sort
         case "mrg":
-            return sorts.mergeSort
+            return sorts.merge_sort
         case "bct":
-            return sorts.bucketSort
+            return sorts.bucket_sort
         case "rdx":
-            return sorts.radixSort
+            return sorts.radix_sort
         case "cnt":
-            return sorts.countSort
+            return sorts.count_sort
         case "shl":
-            return sorts.shellSort
+            return sorts.shell_sort
         case "tim":
-            return sorts.timSort
+            return sorts.tim_sort
         case "tre":
-            return sorts.treeSort
+            return sorts.tree_sort
         case "cbe":
-            return sorts.cubeSort
+            return sorts.cube_sort
         case _:
             return None
     
-def getArr(inStr, n):
+
+    """ inStr refers to the type of sortedness of the returned array
+    n is the length of the returned array
+    returns an array of n integers with the input sortedness
+    """
+def get_arr(inStr, n):
     match inStr:
         case "sorted":
-            return genDataSets.genPreSortedArr(n)
+            return genDataSets.gen_pre_sorted_arr(n)
         case "reverse":
-            return genDataSets.genRevSortedArr(n)
+            return genDataSets.gen_rev_sorted_arr(n)
         case "rand":
-            return genDataSets.genRandArr(n)
+            return genDataSets.gen_rand_arr(n)
         case "manyRep":
-            return genDataSets.genManyRepArr(n)
+            return genDataSets.gen_many_rep_arr(n)
         case "posSkew":
-            return genDataSets.genPosSkewArr(n)
+            return genDataSets.gen_pos_skew_arr(n)
         case "negSkew":
-            return genDataSets.genNegSkewArr(n)
+            return genDataSets.gen_neg_skew_arr(n)
         case _:
             return None
