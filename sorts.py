@@ -1,5 +1,4 @@
-def selection_sort(arr):
-    n = len(arr)
+def selection_sort(arr, n):
     min_idx = 0
     for curr_idx in range(n):
         for j in range(curr_idx, n):
@@ -9,8 +8,7 @@ def selection_sort(arr):
         min_idx = curr_idx + 1
     return arr
 
-def bubble_sort(arr):
-    n = len(arr)
+def bubble_sort(arr, n):
     for i in range(n):
         swap_this = False
         for j in range(n - i - 1):
@@ -21,46 +19,46 @@ def bubble_sort(arr):
             break
     return arr
 
-def insertion_sort(arr):
+def insertion_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def heap_sort(arr):
+def heap_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def quick_sort(arr):
+def quick_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def merge_sort(arr):
+def merge_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def bucket_sort(arr):
+def bucket_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def radix_sort(arr):
+def radix_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def count_sort(arr):
+def count_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def shell_sort(arr):
+def shell_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def tim_sort(arr):
+def tim_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def tree_sort(arr):
+def tree_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
-def cube_sort(arr):
+def cube_sort(arr, n):
     print("TODO - implement this sort")
     return arr

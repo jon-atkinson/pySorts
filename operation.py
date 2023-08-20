@@ -2,37 +2,57 @@ import sorts
 import genDataSets
 import timeit
 
-def time_sort_algo():
-    print("Enter Algorithm: ", end = "")
-    in_str = input().strip()
-    algo = get_algo(in_str)
-    print("Enter n: ", end = "")
-    n = int(input())
-    print("Enter input sortedness: ", end = "")
-    arr = get_arr(input().strip(), n)
-    if (algo == None or arr == None):
-        print("Error: algo or arr didn't populate correctly")
-        return None
-    print(in_str + "\t\t" + str(timeit.timeit(lambda: algo(arr), number=1)))
+# def time_sort_algo():
+#     print("Enter Algorithm: ", end = "")
+#     in_str = input().strip()
+#     algo = get_algo(in_str)
+#     print("Enter n: ", end = "")
+#     n = int(input())
+#     print("Enter input sortedness: ", end = "")
+#     arr = get_arr(input().strip(), n)
+#     if (algo == None or arr == None):
+#         print("Error: algo or arr didn't populate correctly")
+#         return None
+#     print(in_str + "\t\t" + str(timeit.timeit(lambda: algo(arr), number=1)))
     
 
-def race_sort_algos():
-    print("Enter Algorithms (single line, split on spaces): ", end = "")
-    in_strs = input().strip().split()
-    print("Enter n: ", end = "")
-    n = int(input())
-    print("Enter input sortedness: ", end = "")
-    arr = get_arr(input().strip(), n)
+def compare_sort_algos():
+    in_strs = input("Enter algorithm(s) (single line, split on spaces): ").strip().split()
+    n = int(input("Enter n: "))
+    arr_type = input("Enter input sortedness: ").strip()
+    num_reps = int(input("Enter number of repetitions: "))
+
     algos = []
     for in_str in in_strs:
         algos.append(get_algo(in_str))
     if (None in algos):
         print("Error: an algo or arr didn't populate correctly")
         return None
-    for i in range(len(algos)):
-        print(in_strs[i] + "\t\t" + str(timeit.timeit(lambda: algos[i](arr), number=1)))
+
+    results = compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps)
+    for elem in results.keys():
+        print(elem + "\t\t" + str(results[elem]))
     return
 
+def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps):
+    results = dict()
+    for i, elem in enumerate(in_strs):
+        results.update({in_strs[i]: 0.0})
+
+    for i in range(num_reps):
+        # new array since repeating one allows for python memory reuse optimisation interferance
+        arr = get_arr(arr_type, n)
+        for j, elem in enumerate(in_strs):
+            results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
+        
+    # meaningless for comparison since scale factor but for semantic's sakes
+    for i, elem in enumerate(in_strs):
+        results[elem] /= num_reps  
+    return results
+
+def compare_sortedness():
+    print("TODO: implement compare_sortedness")
+    return
 
 def plot_sort_algos():
     print("TODO - implement this operation")

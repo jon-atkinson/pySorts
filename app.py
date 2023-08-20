@@ -12,28 +12,23 @@ import operation
 # (consider sorting this output for fastest runtime to slowest)
 
 def commandLoop():
-    print(formatPrompt("operation: "), end="")
-    command = input()
+    command = input(formatPrompt("operation: "))
     while(command != "q" and command != "Q"):
         match command:
             case "h":
                 helpPySort()
-            case "time":
-                operation.time_sort_algo()
-            case "race":
-                operation.race_sort_algos()
-            case "plot":
-                operation.plot_sort_algos()
+            case "algo":
+                operation.compare_sort_algos()
+            case "sorting":
+                operation.compare_sortedness()
             case _:
                 print("operation not recognised")
-        print(formatPrompt("operation: "), end="")
-        command = input()
+        command = input(formatPrompt("operation: "))
 
 def helpPySort():
-    print("\nAvailable operations include:")
-    print("  - time: times one algorithm")
-    print("  - race: compares runtimes of a list of algorithms")
-    print("  - plot: plots the runtimes over a range of n for a list of algorithms")
+    print("Available operations include:")
+    print("  - algo: compares the runtime of different algorithms") 
+    print("  - sorting: compares the runtime of different sortedness inputs of a given algorithm")
 
     print("\nAvailable input array configurations include:")
     print("  - sorted: pre-sorted array of n ints")
@@ -62,7 +57,7 @@ def helpPySort():
 
 def formatPrompt(promptMsg):
     return ("\033[94m {}\033[00m".format(promptMsg)).strip()
-    
+
 if __name__ == '__main__': #
     print(formatPrompt("Welcome to pySort, please enter a command:"))
     commandLoop()
