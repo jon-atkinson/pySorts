@@ -21,6 +21,8 @@ def commandLoop():
                 operation.compare_sort_algos()
             case "sorting":
                 operation.compare_sortedness()
+            case "plot":
+                operation.plot_algos()
             case _:
                 print("operation not recognised")
         command = input(formatPrompt("operation: "))
@@ -29,6 +31,7 @@ def helpPySort():
     print("Available operations include:")
     print("  - algo: compares the runtime of different algorithms") 
     print("  - sorting: compares the runtime of different sortedness inputs of a given algorithm")
+    print("  - plot: plots two algorithms' O(n) response for a given sortedness")
 
     print("\nAvailable input array configurations include:")
     print("  - sorted: pre-sorted array of n ints")

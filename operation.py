@@ -1,20 +1,6 @@
 import sorts
-import genDataSets
+import gen_data_sets as gen_data_sets
 import timeit
-
-# def time_sort_algo():
-#     print("Enter Algorithm: ", end = "")
-#     in_str = input().strip()
-#     algo = get_algo(in_str)
-#     print("Enter n: ", end = "")
-#     n = int(input())
-#     print("Enter input sortedness: ", end = "")
-#     arr = get_arr(input().strip(), n)
-#     if (algo == None or arr == None):
-#         print("Error: algo or arr didn't populate correctly")
-#         return None
-#     print(in_str + "\t\t" + str(timeit.timeit(lambda: algo(arr), number=1)))
-    
 
 def compare_sort_algos():
     in_strs = input("Enter algorithm(s) (single line, split on spaces): ").strip().split()
@@ -34,6 +20,13 @@ def compare_sort_algos():
         print(elem + "\t\t" + str(results[elem]))
     return
 
+
+    """algos: list of refs to algorithms to compare
+    in_strs: list of strings corresponding to the algos being compared
+    n: size of array being sorted
+    arr_type: string representing the sortedness of the array
+    num_reps: number of reps (with newly gen arrs per rep) to be avged
+    """
 def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps):
     results = dict()
     for i, elem in enumerate(in_strs):
@@ -43,6 +36,7 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps):
         # new array since repeating one allows for python memory reuse optimisation interferance
         arr = get_arr(arr_type, n)
         for j, elem in enumerate(in_strs):
+            # print(algos[j](arr, n))
             results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
         
     # meaningless for comparison since scale factor but for semantic's sakes
@@ -54,7 +48,7 @@ def compare_sortedness():
     print("TODO: implement compare_sortedness")
     return
 
-def plot_sort_algos():
+def plot_algos():
     print("TODO - implement this operation")
     return
 
@@ -72,6 +66,8 @@ def get_algo(inStr):
             return sorts.insertion_sort
         case "hep":
             return sorts.heap_sort
+        case "hep2":
+            return sorts.heapSort2
         case "qck":
             return sorts.quick_sort
         case "mrg":
@@ -101,16 +97,16 @@ def get_algo(inStr):
 def get_arr(inStr, n):
     match inStr:
         case "sorted":
-            return genDataSets.gen_pre_sorted_arr(n)
+            return gen_data_sets.gen_pre_sorted_arr(n)
         case "reverse":
-            return genDataSets.gen_rev_sorted_arr(n)
+            return gen_data_sets.gen_rev_sorted_arr(n)
         case "rand":
-            return genDataSets.gen_rand_arr(n)
+            return gen_data_sets.gen_rand_arr(n)
         case "manyRep":
-            return genDataSets.gen_many_rep_arr(n)
+            return gen_data_sets.gen_many_rep_arr(n)
         case "posSkew":
-            return genDataSets.gen_pos_skew_arr(n)
+            return gen_data_sets.gen_pos_skew_arr(n)
         case "negSkew":
-            return genDataSets.gen_neg_skew_arr(n)
+            return gen_data_sets.gen_neg_skew_arr(n)
         case _:
             return None
