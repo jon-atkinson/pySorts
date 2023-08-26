@@ -1,4 +1,5 @@
 import operation
+import os
 # ideal eventual control flow:
 #              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------ 
 #                  /                            \
@@ -12,26 +13,32 @@ import operation
 # (consider sorting this output for fastest runtime to slowest)
 
 def commandLoop():
-    command = input(formatPrompt("operation: "))
+    command_str = input(formatPrompt("operation: "))
+    command = command_str.split(" ")[0]
+    command_args = command_str.split(" ")[1:]
     while(command != "q" and command != "Q"):
         match command:
             case "h":
                 helpPySort()
             case "algo":
-                operation.compare_sort_algos()
+                operation.compare_sort_algos('-v' in command_args or '--verbose' in command_args)
             case "sorting":
-                operation.compare_sortedness()
+                operation.compare_sortedness('-v' in command_args or '--verbose' in command_args)
             case "plot":
                 operation.plot_algos()
+            case "clear":
+                os.system('clear')
             case _:
                 print("operation not recognised")
-        command = input(formatPrompt("operation: "))
+        command_str = input(formatPrompt("operation: "))
+        command = command_str.split(" ")[0]
+        command_args = command_str.split(" ")[1:]
 
 def helpPySort():
     print("Available operations include:")
     print("  - algo: compares the runtime of different algorithms") 
     print("  - sorting: compares the runtime of different sortedness inputs of a given algorithm")
-    print("  - plot: plots two algorithms' O(n) response for a given sortedness")
+    print("  - plot: plots two algorithms' big O response for a given sortedness")
 
     print("\nAvailable input array configurations include:")
     print("  - sorted: pre-sorted array of n ints")

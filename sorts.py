@@ -8,6 +8,7 @@ def selection_sort(arr, n):
         min_idx = curr_idx + 1
     return arr
 
+
 def bubble_sort(arr, n):
     for i in range(n):
         swap = False
@@ -19,6 +20,7 @@ def bubble_sort(arr, n):
             break
     return arr
 
+
 def insertion_sort(arr, n):
     for i in range(1, n):
         val = arr[i]
@@ -29,16 +31,6 @@ def insertion_sort(arr, n):
         arr[j + 1] = val
     return arr
 
-def build_max_heap(arr, n):
-    for i in range(n):
-        if arr[i] > arr[parent_idx(i)]:
-            j = i
-            while arr[j] > arr[parent_idx(j)]:
-                (arr[j], arr[parent_idx(j)]) = (arr[parent_idx(j)], arr[j])
-                j = parent_idx(j)
- 
-def parent_idx(idx):
-    return int((idx - 1) / 2)
 
 def heap_sort(arr, n):
     build_max_heap(arr, n)
@@ -56,6 +48,18 @@ def heap_sort(arr, n):
                 break
     return arr
 
+def build_max_heap(arr, n):
+    for i in range(n):
+        if arr[i] > arr[parent_idx(i)]:
+            j = i
+            while arr[j] > arr[parent_idx(j)]:
+                (arr[j], arr[parent_idx(j)]) = (arr[parent_idx(j)], arr[j])
+                j = parent_idx(j)
+ 
+def parent_idx(idx):
+    return int((idx - 1) / 2)
+
+
 def quick_sort(arr, n):
     return quicksort_help(arr, 0, n)
 
@@ -65,6 +69,17 @@ def quicksort_help(arr, low, high):
         quicksort_help(arr, low, piv)
         quicksort_help(arr, piv + 1, high)
     return arr
+
+def partition(arr, low, high):
+    pivot, new_low = median_of_three(arr, low, high)
+    arr[low], arr[new_low] = arr[new_low], arr[low]
+    i = low + 1
+    for j in range(low + 1, high, 1):
+        if (arr[j] < pivot):
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+    arr[low], arr[i - 1] = arr[i - 1], arr[low]
+    return i - 1
 
 def median_of_three(arr, low, high):
     mid = (low + high - 1) // 2
@@ -81,48 +96,68 @@ def median_of_three(arr, low, high):
         return c, high - 1
     return a, low
 
-def partition(arr, low, high):
-    pivot, pidx = median_of_three(arr, low, high)
-    arr[low], arr[pidx] = arr[pidx], arr[low]
-    i = low + 1
-    for j in range(low + 1, high, 1):
-        if (arr[j] < pivot):
-            arr[i], arr[j] = arr[j], arr[i]
-            i += 1
-    arr[low], arr[i - 1] = arr[i - 1], arr[low]
-    return i - 1
 
 def merge_sort(arr, n):
-    print("TODO - implement this sort")
+    if n > 1:
+        mid = n // 2
+        left = arr[:mid]
+        right = arr[mid:]
+        merge_sort(left, mid)
+        merge_sort(right, n - mid)
+        i = j = k = 0
+        while i < mid and j < n - mid:
+            if left[i] <= right[j]:
+                arr[k] = left[i]
+                i += 1
+            else:
+                arr[k] = right[j]
+                j += 1
+            k += 1
+        while i < mid:
+            arr[k] = left[i]
+            i += 1
+            k += 1
+        while j < n - mid:
+            arr[k] = right[j]
+            j += 1
+            k += 1
     return arr
+
 
 def bucket_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
+
 def radix_sort(arr, n):
     print("TODO - implement this sort")
     return arr
+
 
 def count_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
+
 def shell_sort(arr, n):
     print("TODO - implement this sort")
     return arr
+
 
 def tim_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
+
 def tree_sort(arr, n):
     print("TODO - implement this sort")
     return arr
 
+
 def cube_sort(arr, n):
     print("TODO - implement this sort")
     return arr
+
 
 def is_sorted(arr):
     for i in range(len(arr) - 1):
@@ -132,8 +167,8 @@ def is_sorted(arr):
 
 if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
-    n = 3970
-    algorithm = quick_sort
+    n = 1000000
+    algorithm = merge_sort
     option = 0
     if option == 0:
         print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n), n)))
