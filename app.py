@@ -21,11 +21,11 @@ def commandLoop():
             case "h":
                 helpPySort()
             case "algo":
-                operation.compare_sort_algos('-v' in command_args or '--verbose' in command_args)
+                operation.compare_sort_algos(command_args)
             case "sorting":
-                operation.compare_sortedness('-v' in command_args or '--verbose' in command_args)
+                operation.compare_sortedness(command_args)
             case "plot":
-                operation.plot_algos()
+                operation.plot_algos(command_args)
             case "clear":
                 os.system('clear')
             case _:

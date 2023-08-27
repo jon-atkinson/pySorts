@@ -1,8 +1,13 @@
 import sorts
 import gen_data_sets as gen_data_sets
 import timeit
+import seaborn as sns
+import tk
 
-def compare_sort_algos(verbose):
+def compare_sort_algos(command_args):
+    verbose = '-v' in command_args or '--verbose' in command_args
+    pretty = '-p' in command_args or '--pretty' in command_args
+
     in_strs = input("Enter algorithm(s) (single line, split on spaces): ").strip().split()
     if in_strs[0] == 'q':
         return None
@@ -37,8 +42,13 @@ def compare_sort_algos(verbose):
         return None
 
     results = compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose)
-    for elem in results.keys():
-        print(elem + "\t\t" + str(results[elem]))
+    if pretty:
+        unit = min(results.values())
+        for elem in results.keys():
+            print(elem + '\t\t' + '#' * int(results[elem]/unit))
+    else:
+        for elem in results.keys():
+            print(elem + "\t\t" + str(results[elem]))
     return
 
 
@@ -78,7 +88,7 @@ def compare_sortedness(verbose):
     print("TODO: implement compare_sortedness")
     return
 
-def plot_algos():
+def plot_algos(command_args):
     print("TODO - implement this operation")
     return
 
