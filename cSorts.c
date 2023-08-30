@@ -12,10 +12,11 @@ bool isSorted(int *arr, int n);
 // returns a pointer to the in-place sorted array
 // uses the bubble sort algorithm
 int *bubbleSort(int *arr, int n) {
+    printf("running bubbleSort in C\n");
     for (int i = 0; i < n; i++) {
         bool swapped = false;
         for (int j = 0; j < n - 1; j++) {
-            if (arr[j] > arr[i]) {
+            if (arr[j] > arr[j + 1]) {
                 swap(&arr[j], &arr[j + 1]);
                 swapped = true;
             }
@@ -58,8 +59,7 @@ bool isSorted(int *arr, int n) {
     if (n == 0) return true;
     int curr = arr[0];
     for (int i = 0; i < n; i++) {
-        if (arr[i] < curr) {printf("arr[i] is %d, arr[i-1] is %d\n", arr[i], arr[i-1]);return false;}
-        
+        if (arr[i] < curr) return false;
         curr = arr[i];
     }
     return true;

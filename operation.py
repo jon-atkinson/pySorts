@@ -1,7 +1,9 @@
 import sorts
 import gen_data_sets as gen_data_sets
 import timeit
+import os
 import seaborn as sns
+import ctypes
 import tk
 
 def compare_sort_algos(command_args):
@@ -40,6 +42,9 @@ def compare_sort_algos(command_args):
     if (None in algos):
         print("Error: an algo didn't populate correctly")
         return None
+    else:
+        for algo in algos:
+            print(algo)
 
     results = compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose)
     if pretty:
@@ -97,11 +102,19 @@ def plot_algos(command_args):
     returns a reference to the function of the desired algorithm
     """
 def get_algo(inStr):
+    # importing cSorts lib
+    script_dir = os.path.abspath(os.path.dirname(__file__))
+    lib_path = os.path.join(script_dir, "cSorts.so")
+    cSorts = ctypes.cdll.LoadLibrary(lib_path)
+    
     match inStr:
         case "sel":
             return sorts.selection_sort
         case "bub":
-            return sorts.bubble_sort
+            bubbleSort = cSorts.bubbleSort
+            bubbleSort.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int]
+            return bubbleSort
+            # return sorts.bubble_sort
         case "ins":
             return sorts.insertion_sort
         case "hep":
