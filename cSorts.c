@@ -23,26 +23,32 @@ int *newRandArray(int n);
 bool isSorted(int *arr, int n);
 
 int main(void) {
-    int n = 10000;
+    int n = 30;
     int *arr = newRandArray(n);
 
     printf("before sorting, arr is ");
     if (isSorted(arr, n)) printf("SORTED\n");
     else printf("NOT SORTED\n");
+    printArray(arr, n);
 
-    arr = bubbleSort(arr, n);
+    arr = selectionSort(arr, n);
 
     printf("after sorting, arr is ");
     if (isSorted(arr, n)) printf("SORTED\n");
     else printf("NOT SORTED\n");
+    printArray(arr, n);
 
     free(arr);
 }
 
 int *selectionSort(int *arr, int n) {
-    
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++) if (arr[j] < arr[minIdx]) minIdx = j;
+        if (minIdx != i) swap(&arr[minIdx], &arr[i]);
+    }
+    return arr;
 }
-
 
 int *bubbleSort(int *arr, int n) {
     for (int i = 0; i < n; i++) {
@@ -69,6 +75,7 @@ void swap(int *first, int *second) {
 // Helper Functions
 void printArray(int *arr, int n) {
     for (int i = 0; i < n; i++) printf("%d, ", arr[i]);
+    putchar('\n');
 }
 
 int *newRandArray(int n) {

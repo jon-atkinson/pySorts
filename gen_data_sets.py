@@ -43,10 +43,10 @@ def parse_arr_type(arr, n, language):
         return to_c_arr(arr, n)
     print("Error, language param not passed in correctly")
     return None
-    
+
 def to_c_arr(arr, n):
     return (ctypes.c_int * n)(*arr)
-    
+
 if __name__ == "__main__":
     import sorts
     print(sorts.selection_sort(gen_rand_arr(100, "python"), 100))

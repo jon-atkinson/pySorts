@@ -50,7 +50,7 @@ def compare_sort_algos(command_args):
     if pretty:
         unit = min(results.values())
         for elem in results.keys():
-            print(elem + '\t\t' + '#' * int(results[elem]/unit))
+            print(elem + '\t\t' + '#' * int(results[elem] / unit))
     else:
         for elem in results.keys():
             print(elem + "\t\t" + str(results[elem]))
@@ -109,7 +109,7 @@ def plot_algos(command_args):
     returns a reference to the function of the desired algorithm
     """
 def get_algo(inStr):
-    # importing cSorts lib
+    # importing and loading cSorts lib
     script_dir = os.path.abspath(os.path.dirname(__file__))
     lib_path = os.path.join(script_dir, "cSorts.so")
     cSorts = ctypes.cdll.LoadLibrary(lib_path)
@@ -122,33 +122,53 @@ def get_algo(inStr):
         case "bub":
             return sorts.bubble_sort
         case "bubC":
-            bubbleSort = cSorts.bubbleSort
-            bubbleSort.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int]
-            bubbleSort.restype = ctypes.POINTER(ctypes.c_int)
-            return bubbleSort
+            return construct_c_algo(cSorts.bubbleSort)
         case "ins":
             return sorts.insertion_sort
+        case "insC":
+            return construct_c_algo(cSorts.insertionSort)
         case "hep":
             return sorts.heap_sort
+        case "hepC":
+            return construct_c_algo(cSorts.heapSort)
         case "qck":
             return sorts.quick_sort
+        case "qckC":
+            return construct_c_algo(cSorts.quickSort)
         case "mrg":
             return sorts.merge_sort
+        case "mrgC":
+            return construct_c_algo(cSorts.mergeSort)
         case "bct":
             return sorts.bucket_sort
+        case "bctC":
+            return construct_c_algo(cSorts.bucketSort)
         case "rdx":
             return sorts.radix_sort
+        case "rdxC":
+            return construct_c_algo(cSorts.radixSort)
         case "cnt":
             return sorts.count_sort
+        case "cntC":
+            return construct_c_algo(cSorts.countSort)
         case "shl":
             return sorts.shell_sort
+        case "shlC":
+            return construct_c_algo(cSorts.shellSort)
         case "tim":
             return sorts.tim_sort
+        case "timC":
+            return construct_c_algo(cSorts.timSort)
         case "tre":
             return sorts.tree_sort
+        case "treC":
+            return construct_c_algo(cSorts.treeSort)
         case "cbe":
             return sorts.cube_sort
+        case "cbeC":
+            return construct_c_algo(cSorts.cubeSort)
         case _:
+            print("No matching algorithm found")
             return None
     
 def construct_c_algo(algo_ref):
