@@ -2,51 +2,51 @@ import random
 import time
 import ctypes
 
-def gen_rand_arr(size):
+def gen_rand_arr(n, language):
     arr = []
     random.seed(time.time())
-    for num in range(size):
-        arr.append(random.randint(0,size))
+    for num in range(n):
+        arr.append(random.randint(0, n))
+    return parse_arr_type(arr, n, language)
 
-    # c sorts require a special array type, hence the wrapper fn
-    # either we extend the feature set of all generation algos to
-    # return either type per user request or we standardise algo language
-    return to_c_arr(arr, size)
-    # return arr
-
-def gen_pos_skew_arr(size):
+def gen_pos_skew_arr(n, language):
     print("TODO")
-    return []
+    return None
 
-def gen_neg_skew_arr(size):
+def gen_neg_skew_arr(n, language):
     print("TODO")
-    return []
+    return None
 
-def gen_many_rep_arr(size):
-    array = []
-    random.seed(time.time())
-    for num in range(size):
-        array.append(random.randint(0,size / 10))
-    return array
-
-def gen_pre_sorted_arr(size):
+def gen_many_rep_arr(n, language):
     arr = []
-    for i in range(size):
+    random.seed(time.time())
+    for num in range(n):
+        arr.append(random.randint(0, n / 10))
+    return parse_arr_type(arr, n, language)
+
+def gen_pre_sorted_arr(n, language):
+    arr = []
+    for i in range(n):
         arr.append(i)
-    return arr
+    return parse_arr_type(arr, n, language)
 
-def gen_rev_sorted_arr(size):
+def gen_rev_sorted_arr(n, language):
     arr = []
-    for i in range(size):
-        arr.append(size - i)
-    return arr
+    for i in range(n):
+        arr.append(n - i)
+    return parse_arr_type(arr, n, language)
+
+def parse_arr_type(arr, n, language):
+    if (language == "python"):
+        return arr
+    elif (language == "c"):
+        return to_c_arr(arr, n)
+    print("Error, language param not passed in correctly")
+    return None
+    
+def to_c_arr(arr, n):
+    return (ctypes.c_int * n)(*arr)
     
 if __name__ == "__main__":
     import sorts
-    print(sorts.selection_sort(gen_many_rep_arr(100), 1))
-
-def to_c_arr(arr, n):
-    arr_c = (ctypes.c_int * n)(*arr)
-    print(arr)
-    print(arr_c)
-    return arr_c
+    print(sorts.selection_sort(gen_rand_arr(100, "python"), 100))

@@ -70,23 +70,30 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
 
     for i in range(num_reps):
         # new input array since repeating one allows for python memory reuse optimisation interferance
-        arr = get_arr(arr_type)(n)
+        arr = get_arr(arr_type)(n, "python")
+        c_arr = gen_data_sets.to_c_arr(arr, n)
+
         if arr == None:
             print('error in input array type')
             return None
 
         if not verbose:
             for j, elem in enumerate(in_strs):
-                results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
-        else: # TODO delete eventually, this is quite an inefficient soln. to this problem
+                if (elem[len(elem) - 1] == "C"):
+                    results[elem] += timeit.timeit(lambda: algos[j](c_arr, n), number=1)
+                else:
+                    results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
+        else: # TODO delete eventually, this is quite an inelegant and inefficient soln. to this problem
             print('(running in verbose mode)')
             for j, elem in enumerate(in_strs):
-                print(algos[j](arr, n))
-                results[elem] += timeit.timeit(lambda: algos[j](arr(n), n), number=1)
+                sortedArray = algos[j](arr, n)
+                for i in range(n):
+                    print(sortedArray[i], "", end="")
+                results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
 
     # meaningless for comparison since #reps introduces a constant scale factor but for semantic sakes
     for i, elem in enumerate(in_strs):
-        results[elem] /= num_reps  
+        results[elem] /= num_reps
     return results
 
 def compare_sortedness(verbose):
@@ -110,11 +117,15 @@ def get_algo(inStr):
     match inStr:
         case "sel":
             return sorts.selection_sort
+        case "selC":
+            return construct_c_algo(cSorts.selectionSort)
         case "bub":
+            return sorts.bubble_sort
+        case "bubC":
             bubbleSort = cSorts.bubbleSort
             bubbleSort.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int]
+            bubbleSort.restype = ctypes.POINTER(ctypes.c_int)
             return bubbleSort
-            # return sorts.bubble_sort
         case "ins":
             return sorts.insertion_sort
         case "hep":
@@ -140,6 +151,11 @@ def get_algo(inStr):
         case _:
             return None
     
+def construct_c_algo(algo_ref):
+    algo_ref.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int]
+    algo_ref.restype = ctypes.POINTER(ctypes.c_int)
+    return algo_ref
+
 
     """ inStr refers to the type of sortedness of the returned array
     n is the length of the returned array

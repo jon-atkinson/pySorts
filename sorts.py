@@ -167,11 +167,11 @@ def is_sorted(arr):
 
 if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
-    n = 1000000
-    algorithm = merge_sort
+    n = 10000
+    algorithm = selection_sort
     option = 0
     if option == 0:
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n), n)))
+        print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
         print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n), n)))
         print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n), n)))
         print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n), n)))
