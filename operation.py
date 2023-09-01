@@ -2,9 +2,9 @@ import sorts
 import gen_data_sets as gen_data_sets
 import timeit
 import os
-import seaborn as sns
+# import seaborn as sns
 import ctypes
-import tk
+# import tk
 
 def compare_sort_algos(command_args):
     verbose = '-v' in command_args or '--verbose' in command_args
@@ -57,7 +57,8 @@ def compare_sort_algos(command_args):
     return
 
 
-    """algos: list of refs to algorithms to compare
+    """ compares the average runtimes of different algorithms on on type of input
+    algos: list of refs to algorithms to compare
     in_strs: list of strings corresponding to the algos being compared
     n: size of array being sorted
     arr_type: string representing the sortedness of the array
@@ -96,10 +97,27 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
         results[elem] /= num_reps
     return results
 
+
+    """Compares the average runtimes of one algorithm on inputs of different
+    sortedness
+    algos: list of refs to algorithms to compare
+    in_strs: list of strings corresponding to the algos being compared
+    n: size of array being sorted
+    arr_type: string representing the sortedness of the array
+    num_reps: number of reps (with newly gen arrs per rep) to be avged
+    """
 def compare_sortedness(verbose):
     print("TODO: implement compare_sortedness")
     return
 
+
+    """ Plots the O(n) response of multiple algorithms on one input type
+    algos: list of refs to algorithms to compare
+    in_strs: list of strings corresponding to the algos being compared
+    n: size of array being sorted
+    arr_type: string representing the sortedness of the array
+    num_reps: number of reps (with newly gen arrs per rep) to be avged
+    """
 def plot_algos(command_args):
     print("TODO - implement this operation")
     return
@@ -115,42 +133,46 @@ def get_algo(inStr):
     cSorts = ctypes.cdll.LoadLibrary(lib_path)
     
     match inStr:
-        case "sel":
-            return sorts.selection_sort
-        case "selC":
-            return construct_c_algo(cSorts.selectionSort)
-        case "bub":
-            return sorts.bubble_sort
-        case "bubC":
-            return construct_c_algo(cSorts.bubbleSort)
-        case "ins":
-            return sorts.insertion_sort
-        case "insC":
-            return construct_c_algo(cSorts.insertionSort)
-        case "hep":
-            return sorts.heap_sort
-        case "hepC":
-            return construct_c_algo(cSorts.heapSort)
-        case "qck":
-            return sorts.quick_sort
-        case "qckC":
-            return construct_c_algo(cSorts.quickSort)
-        case "mrg":
-            return sorts.merge_sort
-        case "mrgC":
-            return construct_c_algo(cSorts.mergeSort)
         case "bct":
             return sorts.bucket_sort
         case "bctC":
             return construct_c_algo(cSorts.bucketSort)
-        case "rdx":
-            return sorts.radix_sort
-        case "rdxC":
-            return construct_c_algo(cSorts.radixSort)
+        case "bub":
+            return sorts.bubble_sort
+        case "bubC":
+            return construct_c_algo(cSorts.bubbleSort)
+        case "cbe":
+            return sorts.cube_sort
+        case "cbeC":
+            return construct_c_algo(cSorts.cubeSort)
         case "cnt":
             return sorts.count_sort
         case "cntC":
             return construct_c_algo(cSorts.countSort)
+        case "hep":
+            return sorts.heap_sort
+        case "hepC":
+            return construct_c_algo(cSorts.heapSort)
+        case "ins":
+            return sorts.insertion_sort
+        case "insC":
+            return construct_c_algo(cSorts.insertionSort)
+        case "mrg":
+            return sorts.merge_sort
+        case "mrgC":
+            return construct_c_algo(cSorts.mergeSort)
+        case "qck":
+            return sorts.quick_sort
+        case "qckC":
+            return construct_c_algo(cSorts.quickSort)
+        case "rdx":
+            return sorts.radix_sort
+        case "rdxC":
+            return construct_c_algo(cSorts.radixSort)
+        case "sel":
+            return sorts.selection_sort
+        case "selC":
+            return construct_c_algo(cSorts.selectionSort)
         case "shl":
             return sorts.shell_sort
         case "shlC":
@@ -163,10 +185,6 @@ def get_algo(inStr):
             return sorts.tree_sort
         case "treC":
             return construct_c_algo(cSorts.treeSort)
-        case "cbe":
-            return sorts.cube_sort
-        case "cbeC":
-            return construct_c_algo(cSorts.cubeSort)
         case _:
             print("No matching algorithm found")
             return None

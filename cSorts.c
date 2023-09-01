@@ -4,13 +4,14 @@
 
 // FUNCTION INTERFACE:
 // takes: arr, an array of n integers of size n
-// returns: a c_int pointer to the sorted array
+// returns: a pointer to the sorted array
 // postcondition: arrays may sort in place or return a sorted copy of the input array but if a
 // copy is returned, the original must be freed
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 
 int *selectionSort(int *arr, int n);
 int *bubbleSort(int *arr, int n);
@@ -31,7 +32,7 @@ int main(void) {
     else printf("NOT SORTED\n");
     printArray(arr, n);
 
-    arr = selectionSort(arr, n);
+    arr = insertionSort(arr, n);
 
     printf("after sorting, arr is ");
     if (isSorted(arr, n)) printf("SORTED\n");
@@ -41,6 +42,7 @@ int main(void) {
     free(arr);
 }
 
+// Sorting Functions
 int *selectionSort(int *arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         int minIdx = i;
@@ -70,15 +72,29 @@ void swap(int *first, int *second) {
     *second = temp;
 }
 
+int *insertionSort(int *arr, int n) {
+    for (int i = 1; i < n; i++) {
+        int val = arr[i];
+        int j = i - 1;
+        while (j >= 0 && val < arr[j]) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = val;
+    }
+    return arr;
+}
 
 
-// Helper Functions
+
+// Testing Helper Functions
 void printArray(int *arr, int n) {
     for (int i = 0; i < n; i++) printf("%d, ", arr[i]);
     putchar('\n');
 }
 
 int *newRandArray(int n) {
+    srand(time(NULL));
     int *ptr = malloc(n * sizeof(int));
     for (int i = 0; i < n; i++) ptr[i] = rand() % n;
     return ptr;
