@@ -1,13 +1,3 @@
-// Programmer: Jon Atkinson
-// Purpose: A collection of sorting algorithms, written in C and designed to be compiled into
-// a shared library to be called from pySorts (a sorting algorithm comparison program in python)
-
-// FUNCTION INTERFACE:
-// takes: arr, an array of n integers of size n
-// returns: a pointer to the sorted array
-// postcondition: arrays may sort in place or return a sorted copy of the input array but if a
-// copy is returned, the original must be freed
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -17,15 +7,12 @@
 #define LeftChild(i) (i*2)
 #define RightChild(i) (i*2+1)
 
-int *selectionSort(int *arr, int n);
-int *bubbleSort(int *arr, int n);
-int *insertionSort(int *arr, int n);
+void buildMaxHeap(int *arr, int n);
 int *heapSort(int *arr, int n);
-
-void swap (int *first, int *second);
 void printArray(int *arr, int n);
 int *newRandArray(int n);
 bool isSorted(int *arr, int n);
+void swap(int *first, int *second);
 
 int main(void) {
     int n = 30;
@@ -44,21 +31,6 @@ int main(void) {
     printArray(arr, n);
 
     free(arr);
-}
-
-// Sorting Functions
-int *bubbleSort(int *arr, int n) {
-    for (int i = 0; i < n; i++) {
-        bool swapped = false;
-        for (int j = 0; j < n - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                swap(&arr[j], &arr[j + 1]);
-                swapped = true;
-            }
-        }
-        if (!swapped) break;
-    }
-    return arr;
 }
 
 void buildMaxHeap(int *arr, int n) {
@@ -90,37 +62,6 @@ int *heapSort(int *arr, int n) {
     return arr;
 }
 
-int *insertionSort(int *arr, int n) {
-    for (int i = 1; i < n; i++) {
-        int val = arr[i];
-        int j = i - 1;
-        while (j >= 0 && val < arr[j]) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = val;
-    }
-    return arr;
-}
-
-int *selectionSort(int *arr, int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int minIdx = i;
-        for (int j = i + 1; j < n; j++) if (arr[j] < arr[minIdx]) minIdx = j;
-        if (minIdx != i) swap(&arr[minIdx], &arr[i]);
-    }
-    return arr;
-}
-
-void swap(int *first, int *second) {
-    int temp = *first;
-    *first = *second;
-    *second = temp;
-}
-
-
-
-// Testing Helper Functions
 void printArray(int *arr, int n) {
     for (int i = 0; i < n; i++) printf("%d, ", arr[i]);
     putchar('\n');
@@ -141,4 +82,10 @@ bool isSorted(int *arr, int n) {
         curr = arr[i];
     }
     return true;
+}
+
+void swap(int *first, int *second) {
+    int temp = *first;
+    *first = *second;
+    *second = temp;
 }

@@ -1,5 +1,6 @@
 import operation
 import os
+import readline
 # ideal eventual control flow:
 #              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------ 
 #                  /                            \
@@ -17,19 +18,22 @@ def commandLoop():
     command = command_str.split(" ")[0]
     command_args = command_str.split(" ")[1:]
     while(command != "q" and command != "Q"):
-        match command:
-            case "h":
-                helpPySort()
-            case "algo":
-                operation.compare_sort_algos(command_args)
-            case "sorting":
-                operation.compare_sortedness(command_args)
-            case "plot":
-                operation.plot_algos(command_args)
-            case "clear":
-                os.system('clear')
-            case _:
-                print("operation not recognised")
+        try:
+            match command:
+                case "h":
+                    helpPySort()
+                case "algo":
+                    operation.compare_sort_algos(command_args)
+                case "sorting":
+                    operation.compare_sortedness(command_args)
+                case "plot":
+                    operation.plot_algos(command_args)
+                case "clear":
+                    os.system('clear')
+                case _:
+                    raise Exception("incorrect command format")
+        except Exception as e:
+            print(f"exception raised: {str(e)}, please change inputs:")
         command_str = input(formatPrompt("operation: "))
         command = command_str.split(" ")[0]
         command_args = command_str.split(" ")[1:]

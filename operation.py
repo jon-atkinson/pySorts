@@ -15,7 +15,7 @@ def compare_sort_algos(command_args):
         return None
 
     n_str = input("Enter n (default 10 000): ")
-    if n_str == 'q':
+    if n_str == 'q' or n_str == 'quit':
         return None
     if n_str == '':
         n = 10000
@@ -23,13 +23,13 @@ def compare_sort_algos(command_args):
         n = int(n_str)
 
     arr_type = input("Enter input sortedness (default 'rand'): ").strip()
-    if arr_type == 'q':
+    if arr_type == 'q' or n_str == 'quit':
         return None
     if arr_type == '':
         arr_type = 'rand'
 
     num_reps_str = input("Enter number of repetitions (default 1): ")
-    if num_reps_str == 'q':
+    if num_reps_str == 'q' or n_str == 'quit':
         return None
     if num_reps_str == '':
         num_reps = 1
@@ -40,11 +40,7 @@ def compare_sort_algos(command_args):
     for in_str in in_strs:
         algos.append(get_algo(in_str))
     if (None in algos):
-        print("Error: an algo didn't populate correctly")
-        return None
-    else:
-        for algo in algos:
-            print(algo)
+        raise Exception("Error: an algo didn't populate correctly")
 
     results = compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose)
     if pretty:
@@ -72,7 +68,6 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
     for i in range(num_reps):
         # new input array since repeating one allows for python memory reuse optimisation interferance
         arr = get_arr(arr_type)(n, "python")
-        c_arr = gen_data_sets.to_c_arr(arr, n)
 
         if arr == None:
             print('error in input array type')
@@ -81,18 +76,34 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
         if not verbose:
             for j, elem in enumerate(in_strs):
                 if (elem[len(elem) - 1] == "C"):
-                    results[elem] += timeit.timeit(lambda: algos[j](c_arr, n), number=1)
+                    results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
-                    results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
+                    results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
         else: # TODO delete eventually, this is quite an inelegant and inefficient soln. to this problem
             print('(running in verbose mode)')
             for j, elem in enumerate(in_strs):
-                sortedArray = algos[j](arr, n)
+                if (elem[len(elem) - 1] == "C"):
+                    inArray = gen_data_sets.to_c_arr(deep_array_copy(arr), n)
+                    sortedArray = algos[j](inArray, n)
+                    print("doublePrint")
+                    print(sortedArray)
+                    printArray(sortedArray)
+                else:
+                    sortedArray = algos[j](deep_array_copy(arr), n)
+
+                print("Initial: " + str(arr) + "\nFinal: ", end="")
                 for i in range(n):
                     print(sortedArray[i], "", end="")
-                results[elem] += timeit.timeit(lambda: algos[j](arr, n), number=1)
+
+                if (elem[len(elem) - 1] == "C"):
+                    print("running c fn")
+                    results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
+                else:
+                    print("running py fn\n")
+                    results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
 
     # meaningless for comparison since #reps introduces a constant scale factor but for semantic sakes
+    # also helps when considering rough runtimes over tests with different number of repeat tests
     for i, elem in enumerate(in_strs):
         results[elem] /= num_reps
     return results
@@ -100,11 +111,6 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
 
     """Compares the average runtimes of one algorithm on inputs of different
     sortedness
-    algos: list of refs to algorithms to compare
-    in_strs: list of strings corresponding to the algos being compared
-    n: size of array being sorted
-    arr_type: string representing the sortedness of the array
-    num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
 def compare_sortedness(verbose):
     print("TODO: implement compare_sortedness")
@@ -215,6 +221,19 @@ def get_arr(inStr):
             return gen_data_sets.gen_neg_skew_arr
         case _:
             return None
+
+def deep_array_copy(arr):
+    new = []
+    for e in arr:
+        new.append(e)
+    return new
+
+# TODO test this function
+def printArray(arr, n):
+    print("[", end="")
+    for i in range(n - 1):
+        print(str(arr[i]) + ", ", end="")
+    print(str(arr[n - 1]) + "]")
 
 if __name__ == "__main__":
     import app
