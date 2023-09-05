@@ -1,5 +1,7 @@
 import operation
 import os
+import sys
+import traceback
 import readline
 # ideal eventual control flow:
 #              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------ 
@@ -33,7 +35,10 @@ def commandLoop():
                 case _:
                     raise Exception("incorrect command format")
         except Exception as e:
-            print(f"exception raised: {str(e)}, please change inputs:")
+            # exc_type, exc_obj, exc_tb = sys.exc_info()
+            # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            # print(f"exception raised: {str(e)} in file {str(fname)} at line {str(exc_tb.tb_lineno)}, please change inputs:")
+            print(traceback.format_exc())
         command_str = input(formatPrompt("operation: "))
         command = command_str.split(" ")[0]
         command_args = command_str.split(" ")[1:]

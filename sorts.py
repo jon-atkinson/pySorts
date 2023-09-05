@@ -124,9 +124,33 @@ def merge_sort(arr, n):
     return arr
 
 
-def bucket_sort(arr, n):
-    print("TODO - implement this sort")
-    return arr
+def bucket_sort(array, n):
+    num_buckets = 10
+    rnge = n / num_buckets
+    buckets = []
+
+    for i in range(num_buckets):
+        buckets.append([])
+
+    for i in range(n):
+        delta = array[i] / rnge - int(array[i] / rnge)
+        if(delta == 0 and array[i] != 0):
+            buckets[int(array[i] / rnge) - 1].append(array[i])
+        else:
+            buckets[int(array[i] / rnge)].append(array[i])
+
+    for i in range(num_buckets):
+        bucket_len = len(buckets[i])
+        if bucket_len > 1:
+            buckets[i] = quick_sort(buckets[i], bucket_len)
+
+    idx = 0
+    for bucket in buckets:
+        for i in bucket:
+            array[idx] = i
+            idx += 1
+
+    return array
 
 
 def radix_sort(arr, n):
@@ -168,15 +192,15 @@ def is_sorted(arr):
 if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
     n = 10000
-    algorithm = selection_sort
+    algorithm = bucket_sort
     option = 0
     if option == 0:
         print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n), n)))
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n), n)))
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n), n)))
+        print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n)))
+        print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n)))
+        print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n)))
     else:
-        print("\n", algorithm(gen_data_sets.gen_rand_arr(n), n))
-        print("\n", algorithm(gen_data_sets.gen_pre_sorted_arr(n), n))
-        print("\n", algorithm(gen_data_sets.gen_rev_sorted_arr(n), n))
-        print("\n", algorithm(gen_data_sets.gen_many_rep_arr(n), n))
+        print("\n", algorithm(gen_data_sets.gen_rand_arr(n, "python"), n))
+        print("\n", algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n))
+        print("\n", algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n))
+        print("\n", algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n))
