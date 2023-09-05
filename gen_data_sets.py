@@ -5,7 +5,7 @@ import ctypes
 def gen_rand_arr(n, language):
     arr = []
     random.seed(time.time())
-    for num in range(n):
+    for _ in range(n):
         arr.append(random.randint(0, n))
     return parse_arr_type(arr, n, language)
 
@@ -20,7 +20,7 @@ def gen_neg_skew_arr(n, language):
 def gen_many_rep_arr(n, language):
     arr = []
     random.seed(time.time())
-    for num in range(n):
+    for _ in range(n):
         arr.append(random.randint(0, n / 10))
     return parse_arr_type(arr, n, language)
 
@@ -33,7 +33,7 @@ def gen_pre_sorted_arr(n, language):
 def gen_rev_sorted_arr(n, language):
     arr = []
     for i in range(n):
-        arr.append(n - i)
+        arr.append(n - i - 1)
     return parse_arr_type(arr, n, language)
 
 def parse_arr_type(arr, n, language):

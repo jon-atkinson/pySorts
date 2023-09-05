@@ -13,6 +13,8 @@ def compare_sort_algos(command_args):
     in_strs = input("Enter algorithm(s) (single line, split on spaces): ").strip().split()
     if in_strs[0] == 'q':
         return None
+    if in_strs[0] == 'all':
+        in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "bubC", "hepC", "insC", "selC"]
 
     n_str = input("Enter n (default 10 000): ")
     if n_str == 'q' or n_str == 'quit':

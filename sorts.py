@@ -1,11 +1,13 @@
 def selection_sort(arr, n):
     min_idx = 0
+    
     for curr_idx in range(n):
         for j in range(curr_idx, n):
             if (arr[j] < arr[min_idx]):
                 min_idx = j
         arr[min_idx], arr[curr_idx] = arr[curr_idx], arr[min_idx]
         min_idx = curr_idx + 1
+
     return arr
 
 
@@ -18,6 +20,7 @@ def bubble_sort(arr, n):
                 swap = True
         if (swap == False):
             break
+
     return arr
 
 
@@ -29,6 +32,7 @@ def insertion_sort(arr, n):
             arr[j + 1] = arr[j]
             j -= 1
         arr[j + 1] = val
+
     return arr
 
 
@@ -46,6 +50,7 @@ def heap_sort(arr, n):
             j = index
             if index >= i:
                 break
+
     return arr
 
 def build_max_heap(arr, n):
@@ -128,7 +133,7 @@ def bucket_sort(array, n):
     num_buckets = 10
     rnge = n / num_buckets
     buckets = []
-
+    
     for i in range(num_buckets):
         buckets.append([])
 
@@ -154,12 +159,48 @@ def bucket_sort(array, n):
 
 
 def radix_sort(arr, n):
-    print("TODO - implement this sort")
+    exp = 1
+    while n / exp >= 1:
+        radix_count_help(arr, n, exp)
+        exp *= 10
     return arr
+
+def radix_count_help(arr, n, exp):
+    out = [0] * n
+    count = [0] * 10
+
+    for i in range(n):
+        idx = arr[i] // exp
+        count[idx % 10] += 1
+
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+
+    i = n - 1
+    while i >= 0:
+        idx = arr[i] // exp
+        out[count[idx % 10] - 1] = arr[i]
+        count[idx % 10] -= 1
+        i -= 1
+
+    for i in range(n):
+        arr[i] = out[i]
 
 
 def count_sort(arr, n):
-    print("TODO - implement this sort")
+    count = [0] * (n + 1)
+
+    for i in range(n):
+        count[arr[i]] += 1
+
+    idx = 0
+    for i in range(n + 1):
+        num = count[i]
+        while(num > 0):
+            arr[idx] = i
+            idx += 1
+            num -= 1
+
     return arr
 
 
@@ -191,8 +232,9 @@ def is_sorted(arr):
 
 if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
+    import timeit
     n = 10000
-    algorithm = bucket_sort
+    algorithm = radix_sort
     option = 0
     if option == 0:
         print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
@@ -200,7 +242,7 @@ if __name__ == "__main__":
         print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n)))
         print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n)))
     else:
-        print("\n", algorithm(gen_data_sets.gen_rand_arr(n, "python"), n))
-        print("\n", algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n))
-        print("\n", algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n))
-        print("\n", algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n))
+        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n))))
+        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n))))
+        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n))))
+        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n))))
