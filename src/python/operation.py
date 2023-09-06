@@ -1,5 +1,5 @@
 import sorts
-import gen_data_sets as gen_data_sets
+import gen_data_sets
 import timeit
 import os
 import ctypes
@@ -12,7 +12,7 @@ def compare_sort_algos(command_args):
 
     in_strs = input("Enter algorithm(s) (single line, split on spaces, default all configured): ").strip().split()
     if in_strs == []:
-        in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "bubC", "hepC", "insC", "selC"]
+        in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "shl", "bubC", "hepC", "insC", "selC"]
     elif in_strs[0] == 'q':
         return None
 
