@@ -205,7 +205,7 @@ def count_sort(arr, n):
 
 
 def shell_sort(arr, n):
-    interval = n // 10
+    interval = n // 2
     while(interval > 0):
         i = interval
         while i < n:
