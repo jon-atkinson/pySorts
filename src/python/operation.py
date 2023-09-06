@@ -2,19 +2,19 @@ import sorts
 import gen_data_sets as gen_data_sets
 import timeit
 import os
-# import seaborn as sns
 import ctypes
+# import seaborn as sns
 # import tk
 
 def compare_sort_algos(command_args):
     verbose = '-v' in command_args or '--verbose' in command_args
     pretty = '-p' in command_args or '--pretty' in command_args
 
-    in_strs = input("Enter algorithm(s) (single line, split on spaces): ").strip().split()
-    if in_strs[0] == 'q':
-        return None
-    if in_strs[0] == 'all':
+    in_strs = input("Enter algorithm(s) (single line, split on spaces, default all configured): ").strip().split()
+    if in_strs == []:
         in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "bubC", "hepC", "insC", "selC"]
+    elif in_strs[0] == 'q':
+        return None
 
     n_str = input("Enter n (default 10 000): ")
     if n_str == 'q' or n_str == 'quit':
@@ -137,7 +137,7 @@ def plot_algos(command_args):
 def get_algo(inStr):
     # importing and loading cSorts lib
     script_dir = os.path.abspath(os.path.dirname(__file__))
-    lib_path = os.path.join(script_dir, "cSorts.so")
+    lib_path = os.path.join(script_dir, "../c/cSorts.so")
     cSorts = ctypes.cdll.LoadLibrary(lib_path)
     
     match inStr:

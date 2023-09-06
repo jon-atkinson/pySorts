@@ -205,7 +205,20 @@ def count_sort(arr, n):
 
 
 def shell_sort(arr, n):
-    print("TODO - implement this sort")
+    interval = n // 10
+    while(interval > 0):
+        i = interval
+        while i < n:
+            j = i - interval
+            while j >= 0:
+                if arr[j + interval] > arr[j]:
+                    break
+                else:
+                    arr[j + interval], arr[j] = arr[j], arr[j + interval]
+                j = j - interval
+            i += 1
+        interval = interval // 2
+    print(arr)
     return arr
 
 
@@ -234,7 +247,7 @@ if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
     import timeit
     n = 10000
-    algorithm = radix_sort
+    algorithm = shell_sort
     option = 0
     if option == 0:
         print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))

@@ -35,9 +35,6 @@ def commandLoop():
                 case _:
                     raise Exception("incorrect command format")
         except Exception as e:
-            # exc_type, exc_obj, exc_tb = sys.exc_info()
-            # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            # print(f"exception raised: {str(e)} in file {str(fname)} at line {str(exc_tb.tb_lineno)}, please change inputs:")
             print(traceback.format_exc())
         command_str = input(formatPrompt("operation: "))
         command = command_str.split(" ")[0]
