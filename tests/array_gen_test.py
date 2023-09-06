@@ -24,8 +24,6 @@ class TestArrayGen(unittest.TestCase):
         self.assertTrue(is_sorted(arr))
         
 
-
-
 if __name__ == '__main__':
     unittest.main()
     

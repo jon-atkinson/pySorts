@@ -17,5 +17,6 @@ class TestBubbleSortPy(unittest.TestCase):
     def test_reversed_input(self):
         self.assertTrue(is_sorted(bubble_sort(self.reversed_in, self.n)))
 
+
 if __name__ == '__main__':
     unittest.main()
