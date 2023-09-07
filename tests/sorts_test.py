@@ -1,21 +1,268 @@
 import unittest
 from src.python.sorts import is_sorted
+from src.python.gen_data_sets import *
 from src.python.sorts import *
+
+
+class TestBucketSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(bucket_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(bucket_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(bucket_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(bucket_sort(arr, self.n)))
+
 
 class TestBubbleSortPy(unittest.TestCase):
     n = 10000
-    rand_in = gen_data_sets.gen_rand_arr(n, "python")
-    sorted_in = gen_data_sets.gen_pre_sorted_arr(n, "python")
-    reversed_in = gen_data_sets.gen_rev_sorted_arr(n, "python")
     
     def test_rand_input(self):
-        self.assertTrue(is_sorted(bubble_sort(self.rand_in, self.n)))
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(bubble_sort(arr, self.n)))
        
     def test_sorted_input(self):
-        self.assertTrue(is_sorted(bubble_sort(self.sorted_in, self.n)))
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(bubble_sort(arr, self.n)))
 
     def test_reversed_input(self):
-        self.assertTrue(is_sorted(bubble_sort(self.reversed_in, self.n)))
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(bubble_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(bubble_sort(arr, self.n)))
+
+
+class TestCubeSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
+
+
+class TestCountSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(count_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(count_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(count_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(count_sort(arr, self.n)))
+
+
+class TestHeapSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(heap_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(heap_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(heap_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(heap_sort(arr, self.n)))
+
+
+class TestInsertionSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(insertion_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(insertion_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(insertion_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(insertion_sort(arr, self.n)))
+
+
+class TestMergeSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(merge_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(merge_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(merge_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(merge_sort(arr, self.n)))
+
+
+class TestQuickSortPy(unittest.TestCase):
+    # n = 10000 exceeds python max recursion depth for this algorithm
+    n = 1000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(quick_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(quick_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(quick_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(quick_sort(arr, self.n)))
+
+
+class TestRadixSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(radix_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(radix_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(radix_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(radix_sort(arr, self.n)))
+
+
+class TestSelectionSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(selection_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(selection_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(selection_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(selection_sort(arr, self.n)))
+
+
+class TestShellSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(shell_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(shell_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(shell_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(shell_sort(arr, self.n)))
+
+
+class TestTimSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(tim_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(tim_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(tim_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(tim_sort(arr, self.n)))
+
+
+class TestTreeSortPy(unittest.TestCase):
+    n = 10000
+
+    def test_rand_input(self):
+        arr = gen_rand_arr(self.n, "python")
+        self.assertTrue(is_sorted(tree_sort(arr, self.n)))
+       
+    def test_sorted_input(self):
+        arr = gen_pre_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(tree_sort(arr, self.n)))
+
+    def test_reversed_input(self):
+        arr = gen_rev_sorted_arr(self.n, "python")
+        self.assertTrue(is_sorted(tree_sort(arr, self.n)))
+
+    def test_many_rep_input(self):
+        arr = gen_many_rep_arr(self.n, "python")
+        self.assertTrue(is_sorted(tree_sort(arr, self.n)))
 
 
 if __name__ == '__main__':
