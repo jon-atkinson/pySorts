@@ -129,8 +129,14 @@ def merge_sort(arr, n):
     return arr
 
 
-def bucket_sort(array, n):
-    num_buckets = 10
+def bucket_sort(arr, n):
+    if n <= 1:
+        return arr
+    if n >= 10:
+        num_buckets = 10
+    else:
+        num_buckets = 2
+
     rnge = n / num_buckets
     buckets = []
     
@@ -138,11 +144,11 @@ def bucket_sort(array, n):
         buckets.append([])
 
     for i in range(n):
-        delta = array[i] / rnge - int(array[i] / rnge)
-        if(delta == 0 and array[i] != 0):
-            buckets[int(array[i] / rnge) - 1].append(array[i])
+        delta = arr[i] / rnge - int(arr[i] / rnge)
+        if(delta == 0 and arr[i] != 0):
+            buckets[int(arr[i] / rnge) - 1].append(arr[i])
         else:
-            buckets[int(array[i] / rnge)].append(array[i])
+            buckets[int(arr[i] / rnge)].append(arr[i])
 
     for i in range(num_buckets):
         bucket_len = len(buckets[i])
@@ -152,10 +158,10 @@ def bucket_sort(array, n):
     idx = 0
     for bucket in buckets:
         for i in bucket:
-            array[idx] = i
+            arr[idx] = i
             idx += 1
 
-    return array
+    return arr
 
 
 def radix_sort(arr, n):
@@ -218,25 +224,71 @@ def shell_sort(arr, n):
                 j = j - interval
             i += 1
         interval = interval // 2
-    print(arr)
     return arr
 
 
 def tim_sort(arr, n):
-    print("TODO - implement this sort")
+    run_size = calc_run_size(n)
+
+    for first in range(0, n, run_size):
+        last = min(first + run_size - 1, n - 1)
+        arr[first:last + 1] = insertion_sort(arr[first:last + 1], last - first + 1)
+
+    merge_size = run_size
+    while merge_size < n:
+        for left in range(0, n, 2 * merge_size):
+            mid = min(n - 1, left + merge_size - 1)
+            right = min((left + 2 * merge_size - 1), n - 1)
+            if mid < right:
+                tim_merge(arr, left, mid, right)
+
+        merge_size *= 2
     return arr
+
+def calc_run_size(n):
+    minRun = 32
+    run = 0
+    while n >= minRun:
+        run |= n & 1
+        n >>= 1
+    return n + run
+
+def tim_merge(arr, left_idx, mid_idx, right_idx):
+    n1, n2 = mid_idx - left_idx + 1, right_idx - mid_idx
+    left, right, = [], []
+
+    for i in range(0, n1):
+        left.append(arr[left_idx + i])
+    for i in range(0, n2):
+        right.append(arr[mid_idx + i + 1])
+
+    i, j, k = 0, 0, left_idx
+    while i < n1 and j < n2:
+        if left[i] <= right[j]:
+            arr[k] = left[i]
+            i += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+        k += 1
+
+    while i < n1:
+        arr[k] = left[i]
+        i += 1 
+        k += 1
+
+    while j < n2:
+        arr[k] = right[j]
+        j += 1 
+        k += 1
 
 
 def tree_sort(arr, n):
     print("TODO - implement this sort")
     return arr
-
-
 def cube_sort(arr, n):
     print("TODO - implement this sort")
     return arr
-
-
 def is_sorted(arr):
     for i in range(len(arr) - 1):
         if (arr[i] > arr[i + 1]):
@@ -245,17 +297,27 @@ def is_sorted(arr):
 
 if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
-    import timeit
-    n = 10000
-    algorithm = shell_sort
-    option = 0
-    if option == 0:
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n)))
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n)))
-        print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n)))
-    else:
-        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n))))
-        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n))))
-        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n))))
-        print("\n", print(timeit.timeit(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n))))
+
+    algorithm = tim_sort
+
+    # n = 65
+    # print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
+    # print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n)))
+    # print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n)))
+    # print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n)))
+
+
+    # nums = [1, 63, 64, 65, 127, 128]
+    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[0], "python"), nums[0]))))
+    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[1], "python"), nums[1]))))
+    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[3], "python"), nums[3]))))
+    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[4], "python"), nums[4]))))
+    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[5], "python"), nums[5]))))
+
+    n = 1000
+    arr = gen_data_sets.gen_rand_arr(n, "python")
+    returned = algorithm(arr, n)
+    print("\n" + str(is_sorted(returned)))
+    print(returned)
+    
+

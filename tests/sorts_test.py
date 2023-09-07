@@ -7,6 +7,18 @@ from src.python.sorts import *
 class TestBucketSortPy(unittest.TestCase):
     n = 10000
 
+    def test_zero_input(self):
+        arr = [0]
+        self.assertTrue(is_sorted(bucket_sort(arr, 1)))
+
+    def test_single_input(self):
+        arr = [1]
+        self.assertTrue(is_sorted(bucket_sort(arr, 1)))
+
+    def test_num_bck_greater_than_num_inputs(self):
+        arr = [1, 0]
+        self.assertTrue(is_sorted(bucket_sort(arr, 2)))
+
     def test_rand_input(self):
         arr = gen_rand_arr(self.n, "python")
         self.assertTrue(is_sorted(bucket_sort(arr, self.n)))
@@ -27,6 +39,14 @@ class TestBucketSortPy(unittest.TestCase):
 class TestBubbleSortPy(unittest.TestCase):
     n = 10000
     
+    def test_zero_input(self):
+        arr = [0]
+        self.assertTrue(is_sorted(bubble_sort(arr, 1)))
+
+    def test_single_input(self):
+        arr = [7]
+        self.assertTrue(is_sorted(bubble_sort(arr, 1)))
+
     def test_rand_input(self):
         arr = gen_rand_arr(self.n, "python")
         self.assertTrue(is_sorted(bubble_sort(arr, self.n)))
@@ -46,6 +66,15 @@ class TestBubbleSortPy(unittest.TestCase):
 
 class TestCubeSortPy(unittest.TestCase):
     n = 10000
+
+    def test_zero_input(self):
+        arr = [0]
+        self.assertTrue(is_sorted(cube_sort(arr, 1)))
+
+    def test_single_input(self):
+        arr = [7]
+        self.assertTrue(is_sorted(cube_sort(arr, 1)))
+
 
     def test_rand_input(self):
         arr = gen_rand_arr(self.n, "python")

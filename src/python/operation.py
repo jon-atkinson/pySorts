@@ -12,7 +12,7 @@ def compare_sort_algos(command_args):
 
     in_strs = input("Enter algorithm(s) (single line, split on spaces, default all configured): ").strip().split()
     if in_strs == []:
-        in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "shl", "bubC", "hepC", "insC", "selC"]
+        in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "shl", "tim", "bubC", "hepC", "insC", "selC"]
     elif in_strs[0] == 'q':
         return None
 
@@ -48,7 +48,8 @@ def compare_sort_algos(command_args):
     if pretty:
         unit = min(results.values())
         for elem in results.keys():
-            print(elem + '\t\t' + '#' * int(results[elem] / unit))
+            # multiple = 
+            print(elem + '\t\t' + '#' * int(results[elem] / unit) + f"\t({round(results[elem] / unit, 2)} * {[k for k, v in results.items() if v == unit][0]})")
     else:
         for elem in results.keys():
             print(elem + "\t\t" + str(results[elem]))

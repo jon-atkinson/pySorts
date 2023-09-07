@@ -1,8 +1,8 @@
+import readline
 import operation
 import os
-import sys
 import traceback
-import readline
+# import sys
 # ideal eventual control flow:
 #              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------ 
 #                  /                            \

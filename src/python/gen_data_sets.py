@@ -9,10 +9,12 @@ def gen_rand_arr(n, language):
         arr.append(random.randint(0, n))
     return parse_arr_type(arr, n, language)
 
+# TODO finish implementation
 def gen_pos_skew_arr(n, language):
     print("TODO")
     return None
 
+# TODO finish implementation
 def gen_neg_skew_arr(n, language):
     print("TODO")
     return None
@@ -21,7 +23,7 @@ def gen_many_rep_arr(n, language):
     arr = []
     random.seed(time.time())
     for _ in range(n):
-        arr.append(random.randint(0, n / 10))
+        arr.append(random.randint(0, n // 10))
     return parse_arr_type(arr, n, language)
 
 def gen_pre_sorted_arr(n, language):
