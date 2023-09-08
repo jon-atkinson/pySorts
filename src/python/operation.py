@@ -48,7 +48,6 @@ def compare_sort_algos(command_args):
     if pretty:
         unit = min(results.values())
         for elem in results.keys():
-            # multiple = 
             print(elem + '\t\t' + '#' * int(results[elem] / unit) + f"\t({round(results[elem] / unit, 2)} * {[k for k, v in results.items() if v == unit][0]})")
     else:
         for elem in results.keys():
@@ -150,10 +149,6 @@ def get_algo(inStr):
             return sorts.bubble_sort
         case "bubC":
             return construct_c_algo(cSorts.bubbleSort)
-        case "cbe":
-            return sorts.cube_sort
-        case "cbeC":
-            return construct_c_algo(cSorts.cubeSort)
         case "cnt":
             return sorts.count_sort
         case "cntC":

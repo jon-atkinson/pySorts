@@ -2,6 +2,7 @@ import random
 import time
 import ctypes
 
+
 def gen_rand_arr(n, language):
     arr = []
     random.seed(time.time())
@@ -9,15 +10,18 @@ def gen_rand_arr(n, language):
         arr.append(random.randint(0, n))
     return parse_arr_type(arr, n, language)
 
+
 # TODO finish implementation
 def gen_pos_skew_arr(n, language):
     print("TODO")
     return None
 
+
 # TODO finish implementation
 def gen_neg_skew_arr(n, language):
     print("TODO")
     return None
+
 
 def gen_many_rep_arr(n, language):
     arr = []
@@ -26,17 +30,20 @@ def gen_many_rep_arr(n, language):
         arr.append(random.randint(0, n // 10))
     return parse_arr_type(arr, n, language)
 
+
 def gen_pre_sorted_arr(n, language):
     arr = []
     for i in range(n):
         arr.append(i)
     return parse_arr_type(arr, n, language)
 
+
 def gen_rev_sorted_arr(n, language):
     arr = []
     for i in range(n):
         arr.append(n - i - 1)
     return parse_arr_type(arr, n, language)
+
 
 def parse_arr_type(arr, n, language):
     if (language == "python"):
@@ -46,10 +53,12 @@ def parse_arr_type(arr, n, language):
     print("Error, language param not passed in correctly")
     return None
 
+
 def to_c_arr(arr, n):
     var = (ctypes.c_int * n)(*arr)
     return var
     return (ctypes.c_int * n)(*arr)
+
 
 if __name__ == "__main__":
     # import sorts

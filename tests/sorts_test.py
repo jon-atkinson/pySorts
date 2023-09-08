@@ -64,35 +64,6 @@ class TestBubbleSortPy(unittest.TestCase):
         self.assertTrue(is_sorted(bubble_sort(arr, self.n)))
 
 
-class TestCubeSortPy(unittest.TestCase):
-    n = 10000
-
-    def test_zero_input(self):
-        arr = [0]
-        self.assertTrue(is_sorted(cube_sort(arr, 1)))
-
-    def test_single_input(self):
-        arr = [7]
-        self.assertTrue(is_sorted(cube_sort(arr, 1)))
-
-
-    def test_rand_input(self):
-        arr = gen_rand_arr(self.n, "python")
-        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
-       
-    def test_sorted_input(self):
-        arr = gen_pre_sorted_arr(self.n, "python")
-        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
-
-    def test_reversed_input(self):
-        arr = gen_rev_sorted_arr(self.n, "python")
-        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
-
-    def test_many_rep_input(self):
-        arr = gen_many_rep_arr(self.n, "python")
-        self.assertTrue(is_sorted(cube_sort(arr, self.n)))
-
-
 class TestCountSortPy(unittest.TestCase):
     n = 10000
 
