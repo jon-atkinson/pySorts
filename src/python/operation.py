@@ -234,6 +234,6 @@ def printArray(arr, n):
     print(str(arr[n - 1]) + "]")
 
 if __name__ == "__main__":
-    import app
+    import pySorts.src.python.cli as cli
     print("Running from operation.py")
-    app.commandLoop()
+    cli.commandLoop()

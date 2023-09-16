@@ -1,3 +1,4 @@
+from sys import setrecursionlimit
 def selection_sort(arr, n):
     min_idx = 0
     
@@ -66,6 +67,7 @@ def parent_idx(idx):
 
 
 def quick_sort(arr, n):
+    setrecursionlimit(n + 1)
     return quicksort_help(arr, 0, n)
 
 def quicksort_help(arr, low, high):
