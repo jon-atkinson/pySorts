@@ -4,7 +4,7 @@ import os
 import traceback
 # import sys
 # ideal eventual control flow:
-#              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------ 
+#              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------
 #                  /                            \
 #       time = ask for algo, n,         race = ask for algos as a space seperated string of strings
 #       input sortedness                         |

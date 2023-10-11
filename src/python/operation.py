@@ -71,7 +71,7 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
         # new input array since repeating one allows for python memory reuse optimisation interferance
         arr = get_arr(arr_type)(n, "python")
 
-        if arr == None:
+        if arr is None:
             print('error in input array type')
             return None
 
@@ -87,25 +87,20 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
                 if (elem[len(elem) - 1] == "C"):
                     inArray = gen_data_sets.to_c_arr(deep_array_copy(arr), n)
                     sortedArray = algos[j](inArray, n)
-                    print("doublePrint")
-                    print(sortedArray)
-                    printArray(sortedArray)
                 else:
                     sortedArray = algos[j](deep_array_copy(arr), n)
 
-                print("Initial: " + str(arr) + "\nFinal: ", end="")
-                for i in range(n):
-                    print(sortedArray[i], "", end="")
+                print("\nInitial: " + str(arr[0:n]) + "\nFinal: ", end="")
+                printArray(sortedArray, n)
 
                 if (elem[len(elem) - 1] == "C"):
-                    print("running c fn")
                     results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
-                    print("running py fn\n")
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
 
     # meaningless for comparison since #reps introduces a constant scale factor but for semantic sakes
     # also helps when considering rough runtimes over tests with different number of repeat tests
+    print()
     for i, elem in enumerate(in_strs):
         results[elem] /= num_reps
     return results

@@ -1,14 +1,9 @@
-import random
-import time
 import ctypes
+import numpy as np
 
 
 def gen_rand_arr(n, language):
-    arr = []
-    random.seed(time.time())
-    for _ in range(n):
-        arr.append(random.randint(0, n))
-    return parse_arr_type(arr, n, language)
+    return parse_arr_type(np.random.randint(0, n, n), n, language)
 
 
 # TODO finish implementation
@@ -24,25 +19,15 @@ def gen_neg_skew_arr(n, language):
 
 
 def gen_many_rep_arr(n, language):
-    arr = []
-    random.seed(time.time())
-    for _ in range(n):
-        arr.append(random.randint(0, n // 10))
-    return parse_arr_type(arr, n, language)
+    return parse_arr_type(np.random.randint(0, n, n // 10), n, language)
 
 
 def gen_pre_sorted_arr(n, language):
-    arr = []
-    for i in range(n):
-        arr.append(i)
-    return parse_arr_type(arr, n, language)
+    return parse_arr_type(np.arange(0,n), n, language)
 
 
 def gen_rev_sorted_arr(n, language):
-    arr = []
-    for i in range(n):
-        arr.append(n - i - 1)
-    return parse_arr_type(arr, n, language)
+    return parse_arr_type(np.arange(n,0,-1), n, language)
 
 
 def parse_arr_type(arr, n, language):
@@ -57,7 +42,7 @@ def parse_arr_type(arr, n, language):
 def to_c_arr(arr, n):
     var = (ctypes.c_int * n)(*arr)
     return var
-    return (ctypes.c_int * n)(*arr)
+    # return (ctypes.c_int * n)(*arr)
 
 
 if __name__ == "__main__":

@@ -67,7 +67,7 @@ def parent_idx(idx):
 
 
 def quick_sort(arr, n):
-    setrecursionlimit(n + 1)
+    # setrecursionlimit(n + 1)
     return quicksort_help(arr, 0, n)
 
 def quicksort_help(arr, low, high):
