@@ -16,7 +16,7 @@ def compare_sort_algos(command_args):
     elif in_strs[0] == 'q':
         return None
 
-    n_str = input("Enter n (default 10 000): ")
+    n_str = input("Enter n (default 10 000): ").strip()
     if n_str == 'q' or n_str == 'quit':
         return None
     if n_str == '':
@@ -30,7 +30,7 @@ def compare_sort_algos(command_args):
     if arr_type == '':
         arr_type = 'rand'
 
-    num_reps_str = input("Enter number of repetitions (default 1): ")
+    num_reps_str = input("Enter number of repetitions (default 1): ").strip()
     if num_reps_str == 'q' or n_str == 'quit':
         return None
     if num_reps_str == '':
@@ -68,7 +68,7 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
         results.update({in_strs[i]: 0.0})
 
     for i in range(num_reps):
-        # new input array since repeating one allows for python memory reuse optimisation interferance
+        # new input array since repeating one allows python memory cache optimisations
         arr = get_arr(arr_type)(n, "python")
 
         if arr is None:
@@ -81,22 +81,22 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
                     results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
-        else: # TODO delete eventually, this is quite an inelegant and inefficient soln. to this problem
+        else: # TODO refactor eventually, this is quite an inelegant and inefficient soln. to this problem
             print('(running in verbose mode)')
             for j, elem in enumerate(in_strs):
-                if (elem[len(elem) - 1] == "C"):
+                if (elem[-1] == "C"):
                     inArray = gen_data_sets.to_c_arr(deep_array_copy(arr), n)
                     sortedArray = algos[j](inArray, n)
                 else:
                     sortedArray = algos[j](deep_array_copy(arr), n)
 
-                print("\nInitial: " + str(arr[0:n]) + "\nFinal: ", end="")
-                printArray(sortedArray, n)
+                print("\n\n(" + elem + ")\nInitial: " + str(arr[0:n]) + "\nFinal: " + str(sortedArray[0:n]), end="")
 
-                if (elem[len(elem) - 1] == "C"):
+                if (elem[-1] == "C"):
                     results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
+
 
     # meaningless for comparison since #reps introduces a constant scale factor but for semantic sakes
     # also helps when considering rough runtimes over tests with different number of repeat tests
@@ -208,6 +208,8 @@ def get_arr(inStr):
             return gen_data_sets.gen_rand_arr
         case "manyRep":
             return gen_data_sets.gen_many_rep_arr
+        case "norm":
+            return gen_data_sets.gen_norm_rand_arr
         case "posSkew":
             return gen_data_sets.gen_pos_skew_arr
         case "negSkew":
@@ -221,14 +223,8 @@ def deep_array_copy(arr):
         new.append(e)
     return new
 
-# TODO test this function
-def printArray(arr, n):
-    print("[", end="")
-    for i in range(n - 1):
-        print(str(arr[i]) + ", ", end="")
-    print(str(arr[n - 1]) + "]")
-
 if __name__ == "__main__":
-    import pySorts.src.python.cli as cli
+    import cli
+    os.system('clear')
     print("Running from operation.py")
     cli.commandLoop()

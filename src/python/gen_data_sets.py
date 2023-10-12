@@ -6,6 +6,10 @@ def gen_rand_arr(n, language):
     return parse_arr_type(np.random.randint(0, n, n), n, language)
 
 
+def gen_norm_rand_arr(n, language):
+    return parse_arr_type(np.random.normal(loc=n/2,scale=1,size=n).astype(int), n, language)
+
+
 # TODO finish implementation
 def gen_pos_skew_arr(n, language):
     print("TODO")
@@ -51,11 +55,11 @@ if __name__ == "__main__":
     # print(sorts.selection_sort(gen_rand_arr(100, "python"), 100))
     n = 10
     arr = []
-    for i in [0,1,2,3,4,5,6,7,8,9]:
+    for i in range(n):
         arr.append(i)
     print(arr)
     newArr = to_c_arr(operation.deep_array_copy(arr), n)
     print(newArr)
     print("reminder, the above two c array objects should be identical")
-    for j in [0,1,2,3,4,5,6,7,8,9]:
+    for j in range(n):
         print(newArr[j], ' ', end='')

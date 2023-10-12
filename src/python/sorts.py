@@ -1,3 +1,4 @@
+#%%
 from sys import setrecursionlimit
 def selection_sort(arr, n):
     min_idx = 0
@@ -299,10 +300,23 @@ def is_sorted(arr):
 
 if __name__ == "__main__":
     import gen_data_sets as gen_data_sets
+    from matplotlib import pyplot as plt
+    import numpy as np
 
     algorithm = tim_sort
+    n = 10000
+    # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
+    arr = gen_data_sets.gen_pos_skew_arr(n, "python")
+    arr.sort()
+    print(arr)
+    # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
+    # print(arr)
 
-    # n = 65
+
+    plt.title("array distribution")
+    plt.plot(np.arange(0,n), arr, "red")
+    plt.show()
+
     # print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
     # print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n)))
     # print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n)))
@@ -316,10 +330,15 @@ if __name__ == "__main__":
     # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[4], "python"), nums[4]))))
     # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[5], "python"), nums[5]))))
 
-    n = 1000
-    arr = gen_data_sets.gen_rand_arr(n, "python")
-    returned = algorithm(arr, n)
-    print("\n" + str(is_sorted(returned)))
-    print(returned)
+    # n = 1000
+    # arr = gen_data_sets.gen_rand_arr(n, "python")
+    # returned = algorithm(arr, n)
+    # print("\n" + str(is_sorted(returned)))
+    # print(returned)
     
 
+
+
+
+
+ # %%

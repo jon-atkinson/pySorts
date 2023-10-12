@@ -75,5 +75,6 @@ def formatPrompt(promptMsg):
     return ("\033[94m {}\033[00m".format(promptMsg)).strip()
 
 if __name__ == '__main__': #
+    os.system('clear')
     print(formatPrompt("Welcome to pySort, please enter a command:"))
     commandLoop()
