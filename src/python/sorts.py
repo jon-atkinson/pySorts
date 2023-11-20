@@ -1,5 +1,6 @@
 #%%
 from sys import setrecursionlimit
+from avl import AVL_Node, AVL_Tree
 def selection_sort(arr, n):
     min_idx = 0
     
@@ -288,7 +289,12 @@ def tim_merge(arr, left_idx, mid_idx, right_idx):
 
 def tree_sort(arr, n):
     print("TODO - implement this sort")
+    tree = AVL_Tree()
+    for i in range(len(arr)): 
+        tree.insert(arr[i]) 
     return arr
+
+
 def cube_sort(arr, n):
     print("TODO - implement this sort")
     return arr

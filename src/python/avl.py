@@ -7,7 +7,7 @@ class AVL_Node(object):
 
 class AVL_Tree(object):
     def __init__(self, data = 0):
-        self.root = AVL_Node(data=self.data)
+        self.root = AVL_Node(data=data)
 
 
     def insert(self, root, data):
@@ -68,3 +68,10 @@ class AVL_Tree(object):
         root.depth = 1 + max(self.get_depth(root.left), self.get_depth(root.right))
         a.depth = 1 + max(self.get_depth(a.left), self.get_depth(a.right))
         return new_root
+
+    def to_sorted_array(self, root, array=[]):
+        if root != None:
+            self.to_sorted_array(root.left, array)
+            array.append(root.data)
+            self.to_sorted_array(root.right, array)
+        return array
