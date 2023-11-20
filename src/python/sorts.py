@@ -1,6 +1,7 @@
 #%%
 from sys import setrecursionlimit
-from avl import AVL_Node, AVL_Tree
+from avl import AVL_Node, avl_insert
+
 def selection_sort(arr, n):
     min_idx = 0
     
@@ -288,16 +289,17 @@ def tim_merge(arr, left_idx, mid_idx, right_idx):
 
 
 def tree_sort(arr, n):
-    print("TODO - implement this sort")
-    tree = AVL_Tree()
-    for i in range(len(arr)): 
-        tree.insert(arr[i]) 
+    tree = None
+    for num in arr: 
+        tree = avl_insert(tree, num) 
     return arr
 
 
 def cube_sort(arr, n):
     print("TODO - implement this sort")
     return arr
+
+
 def is_sorted(arr):
     for i in range(len(arr) - 1):
         if (arr[i] > arr[i + 1]):
@@ -310,10 +312,13 @@ if __name__ == "__main__":
     import numpy as np
 
     algorithm = tim_sort
-    n = 10000
+    n = 100
     # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
-    arr = gen_data_sets.gen_pos_skew_arr(n, "python")
-    arr.sort()
+    # arr = gen_data_sets.gen_pos_skew_arr(n, "python")
+    arr = gen_data_sets.gen_rand_arr(n, "python")
+    # arr.sort()
+    print(arr)
+    arr = algorithm(arr, n)
     print(arr)
     # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
     # print(arr)
