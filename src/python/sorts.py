@@ -1,4 +1,3 @@
-#%%
 from sys import setrecursionlimit
 from avl import AVL_Node, avl_insert
 
@@ -318,14 +317,18 @@ if __name__ == "__main__":
     arr = gen_data_sets.gen_rand_arr(n, "python")
     # arr.sort()
     print(arr)
-    arr = algorithm(arr, n)
-    print(arr)
     # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
     # print(arr)
 
 
+    import matplotlib
+    matplotlib.use('TkAgg')
     plt.title("array distribution")
     plt.plot(np.arange(0,n), arr, "red")
+    # plt.show()
+    arr = algorithm(arr, n)
+    print(arr)
+    plt.plot(np.arange(0,n), arr, "green")
     plt.show()
 
     # print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
@@ -346,10 +349,3 @@ if __name__ == "__main__":
     # returned = algorithm(arr, n)
     # print("\n" + str(is_sorted(returned)))
     # print(returned)
-    
-
-
-
-
-
- # %%

@@ -69,7 +69,7 @@ def helpPySort():
     print("  - shl: shell sort")
     print("  - tim: tim sort")
     print("  - tre: tree sort")
-    print("  - cbe: cube sort")
+    print("  - cbe: cube sort (unimplemented)")
 
 def formatPrompt(promptMsg):
     return ("\033[94m {}\033[00m".format(promptMsg)).strip()

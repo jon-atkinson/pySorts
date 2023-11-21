@@ -3,6 +3,7 @@ import gen_data_sets
 import timeit
 import os
 import ctypes
+from matplotlib import pyplot as plt
 # import seaborn as sns
 # import tk
 
@@ -77,7 +78,7 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
 
         if not verbose:
             for j, elem in enumerate(in_strs):
-                if (elem[len(elem) - 1] == "C"):
+                if (elem[-1] == "C"):
                     results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
@@ -114,6 +115,7 @@ def compare_sortedness(verbose):
     return
 
 
+def plot_algos(command_args):
     """ Plots the O(n) response of multiple algorithms on one input type
     algos: list of refs to algorithms to compare
     in_strs: list of strings corresponding to the algos being compared
@@ -121,15 +123,70 @@ def compare_sortedness(verbose):
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
-def plot_algos(command_args):
-    print("TODO - implement this operation")
+    # print("TODO - implement this operation")
+
+    in_strs = input("Enter algorithm(s) (single line, split on spaces, default all configured): ").strip().split()
+    if in_strs == []:
+        in_strs = ["bct", "bub", "cnt", "hep", "ins", "mrg", "qck", "rdx", "sel", "shl", "tim", "bubC", "hepC", "insC", "selC"]
+    elif in_strs[0] == 'q':
+        return None
+
+    # throws error if not 2 inputs, requires update at some point
+    inputs = input("Enter start, stop, step (optional): ").strip().split()
+    if len(inputs) == 2:
+        start, stop = inputs
+        step = 1
+    elif len(inputs) == 3:
+        start, stop, step = inputs
+    else:
+        raise Exception("invalid start, stop, step inputs")
+    start, stop, step = int(start), int(stop), int(step)
+
+    arr_type = input("Enter input sortedness (default 'rand'): ").strip()
+    if arr_type == 'q' or arr_type == 'quit':
+        return None
+    if arr_type == '':
+        arr_type = 'rand'
+
+    algos = []
+    for in_str in in_strs:
+        algos.append(get_algo(in_str))
+    if (None in algos):
+        raise Exception("Error: an algo didn't populate correctly")
+
+    results = dict()
+    for i, elem in enumerate(in_strs):
+        results.update({in_strs[i]: []})
+    n_steps = []
+
+    for i in range(start, stop + 1, step):
+        n_steps.append(i)
+        # new input array since repeating one allows python memory cache optimisations (we want nice clean curves)
+        arr = get_arr(arr_type)(i, "python")
+
+        if arr is None:
+            print('error in input array type')
+            return None
+
+        for j, elem in enumerate(in_strs):
+            print("calculating", elem, i)
+            if (elem[-1] == "C"):
+                results[elem].append(timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), i), i), number=1))
+            else:
+                results[elem].append(timeit.timeit(lambda: algos[j](deep_array_copy(arr), i), number=1))
+
+    # plotting algorithm time response curves
+    for elem in results:
+        plt.plot(n_steps, results[elem])
+    plt.legend(in_strs)
+    plt.show()
     return
 
 
+def get_algo(inStr):
     """ takes a string refering to the desired algorithm
     returns a reference to the function of the desired algorithm
     """
-def get_algo(inStr):
     # importing and loading cSorts lib
     script_dir = os.path.abspath(os.path.dirname(__file__))
     lib_path = os.path.join(script_dir, "../c/cSorts.so")
@@ -148,6 +205,10 @@ def get_algo(inStr):
             return sorts.count_sort
         case "cntC":
             return construct_c_algo(cSorts.countSort)
+        case "cbe":
+            return None
+        case "cbeC":
+            return None
         case "hep":
             return sorts.heap_sort
         case "hepC":
@@ -185,7 +246,7 @@ def get_algo(inStr):
         case "treC":
             return construct_c_algo(cSorts.treeSort)
         case _:
-            print("No matching algorithm found")
+            print("No matching algorithm found:", inStr)
             return None
     
 def construct_c_algo(algo_ref):
