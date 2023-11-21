@@ -4,8 +4,6 @@ import timeit
 import os
 import ctypes
 from matplotlib import pyplot as plt
-# import seaborn as sns
-# import tk
 
 def compare_sort_algos(command_args):
     verbose = '-v' in command_args or '--verbose' in command_args
@@ -56,6 +54,7 @@ def compare_sort_algos(command_args):
     return
 
 
+def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
     """ compares the average runtimes of different algorithms on on type of input
     algos: list of refs to algorithms to compare
     in_strs: list of strings corresponding to the algos being compared
@@ -63,7 +62,6 @@ def compare_sort_algos(command_args):
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
-def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
     results = dict()
     for i, elem in enumerate(in_strs):
         results.update({in_strs[i]: 0.0})
@@ -101,7 +99,7 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
 
     # meaningless for comparison since #reps introduces a constant scale factor but for semantic sakes
     # also helps when considering rough runtimes over tests with different number of repeat tests
-    print()
+    # print()
     for i, elem in enumerate(in_strs):
         results[elem] /= num_reps
     return results
@@ -123,7 +121,6 @@ def plot_algos(command_args):
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
-    # print("TODO - implement this operation")
 
     in_strs = input("Enter algorithm(s) (single line, split on spaces, default all configured): ").strip().split()
     if in_strs == []:
@@ -154,11 +151,22 @@ def plot_algos(command_args):
     if (None in algos):
         raise Exception("Error: an algo didn't populate correctly")
 
+    num_reps_str = input("Enter number of repetitions (default 1): ").strip()
+    if num_reps_str == 'q':
+        return None
+    if num_reps_str == '':
+        num_reps = 1
+    else:
+        num_reps = int(num_reps_str)
+
     results = dict()
     for i, elem in enumerate(in_strs):
         results.update({in_strs[i]: []})
     n_steps = []
 
+    # need to change the following to sum on each sort then divide by num_reps as the LAST thing on the bottom of this loop
+    for _ in range(num_reps):
+        print("indent each one of the below")
     for i in range(start, stop + 1, step):
         n_steps.append(i)
         # new input array since repeating one allows python memory cache optimisations (we want nice clean curves)
