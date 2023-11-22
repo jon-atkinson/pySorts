@@ -1,5 +1,5 @@
 import sorts
-import gen_data_sets
+import create_arrays
 import timeit
 import os
 import ctypes
@@ -77,14 +77,14 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
         if not verbose:
             for j, elem in enumerate(in_strs):
                 if (elem[-1] == "C"):
-                    results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
+                    results[elem] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
         else: # TODO refactor eventually, this is quite an inelegant and inefficient soln. to this problem
             print('(running in verbose mode)')
             for j, elem in enumerate(in_strs):
                 if (elem[-1] == "C"):
-                    inArray = gen_data_sets.to_c_arr(deep_array_copy(arr), n)
+                    inArray = create_arrays.to_c_arr(deep_array_copy(arr), n)
                     sortedArray = algos[j](inArray, n)
                 else:
                     sortedArray = algos[j](deep_array_copy(arr), n)
@@ -92,14 +92,13 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
                 print("\n\n(" + elem + ")\nInitial: " + str(arr[0:n]) + "\nFinal: " + str(sortedArray[0:n]), end="")
 
                 if (elem[-1] == "C"):
-                    results[elem] += timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), n), n), number=1)
+                    results[elem] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
 
 
     # meaningless for comparison since #reps introduces a constant scale factor but for semantic sakes
     # also helps when considering rough runtimes over tests with different number of repeat tests
-    # print()
     for i, elem in enumerate(in_strs):
         results[elem] /= num_reps
     return results
@@ -117,7 +116,7 @@ def plot_algos(command_args):
     """ Plots the O(n) response of multiple algorithms on one input type
     algos: list of refs to algorithms to compare
     in_strs: list of strings corresponding to the algos being compared
-    n: size of array being sorted
+    start, stop, step: start and stop for the sweep and step = granularity
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
@@ -145,12 +144,6 @@ def plot_algos(command_args):
     if arr_type == '':
         arr_type = 'rand'
 
-    algos = []
-    for in_str in in_strs:
-        algos.append(get_algo(in_str))
-    if (None in algos):
-        raise Exception("Error: an algo didn't populate correctly")
-
     num_reps_str = input("Enter number of repetitions (default 1): ").strip()
     if num_reps_str == 'q':
         return None
@@ -159,34 +152,47 @@ def plot_algos(command_args):
     else:
         num_reps = int(num_reps_str)
 
+    algos = []
+    for in_str in in_strs:
+        algos.append(get_algo(in_str))
+    if (None in algos):
+        raise Exception("Error: an algo didn't populate correctly")
+
     results = dict()
     for i, elem in enumerate(in_strs):
         results.update({in_strs[i]: []})
     n_steps = []
 
-    # need to change the following to sum on each sort then divide by num_reps as the LAST thing on the bottom of this loop
-    for _ in range(num_reps):
-        print("indent each one of the below")
-    for i in range(start, stop + 1, step):
-        n_steps.append(i)
-        # new input array since repeating one allows python memory cache optimisations (we want nice clean curves)
-        arr = get_arr(arr_type)(i, "python")
+    i = 0
+    for n in range(start, stop + 1, step):
+        n_steps.append(n)
 
-        if arr is None:
-            print('error in input array type')
-            return None
+        for _ in range(num_reps):
+            # new input array since repeating one allows python memory cache optimisations
+            arr = get_arr(arr_type)(n, "python")
 
-        for j, elem in enumerate(in_strs):
-            print("calculating", elem, i)
-            if (elem[-1] == "C"):
-                results[elem].append(timeit.timeit(lambda: algos[j](gen_data_sets.to_c_arr(deep_array_copy(arr), i), i), number=1))
-            else:
-                results[elem].append(timeit.timeit(lambda: algos[j](deep_array_copy(arr), i), number=1))
+            if arr is None:
+                print('error in input array type')
+                return None
+
+            for j, elem in enumerate(in_strs):
+                if len(results[elem]) <= i:
+                    results[elem].append(0)
+                if (elem[-1] == "C"):
+                    results[elem][i] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(deep_array_copy(arr), n), n), number=1) / num_reps
+                else:
+                    results[elem][i] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1) / num_reps
+
+        i += 1
 
     # plotting algorithm time response curves
+    print("plotting!")
     for elem in results:
         plt.plot(n_steps, results[elem])
     plt.legend(in_strs)
+    plt.title(f"Average runtimes for {num_reps} repetition(s) of each algorithm")
+    plt.xlabel("Array Length (n)")
+    plt.ylabel("Time Cost (s)")
     plt.show()
     return
 
@@ -263,26 +269,26 @@ def construct_c_algo(algo_ref):
     return algo_ref
 
 
+def get_arr(inStr):
     """ inStr refers to the type of sortedness of the returned array
     n is the length of the returned array
     returns an array of n integers with the input sortedness
     """
-def get_arr(inStr):
     match inStr:
         case "sorted":
-            return gen_data_sets.gen_pre_sorted_arr
+            return create_arrays.gen_pre_sorted_arr
         case "reverse":
-            return gen_data_sets.gen_rev_sorted_arr
+            return create_arrays.gen_rev_sorted_arr
         case "rand":
-            return gen_data_sets.gen_rand_arr
+            return create_arrays.gen_rand_arr
         case "manyRep":
-            return gen_data_sets.gen_many_rep_arr
+            return create_arrays.gen_many_rep_arr
         case "norm":
-            return gen_data_sets.gen_norm_rand_arr
+            return create_arrays.gen_norm_rand_arr
         case "posSkew":
-            return gen_data_sets.gen_pos_skew_arr
+            return create_arrays.gen_pos_skew_arr
         case "negSkew":
-            return gen_data_sets.gen_neg_skew_arr
+            return create_arrays.gen_neg_skew_arr
         case _:
             return None
 
@@ -293,7 +299,7 @@ def deep_array_copy(arr):
     return new
 
 if __name__ == "__main__":
-    import cli
+    from cli import commandLoop
     os.system('clear')
     print("Running from operation.py")
-    cli.commandLoop()
+    commandLoop()

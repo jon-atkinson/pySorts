@@ -306,7 +306,7 @@ def is_sorted(arr):
     return True
 
 if __name__ == "__main__":
-    import gen_data_sets as gen_data_sets
+    import src.python.create_arrays as create_arrays
     from matplotlib import pyplot as plt
     import numpy as np
 
@@ -314,7 +314,7 @@ if __name__ == "__main__":
     n = 100
     # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
     # arr = gen_data_sets.gen_pos_skew_arr(n, "python")
-    arr = gen_data_sets.gen_rand_arr(n, "python")
+    arr = create_arrays.gen_rand_arr(n, "python")
     # arr.sort()
     print(arr)
     # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
