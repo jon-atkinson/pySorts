@@ -298,7 +298,6 @@ def deep_array_copy(arr):
         new.append(e)
     return new
 
-
 if __name__ == "__main__":
     from cli import commandLoop
     os.system('clear')
