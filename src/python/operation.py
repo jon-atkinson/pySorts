@@ -5,6 +5,7 @@ import os
 import ctypes
 from matplotlib import pyplot as plt
 
+# compares runtimes of various sorting algorithms and outputs results to terminal
 def compare_sort_algos(command_args):
     verbose = '-v' in command_args or '--verbose' in command_args
     pretty = '-p' in command_args or '--pretty' in command_args
