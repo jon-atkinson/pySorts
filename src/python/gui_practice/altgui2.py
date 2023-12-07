@@ -5,23 +5,40 @@ from tkinter import *
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+# colour pallet
+colour1 = "#B8D8D8"
+colour2 = "#7A9E9F"
+colour3 = "#4F6367"
+colour4 = "#EEF5DB"
+colour5 = "#FE5F55"
 
 class app(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        tk.Tk.wm_title(self, "pySorts")
+        tk.Tk.wm_title(self, "pySorts runtime comparison tool")
         self.geometry("1280x720")
 
         container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand = True)
+        container.pack(expand=True, fill="both", side="top")
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.frames = {}
 
+        titleBar = tk.Frame(container, width=1280, height=100, borderwidth=20, background=colour3)
+        title = tk.Label(titleBar, text="pySorts", font=("Quicksand", 16, "bold"), foreground=colour5, background=colour3)
+        title.pack()
+        title.configure(anchor="center")
+        titleBar.pack(side="top", fill="both", expand=False)
+
+        content = tk.Frame(container)
+        content.pack(side="top", fill="both", expand=True)
+        content.grid_rowconfigure(0, weight=1)
+        content.grid_columnconfigure(0, weight=1)
+
         # setting up app pages
         for F in (StartPage, CompareAlgorithmsPage, PageTwo, PageThree):
-            frame = F(container, self)
+            frame = F(content, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame(StartPage)
@@ -34,10 +51,8 @@ class app(tk.Tk):
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent)
+        tk.Frame.__init__(self, parent, background=colour1)
         self.controller = controller
-        title = tk.Label(self, text="pyPlots")
-        title.grid(row=0, column=1)
         button = ttk.Button(self, text="Compare Algorithms",
                             command=lambda: controller.show_frame(CompareAlgorithmsPage))
         button.grid(row=1,column=0)
@@ -56,9 +71,20 @@ class StartPage(tk.Frame):
 class CompareAlgorithmsPage(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, background=colour1)
         label = tk.Label(self, text="Page One!!!")
         label.pack(pady=10,padx=10)
+        label2 = tk.Label(self, text="colour1", foreground=colour1)
+        label2.pack(pady=10,padx=10)
+        label3 = tk.Label(self, text="colour2", foreground=colour2)
+        label3.pack(pady=10,padx=10)
+        label4 = tk.Label(self, text="colour3", foreground=colour3)
+        label4.pack(pady=10,padx=10)
+        label5 = tk.Label(self, text="colour4", foreground=colour4)
+        label5.pack(pady=10,padx=10)
+        label6 = tk.Label(self, text="colour5", foreground=colour5)
+        label6.pack(pady=10,padx=10)
+
         button1 = ttk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
@@ -70,7 +96,7 @@ class CompareAlgorithmsPage(tk.Frame):
 class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, background=colour1)
         label = tk.Label(self, text="Page Two!!!")
         label.pack(pady=10,padx=10)
         button1 = ttk.Button(self, text="Back to Home",
@@ -84,7 +110,7 @@ class PageTwo(tk.Frame):
 class PageThree(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, background=colour1)
         label = tk.Label(self, text="Graph Page!")
         label.pack(pady=10,padx=10)
         button1 = ttk.Button(self, text="Back to Home",
