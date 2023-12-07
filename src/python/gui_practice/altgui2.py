@@ -20,7 +20,7 @@ class app(tk.Tk):
         self.frames = {}
 
         # setting up app pages
-        for F in (StartPage, PageOne, PageTwo, PageThree):
+        for F in (StartPage, CompareAlgorithmsPage, PageTwo, PageThree):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -36,24 +36,24 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
         self.controller = controller
-        label = tk.Label(self, text="Start Page")
-        label.pack(pady=10,padx=10)
-        button = ttk.Button(self, text="Visit Page 1",
-                            command=lambda: controller.show_frame(PageOne))
-        button.pack()
-        button2 = ttk.Button(self, text="Visit Page 2",
+        title = tk.Label(self, text="pyPlots")
+        title.grid(row=0, column=1)
+        button = ttk.Button(self, text="Compare Algorithms",
+                            command=lambda: controller.show_frame(CompareAlgorithmsPage))
+        button.grid(row=1,column=0)
+        button2 = ttk.Button(self, text="Compare Algorithm Performance for Different Input Sortedness",
                             command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
+        button2.grid(row=1,column=1)
         button3 = ttk.Button(self, text="Graph Page",
                             command=self.show_graph)
-        button3.pack()
+        button3.grid(row=1,column=3)
 
     def show_graph(self):
         self.controller.show_frame(PageThree)
         graph = self.controller.frames[PageThree]
         graph.plot()
 
-class PageOne(tk.Frame):
+class CompareAlgorithmsPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -77,7 +77,7 @@ class PageTwo(tk.Frame):
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
         button2 = ttk.Button(self, text="Page One",
-                            command=lambda: controller.show_frame(PageOne))
+                            command=lambda: controller.show_frame(CompareAlgorithmsPage))
         button2.pack()
 
 
