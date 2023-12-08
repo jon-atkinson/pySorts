@@ -166,19 +166,23 @@ class CompareAlgorithmsPage(tk.Frame):
                           sticky="w",
                           pady=10)
         select_all_algos_button = ttk.Button(button_frame, text="Select All",
-                                             command=self.select_all_algos)
+                                             command=self.select_all_algos,
+                                             width=10)
         select_all_algos_button.grid(row=0,
                                      column=0)
         deselect_all_algos_button = ttk.Button(button_frame, text="Deselect All",
-                                             command=self.deselect_all_algos)
+                                             command=self.deselect_all_algos,
+                                             width=10)
         deselect_all_algos_button.grid(row=0,
                                      column=1)
         select_py_algos_button = ttk.Button(button_frame, text="Select py",
-                                             command=self.select_py_algos)
+                                             command=self.select_py_algos,
+                                             width=10)
         select_py_algos_button.grid(row=1,
                                      column=0)
         select_c_algos_button = ttk.Button(button_frame, text="Select c",
-                                             command=self.select_c_algos)
+                                             command=self.select_c_algos,
+                                             width=10)
         select_c_algos_button.grid(row=1,
                                      column=1)
         max_row_num = row_num
@@ -206,7 +210,7 @@ class CompareAlgorithmsPage(tk.Frame):
         sliders_container.grid(row=max_row_num,
                                column=1)
         self.sweep_start = ttk.Label(sliders_container,
-                                     text="Start: 00000")
+                                     text="Start: 00001")
         self.sweep_start.grid(row=0,
                          column=0)
         min_sweep_val = tk.IntVar()
@@ -222,7 +226,7 @@ class CompareAlgorithmsPage(tk.Frame):
                          pady=10)
 
         self.sweep_end = ttk.Label(sliders_container,
-                                     text="Stop: 00000")
+                                     text="Stop: 00001")
         self.sweep_end.grid(row=1,
                          column=0)
         max_sweep_val = tk.IntVar()
