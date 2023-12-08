@@ -17,7 +17,7 @@ class app(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        tk.Tk.wm_title(self, "pySorts runtime comparison tool")
+        tk.Tk.wm_title(self, "pySorts algorithm runtime comparison tool")
         self.geometry("1280x720")
 
         container = tk.Frame(self)
@@ -56,12 +56,17 @@ class app(tk.Tk):
                         anchor="center")
         style.configure("Home.TButton",
                         padding=20)
+        style.configure("Plot.Home.TButton",
+                        background=colour5,
+                        foreground=colour4)
         style.configure("TCheckbutton",
                         background=colour1,
                         foreground=colour3,
                         indicatorcolor=colour4,
                         width=30,
                         anchor="w")
+        style.configure("Diagnosis.TFrame",
+                        background="magenta")
 
     def show_frame(self, cont):
         frame = self.frames[cont]
@@ -105,6 +110,17 @@ class CompareAlgorithmsPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background=colour1)
+        self.columnconfigure(1, weight=1)
+
+        left_panel = ttk.Frame(self)
+        left_panel.grid(row=0,
+                        column=0)
+        right_panel = ttk.Frame(self)
+        right_panel.grid(row=0,
+                        column=1,
+                        sticky="ew")
+        right_panel.columnconfigure(0, weight=1)
+
         algorithms = ["Bucket Sort    (py)",
                       "Bubble Sort    (py)",
                       "Count Sort     (py)",
@@ -135,7 +151,7 @@ class CompareAlgorithmsPage(tk.Frame):
         row_num = 0
         for algo in algorithms:
             var = tk.IntVar()
-            checkbox = ttk.Checkbutton(self,
+            checkbox = ttk.Checkbutton(left_panel,
                                    style="TCheckbutton",
                                    text=algo,
                                    variable=var)
@@ -144,7 +160,7 @@ class CompareAlgorithmsPage(tk.Frame):
             row_num += 1
             self.selected_algos.append(var)
         
-        button_frame = ttk.Frame(self)
+        button_frame = ttk.Frame(left_panel)
         button_frame.grid(row=row_num,
                           column=0,
                           sticky="w",
@@ -176,7 +192,7 @@ class CompareAlgorithmsPage(tk.Frame):
                          "Negative Skew"]
         self.selected_sortedness = tk.StringVar()
         for input_option in input_options:
-            input_radio_button = ttk.Radiobutton(self,
+            input_radio_button = ttk.Radiobutton(left_panel,
                                                  text=input_option,
                                                  variable=self.selected_sortedness,
                                                  value=input_option,
@@ -185,19 +201,8 @@ class CompareAlgorithmsPage(tk.Frame):
                                     column=1,
                                     sticky="w")
             row_num += 1
-
-        button1 = ttk.Button(self,
-                             text="Back to Home",
-                             command=lambda: controller.show_frame(StartPage))
-        button1.grid(row=0,
-                     column=100)
-        button2 = ttk.Button(self,
-                             text="Page Two",
-                             command=lambda: controller.show_frame(PageTwo))
-        button2.grid(row=1,
-                     column=100)
         
-        sliders_container = ttk.Frame(self)
+        sliders_container = ttk.Frame(left_panel)
         sliders_container.grid(row=max_row_num,
                                column=1)
         self.sweep_start = ttk.Label(sliders_container,
@@ -217,7 +222,7 @@ class CompareAlgorithmsPage(tk.Frame):
                          pady=10)
 
         self.sweep_end = ttk.Label(sliders_container,
-                                     text="End: 00000")
+                                     text="Stop: 00000")
         self.sweep_end.grid(row=1,
                          column=0)
         max_sweep_val = tk.IntVar()
@@ -231,6 +236,29 @@ class CompareAlgorithmsPage(tk.Frame):
         max_slider.grid(row=1,
                          column=1,
                          pady=10)
+
+        home_button = ttk.Button(right_panel,
+                             text="Home",
+                             style="Home.TButton",
+                             command=lambda: controller.show_frame(StartPage))
+        home_button.grid(row=0,
+                         column=0,
+                         pady=10)
+        plot_button = ttk.Button(right_panel,
+                                 text="Plot",
+                                 style="Plot.Home.TButton",
+                                 command=lambda: print("TODO: implement this button's functionality"))
+        plot_button.grid(row=1,
+                         column=0,
+                         padx=20,
+                         pady=20)
+        compare_sortedness_button = ttk.Button(right_panel,
+                             text="Page Two",
+                             style="Home.TButton",
+                             command=lambda: controller.show_frame(PageTwo))
+        compare_sortedness_button.grid(row=2,
+                     column=0,
+                     pady=10)
 
     def select_all_algos(self):
         for var in self.selected_algos:
@@ -255,7 +283,7 @@ class CompareAlgorithmsPage(tk.Frame):
         self.sweep_start.config(text=f"Start: {round(float(value)):05}")
 
     def on_max_slider_change(self, value):
-        self.sweep_end.config(text=f"Start: {round(float(value)):05}")
+        self.sweep_end.config(text=f"Stop: {round(float(value)):05}")
 
 class PageTwo(tk.Frame):
 
