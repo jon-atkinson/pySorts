@@ -238,6 +238,23 @@ class CompareAlgorithmsPage(tk.Frame):
                          column=1,
                          pady=10)
 
+
+        self.step = ttk.Label(sliders_container,
+                                     text="Step: 0001")
+        self.step.grid(row=2,
+                         column=0)
+        self.step_val = tk.IntVar(value=1)
+        step_slider = ttk.Scale(sliders_container,
+                               from_=1,
+                               to=1000,
+                               orient="horizontal",
+                               length=500,
+                               command=self.on_step_slider_change,
+                               variable=self.step_val)
+        step_slider.grid(row=2,
+                         column=1,
+                         pady=10)
+
         home_button = ttk.Button(right_panel,
                              text="Home",
                              style="Home.TButton",
@@ -248,7 +265,7 @@ class CompareAlgorithmsPage(tk.Frame):
         plot_button = ttk.Button(right_panel,
                                  text="Plot",
                                  style="Plot.Home.TButton",
-                                 command=lambda: self.show_graph(2, 3, 4, 5, 6))
+                                 command=lambda: self.show_graph())
         plot_button.grid(row=1,
                          column=0,
                          padx=20,
@@ -285,25 +302,72 @@ class CompareAlgorithmsPage(tk.Frame):
 
     def on_max_slider_change(self, value):
         self.sweep_end.config(text=f"Stop: {round(float(value)):05}")
+    
+    def on_step_slider_change(self, value):
+        self.step.config(text=f"Step: {round(float(value)):04}")
 
     # marker - TODO: working on this function (plotting from gui)
-    def show_graph(self, start, stop, step, arr_type, num_reps):
-        print(start, stop, step, arr_type, num_reps)
-        print("start is: ", self.min_sweep_val.get())
-        print("stop is: ", self.max_sweep_val.get())
-
+    def show_graph(self):
         in_strs = self.parse_algo_strs()
+        start = self.min_sweep_val.get()
+        stop = self.max_sweep_val.get()
+        step = self.step_val.get()
+        arr_type = self.parse_sortedness()
+        num_reps = 1
+        n_steps, results = plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps, )
         self.controller.show_frame(PageThree)
         graph = self.controller.frames[PageThree]
-        graph.plot()
+        graph.plot(results, n_steps, in_strs, num_reps)
 
     def parse_algo_strs(self):
-        all_in_strs = ["bct", "bub", "cnt", "cbe", "hep", "ins", "mrg", "qck", "rdx", "sel", "shl", "tim", "tre", "bctC", "bubC", "cntC", "cbeC", "hepC", "insC", "mrgC", "qckC", "rdxC", "selC", "shlC", "timC", "treC"]
+        all_in_strs = ["bct",
+                       "bub",
+                       "cnt",
+                       "cbe",
+                       "hep",
+                       "ins",
+                       "mrg",
+                       "qck",
+                       "rdx",
+                       "sel",
+                       "shl",
+                       "tim",
+                       "tre",
+                       "bctC",
+                       "bubC",
+                       "cntC",
+                       "cbeC",
+                       "hepC",
+                       "insC",
+                       "mrgC",
+                       "qckC",
+                       "rdxC",
+                       "selC",
+                       "shlC",
+                       "timC",
+                       "treC"]
         in_strs = []
         for count, num in enumerate(self.selected_algos):
             if num.get() == 1:
                 in_strs.append(all_in_strs[count])
         return in_strs
+    
+    def parse_sortedness(self):
+        match self.selected_sortedness.get():
+            case "Sorted":
+                return "sorted"
+            case "Reverse Sorted":
+                return "reverse"
+            case "Random":
+                return "rand"
+            case "Many Repeated":
+                return "manyRep"
+            case "Positive Skew":
+                return "posSkew"
+            case "Negative Skew":
+                return "negSkew"
+            case _:
+                raise Exception("no match found for sortedness")
 
 class PageTwo(tk.Frame):
 
@@ -323,21 +387,23 @@ class PageThree(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background=colour1)
-        label = tk.Label(self, text="Graph Page!")
-        label.pack(pady=10,padx=10)
         button1 = ttk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
         self.f = Figure(figsize=(5,5), dpi=100)
         self.canvas = FigureCanvasTkAgg(self.f, self)
 
-    def plot(self):
+    def plot(self, results, n_steps, in_strs, num_reps):
         print("in PageThree.plot")
         self.f.clear()
-        # a = self.f.add_subplot(111)
         graph = self.f.add_subplot(111)
-        # a.plot([1,2,3,4,5,6,7,8,9,10],[random.randint(1,34) for _ in range(10)])
-        graph.plot()
+        for elem in results:
+            graph.plot(n_steps, results[elem])
+        graph.legend(in_strs)
+        # graph.title(f"Average runtimes for {num_reps} repetition(s) of each algorithm")
+        # graph.xlabel("Array Length (n)")
+        # graph.ylabel("Time Cost (s)")
+        # graph.plot()
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
