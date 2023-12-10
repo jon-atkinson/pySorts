@@ -240,7 +240,7 @@ class CompareAlgorithmsPage(tk.Frame):
 
 
         self.step = ttk.Label(sliders_container,
-                                     text="Step: 0001")
+                                     text="Step:  0001")
         self.step.grid(row=2,
                          column=0)
         self.step_val = tk.IntVar(value=1)

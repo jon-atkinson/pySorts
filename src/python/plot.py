@@ -1,6 +1,3 @@
-# from tkinter import *
-# from PIL import ImageTk, Image
-import numpy as np
 import matplotlib.pyplot as plt
 import create_arrays
 import operation
@@ -92,20 +89,12 @@ def plot_algos_cli(command_args):
 
 
 def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
-    """ Plots the O(n) response of multiple algorithms on one input type
-    algos: list of refs to algorithms to compare
+    """ Calculates the O(n) response of multiple algorithms on one input type
     in_strs: list of strings corresponding to the algos being compared
     start, stop, step: start and stop for the sweep and step = granularity
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
-
-    # print("in_strs: ", in_strs)
-    # print("start: ", start)
-    # print("stop: ", stop)
-    # print("step: ", step)
-    # print("arr_type: ", arr_type)
-    # print("num_reps: ", num_reps)
 
     algos = []
     for in_str in in_strs:
@@ -124,7 +113,6 @@ def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
         n_steps.append(n)
 
         for _ in range(num_reps):
-            # new input array since repeating one allows python memory cache optimisations
             arr = operation.get_arr(arr_type)(n, "python")
 
             if arr is None:
@@ -141,13 +129,4 @@ def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
 
         i += 1
 
-    # plotting algorithm time response curves
-    # print("plotting!")
-    # for elem in results:
-        # plt.plot(n_steps, results[elem])
-    # plt.legend(in_strs)
-    # plt.title(f"Average runtimes for {num_reps} repetition(s) of each algorithm")
-    # plt.xlabel("Array Length (n)")
-    # plt.ylabel("Time Cost (s)")
-    # plt.show()
     return n_steps, results
