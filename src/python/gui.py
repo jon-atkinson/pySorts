@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import font
+from plot import plot_algos_gui
 
 # colour pallet
 colour1 = "#B8D8D8"
@@ -93,7 +94,7 @@ class StartPage(tk.Frame):
         button2.grid(row=1,column=0)
         button3 = ttk.Button(self, text="Most Recently Generated Graph",
                             style="Home.TButton",
-                            command=self.show_graph)
+                            command=lambda: self.show_graph(1, 2, 3, 4, 5, 6))
         button3.grid(row=1, column=1)
 
         self.columnconfigure(0, weight=1)
@@ -101,16 +102,12 @@ class StartPage(tk.Frame):
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
-    def show_graph(self):
-        self.controller.show_frame(PageThree)
-        graph = self.controller.frames[PageThree]
-        graph.plot()
-
 class CompareAlgorithmsPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background=colour1)
         self.columnconfigure(1, weight=1)
+        self.controller = controller
 
         left_panel = ttk.Frame(self)
         left_panel.grid(row=0,
@@ -213,14 +210,14 @@ class CompareAlgorithmsPage(tk.Frame):
                                      text="Start: 00001")
         self.sweep_start.grid(row=0,
                          column=0)
-        min_sweep_val = tk.IntVar()
+        self.min_sweep_val = tk.IntVar(value=1)
         min_slider = ttk.Scale(sliders_container,
                                from_=1,
                                to=10000,
                                orient="horizontal",
                                length=500,
                                command=self.on_min_slider_change,
-                               variable=min_sweep_val)
+                               variable=self.min_sweep_val)
         min_slider.grid(row=0,
                          column=1,
                          pady=10)
@@ -229,14 +226,14 @@ class CompareAlgorithmsPage(tk.Frame):
                                      text="Stop: 00001")
         self.sweep_end.grid(row=1,
                          column=0)
-        max_sweep_val = tk.IntVar()
+        self.max_sweep_val = tk.IntVar(value=1)
         max_slider = ttk.Scale(sliders_container,
                                from_=1,
                                to=10000,
                                orient="horizontal",
                                length=500,
                                command=self.on_max_slider_change,
-                               variable=max_sweep_val)
+                               variable=self.max_sweep_val)
         max_slider.grid(row=1,
                          column=1,
                          pady=10)
@@ -251,7 +248,7 @@ class CompareAlgorithmsPage(tk.Frame):
         plot_button = ttk.Button(right_panel,
                                  text="Plot",
                                  style="Plot.Home.TButton",
-                                 command=lambda: print("TODO: implement this button's functionality"))
+                                 command=lambda: self.show_graph(2, 3, 4, 5, 6))
         plot_button.grid(row=1,
                          column=0,
                          padx=20,
@@ -289,6 +286,25 @@ class CompareAlgorithmsPage(tk.Frame):
     def on_max_slider_change(self, value):
         self.sweep_end.config(text=f"Stop: {round(float(value)):05}")
 
+    # marker - TODO: working on this function (plotting from gui)
+    def show_graph(self, start, stop, step, arr_type, num_reps):
+        print(start, stop, step, arr_type, num_reps)
+        print("start is: ", self.min_sweep_val.get())
+        print("stop is: ", self.max_sweep_val.get())
+
+        in_strs = self.parse_algo_strs()
+        self.controller.show_frame(PageThree)
+        graph = self.controller.frames[PageThree]
+        graph.plot()
+
+    def parse_algo_strs(self):
+        all_in_strs = ["bct", "bub", "cnt", "cbe", "hep", "ins", "mrg", "qck", "rdx", "sel", "shl", "tim", "tre", "bctC", "bubC", "cntC", "cbeC", "hepC", "insC", "mrgC", "qckC", "rdxC", "selC", "shlC", "timC", "treC"]
+        in_strs = []
+        for count, num in enumerate(self.selected_algos):
+            if num.get() == 1:
+                in_strs.append(all_in_strs[count])
+        return in_strs
+
 class PageTwo(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -316,9 +332,12 @@ class PageThree(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.f, self)
 
     def plot(self):
+        print("in PageThree.plot")
         self.f.clear()
-        a = self.f.add_subplot(111)
-        a.plot([1,2,3,4,5,6,7,8,9,10],[random.randint(1,34) for _ in range(10)])
+        # a = self.f.add_subplot(111)
+        graph = self.f.add_subplot(111)
+        # a.plot([1,2,3,4,5,6,7,8,9,10],[random.randint(1,34) for _ in range(10)])
+        graph.plot()
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 

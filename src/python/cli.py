@@ -2,6 +2,7 @@ import readline
 import operation
 import os
 import traceback
+import plot
 # import sys
 # ideal eventual control flow:
 #              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------
@@ -29,7 +30,7 @@ def commandLoop():
                 case "sorting":
                     operation.compare_sortedness(command_args)
                 case "plot":
-                    operation.plot_algos(command_args)
+                    plot.plot_algos_cli(command_args)
                 case "clear":
                     os.system('clear')
                 case _:
