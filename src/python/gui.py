@@ -1,4 +1,4 @@
-import random
+# import random
 from matplotlib.figure import Figure
 import tkinter as tk
 from tkinter import *
@@ -59,14 +59,16 @@ class app(tk.Tk):
         style.configure("Plot.Home.TButton",
                         background=colour5,
                         foreground=colour4)
+        style.configure("Increment.TButton",
+                        font=("TkFixedFont", 6, "bold"),
+                        height=5,
+                        width=5)
         style.configure("TCheckbutton",
                         background=colour1,
                         foreground=colour3,
                         indicatorcolor=colour4,
                         width=30,
                         anchor="w")
-        style.configure("Diagnosis.TFrame",
-                        background="magenta")
 
     def show_frame(self, cont):
         frame = self.frames[cont]
@@ -120,7 +122,7 @@ class CompareAlgorithmsPage(tk.Frame):
         algorithms = ["Bucket Sort    (py)",
                       "Bubble Sort    (py)",
                       "Count Sort     (py)",
-                      "Cube Sort      (py)",
+                      "Cube Sort      (py) - TODO",
                       "Heap Sort      (py)",
                       "Insertion Sort (py)",
                       "Merge Sort     (py)",
@@ -130,19 +132,19 @@ class CompareAlgorithmsPage(tk.Frame):
                       "Shell Sort     (py)",
                       "Tim Sort       (py)",
                       "Tree Sort      (py)",
-                      "Bucket Sort    (c)",
+                      "Bucket Sort    (c) - TODO",
                       "Bubble Sort    (c)",
-                      "Count Sort     (c)",
-                      "Cube Sort      (c)",
+                      "Count Sort     (c) - TODO",
+                      "Cube Sort      (c) - TODO",
                       "Heap Sort      (c)",
                       "Insertion Sort (c)",
-                      "Merge Sort     (c)",
-                      "Quick Sort     (c)",
-                      "Radix Sort     (c)",
+                      "Merge Sort     (c) - TODO",
+                      "Quick Sort     (c) - TODO",
+                      "Radix Sort     (c) - TODO",
                       "Selection Sort (c)",
-                      "Shell Sort     (c)",
-                      "Tim Sort       (c)",
-                      "Tree Sort      (c)"]
+                      "Shell Sort     (c) - TODO",
+                      "Tim Sort       (c) - TODO",
+                      "Tree Sort      (c) - TODO"]
         self.selected_algos = []
         row_num = 0
         for algo in algorithms:
@@ -212,16 +214,44 @@ class CompareAlgorithmsPage(tk.Frame):
                          column=0,
                          sticky="w")
         self.min_sweep_val = tk.IntVar(value=1)
-        min_slider = ttk.Scale(sliders_container,
+        self.min_slider = ttk.Scale(sliders_container,
                                from_=1,
                                to=10000,
                                orient="horizontal",
                                length=500,
                                command=self.on_min_slider_change,
                                variable=self.min_sweep_val)
-        min_slider.grid(row=0,
+        self.min_slider.grid(row=0,
                          column=1,
                          pady=2)
+        self.min_sweep_subt_hundred_button = ttk.Button(sliders_container,
+                                              text="-100",
+                                              style="Increment.TButton",
+                                              command=self.min_sweep_subt_hundred)
+        self.min_sweep_subt_hundred_button.grid(row=0,
+                                      column=2,
+                                      pady=2)
+        self.min_sweep_subt_ten_button = ttk.Button(sliders_container,
+                                              text="-10",
+                                              style="Increment.TButton",
+                                              command=self.min_sweep_subt_ten)
+        self.min_sweep_subt_ten_button.grid(row=0,
+                                      column=3,
+                                      pady=2)
+        self.min_sweep_add_ten_button = ttk.Button(sliders_container,
+                                              text="+10",
+                                              style="Increment.TButton",
+                                              command=self.min_sweep_add_ten)
+        self.min_sweep_add_ten_button.grid(row=0,
+                                      column=4,
+                                      pady=2)
+        self.min_sweep_add_hundred_button = ttk.Button(sliders_container,
+                                              text="+100",
+                                              style="Increment.TButton",
+                                              command=self.min_sweep_add_hundred)
+        self.min_sweep_add_hundred_button.grid(row=0,
+                                      column=5,
+                                      pady=2)
 
         self.sweep_end = ttk.Label(sliders_container,
                                      text="Stop: 00001")
@@ -229,17 +259,44 @@ class CompareAlgorithmsPage(tk.Frame):
                          column=0,
                          sticky="w")
         self.max_sweep_val = tk.IntVar(value=1)
-        max_slider = ttk.Scale(sliders_container,
+        self.max_slider = ttk.Scale(sliders_container,
                                from_=1,
                                to=10000,
                                orient="horizontal",
                                length=500,
                                command=self.on_max_slider_change,
                                variable=self.max_sweep_val)
-        max_slider.grid(row=1,
+        self.max_slider.grid(row=1,
                          column=1,
                          pady=2)
-
+        self.max_sweep_subt_hundred_button = ttk.Button(sliders_container,
+                                              text="-100",
+                                              style="Increment.TButton",
+                                              command=self.max_sweep_subt_hundred)
+        self.max_sweep_subt_hundred_button.grid(row=1,
+                                      column=2,
+                                      pady=2)
+        self.max_sweep_subt_ten_button = ttk.Button(sliders_container,
+                                              text="-10",
+                                              style="Increment.TButton",
+                                              command=self.max_sweep_subt_ten)
+        self.max_sweep_subt_ten_button.grid(row=1,
+                                      column=3,
+                                      pady=2)
+        self.max_sweep_add_ten_button = ttk.Button(sliders_container,
+                                              text="+10",
+                                              style="Increment.TButton",
+                                              command=self.max_sweep_add_ten)
+        self.max_sweep_add_ten_button.grid(row=1,
+                                      column=4,
+                                      pady=2)
+        self.max_sweep_add_hundred_button = ttk.Button(sliders_container,
+                                              text="+100",
+                                              style="Increment.TButton",
+                                              command=self.max_sweep_add_hundred)
+        self.max_sweep_add_hundred_button.grid(row=1,
+                                      column=5,
+                                      pady=2)
 
         self.step = ttk.Label(sliders_container,
                                      text="Step:  0001")
@@ -247,14 +304,14 @@ class CompareAlgorithmsPage(tk.Frame):
                          column=0,
                          sticky="w")
         self.step_val = tk.IntVar(value=1)
-        step_slider = ttk.Scale(sliders_container,
+        self.step_slider = ttk.Scale(sliders_container,
                                from_=1,
                                to=1000,
                                orient="horizontal",
                                length=500,
                                command=self.on_step_slider_change,
                                variable=self.step_val)
-        step_slider.grid(row=2,
+        self.step_slider.grid(row=2,
                          column=1,
                          pady=2)
 
@@ -264,14 +321,14 @@ class CompareAlgorithmsPage(tk.Frame):
                          column=0,
                          sticky="w")
         self.reps_val = tk.IntVar(value=1)
-        reps_slider = ttk.Scale(sliders_container,
+        self.reps_slider = ttk.Scale(sliders_container,
                                from_=1,
                                to=1000,
                                orient="horizontal",
                                length=500,
                                command=self.on_repeats_slider_change,
                                variable=self.reps_val)
-        reps_slider.grid(row=3,
+        self.reps_slider.grid(row=3,
                          column=1,
                          pady=2)
 
@@ -317,8 +374,48 @@ class CompareAlgorithmsPage(tk.Frame):
     def on_min_slider_change(self, value):
         self.sweep_start.config(text=f"Start: {round(float(value)):05}")
 
+    def min_sweep_subt_hundred(self):
+        val = max(self.min_slider.cget("from"), self.min_sweep_val.get() - 100)
+        self.min_sweep_val.set(val)
+        self.on_min_slider_change(val)
+
+    def min_sweep_subt_ten(self):
+        val = max(self.min_slider.cget("from"), self.min_sweep_val.get() - 10)
+        self.min_sweep_val.set(val)
+        self.on_min_slider_change(val)
+    
+    def min_sweep_add_ten(self):
+        val = min(self.min_slider.cget("to"), self.min_sweep_val.get() + 10)
+        self.min_sweep_val.set(val)
+        self.on_min_slider_change(val)
+    
+    def min_sweep_add_hundred(self):
+        val = min(self.min_slider.cget("to"), self.min_sweep_val.get() + 100)
+        self.min_sweep_val.set(val)
+        self.on_min_slider_change(val)
+    
     def on_max_slider_change(self, value):
         self.sweep_end.config(text=f"Stop: {round(float(value)):05}")
+
+    def max_sweep_subt_hundred(self):
+        val = max(self.max_slider.cget("from"), self.max_sweep_val.get() - 100)
+        self.max_sweep_val.set(val)
+        self.on_max_slider_change(val)
+
+    def max_sweep_subt_ten(self):
+        val = max(self.max_slider.cget("from"), self.max_sweep_val.get() - 10)
+        self.max_sweep_val.set(val)
+        self.on_max_slider_change(val)
+    
+    def max_sweep_add_ten(self):
+        val = min(self.max_slider.cget("to"), self.max_sweep_val.get() + 10)
+        self.max_sweep_val.set(val)
+        self.on_max_slider_change(val)
+    
+    def max_sweep_add_hundred(self):
+        val = min(self.max_slider.cget("to"), self.max_sweep_val.get() + 100)
+        self.max_sweep_val.set(val)
+        self.on_max_slider_change(val)
 
     def on_step_slider_change(self, value):
         self.step.config(text=f"Step: {round(float(value)):04}")
