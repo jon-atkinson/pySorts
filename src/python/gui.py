@@ -197,7 +197,8 @@ class CompareAlgorithmsPage(tk.Frame):
                                                  text=input_option,
                                                  variable=self.selected_sortedness,
                                                  value=input_option,
-                                                 command=self.on_sortedness_selection)
+                                                 width=30)
+                                                #  command=self.on_sortedness_selection)
             input_radio_button.grid(row=row_num,
                                     column=1,
                                     sticky="w")
@@ -209,7 +210,8 @@ class CompareAlgorithmsPage(tk.Frame):
         self.sweep_start = ttk.Label(sliders_container,
                                      text="Start: 00001")
         self.sweep_start.grid(row=0,
-                         column=0)
+                         column=0,
+                         sticky="w")
         self.min_sweep_val = tk.IntVar(value=1)
         min_slider = ttk.Scale(sliders_container,
                                from_=1,
@@ -220,12 +222,13 @@ class CompareAlgorithmsPage(tk.Frame):
                                variable=self.min_sweep_val)
         min_slider.grid(row=0,
                          column=1,
-                         pady=10)
+                         pady=2)
 
         self.sweep_end = ttk.Label(sliders_container,
                                      text="Stop: 00001")
         self.sweep_end.grid(row=1,
-                         column=0)
+                         column=0,
+                         sticky="w")
         self.max_sweep_val = tk.IntVar(value=1)
         max_slider = ttk.Scale(sliders_container,
                                from_=1,
@@ -236,13 +239,14 @@ class CompareAlgorithmsPage(tk.Frame):
                                variable=self.max_sweep_val)
         max_slider.grid(row=1,
                          column=1,
-                         pady=10)
+                         pady=2)
 
 
         self.step = ttk.Label(sliders_container,
                                      text="Step:  0001")
         self.step.grid(row=2,
-                         column=0)
+                         column=0,
+                         sticky="w")
         self.step_val = tk.IntVar(value=1)
         step_slider = ttk.Scale(sliders_container,
                                from_=1,
@@ -253,7 +257,24 @@ class CompareAlgorithmsPage(tk.Frame):
                                variable=self.step_val)
         step_slider.grid(row=2,
                          column=1,
-                         pady=10)
+                         pady=2)
+
+        self.repeats = ttk.Label(sliders_container,
+                                     text="Reps:  0001")
+        self.repeats.grid(row=3,
+                         column=0,
+                         sticky="w")
+        self.reps_val = tk.IntVar(value=1)
+        reps_slider = ttk.Scale(sliders_container,
+                               from_=1,
+                               to=1000,
+                               orient="horizontal",
+                               length=500,
+                               command=self.on_repeats_slider_change,
+                               variable=self.reps_val)
+        reps_slider.grid(row=3,
+                         column=1,
+                         pady=2)
 
         home_button = ttk.Button(right_panel,
                              text="Home",
@@ -294,9 +315,6 @@ class CompareAlgorithmsPage(tk.Frame):
         for var in self.selected_algos[13:]:
             var.set(1)
 
-    def on_sortedness_selection(self):
-        print(self.selected_sortedness.get())
-
     def on_min_slider_change(self, value):
         self.sweep_start.config(text=f"Start: {round(float(value)):05}")
 
@@ -305,6 +323,9 @@ class CompareAlgorithmsPage(tk.Frame):
     
     def on_step_slider_change(self, value):
         self.step.config(text=f"Step: {round(float(value)):04}")
+    
+    def on_repeats_slider_change(self, value):
+        self.repeats.config(text=f"#Reps: {round(float(value)):04}")
 
     # marker - TODO: working on this function (plotting from gui)
     def show_graph(self):
@@ -313,7 +334,7 @@ class CompareAlgorithmsPage(tk.Frame):
         stop = self.max_sweep_val.get()
         step = self.step_val.get()
         arr_type = self.parse_sortedness()
-        num_reps = 1
+        num_reps = self.reps_val.get()
         n_steps, results = plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps, )
         self.controller.show_frame(PageThree)
         graph = self.controller.frames[PageThree]
@@ -394,7 +415,6 @@ class PageThree(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.f, self)
 
     def plot(self, results, n_steps, in_strs, num_reps):
-        print("in PageThree.plot")
         self.f.clear()
         graph = self.f.add_subplot(111)
         for elem in results:
