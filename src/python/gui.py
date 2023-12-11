@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from tkinter import font
 from plot import plot_algos_gui
 
 # colour pallet
@@ -320,14 +319,13 @@ class CompareAlgorithmsPage(tk.Frame):
 
     def on_max_slider_change(self, value):
         self.sweep_end.config(text=f"Stop: {round(float(value)):05}")
-    
+
     def on_step_slider_change(self, value):
         self.step.config(text=f"Step: {round(float(value)):04}")
-    
+
     def on_repeats_slider_change(self, value):
         self.repeats.config(text=f"#Reps: {round(float(value)):04}")
 
-    # marker - TODO: working on this function (plotting from gui)
     def show_graph(self):
         in_strs = self.parse_algo_strs()
         start = self.min_sweep_val.get()
@@ -335,7 +333,7 @@ class CompareAlgorithmsPage(tk.Frame):
         step = self.step_val.get()
         arr_type = self.parse_sortedness()
         num_reps = self.reps_val.get()
-        n_steps, results = plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps, )
+        n_steps, results = plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps)
         self.controller.show_frame(PageThree)
         graph = self.controller.frames[PageThree]
         graph.plot(results, n_steps, in_strs, num_reps)
