@@ -98,7 +98,7 @@ class StartPage(tk.Frame):
                             command=lambda: self.show_graph(1, 2, 3, 4, 5, 6))
         button3.grid(row=1, column=1)
 
-        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -515,10 +515,9 @@ class PageThree(tk.Frame):
         for elem in results:
             graph.plot(n_steps, results[elem])
         graph.legend(in_strs)
-        # graph.title(f"Average runtimes for {num_reps} repetition(s) of each algorithm")
-        # graph.xlabel("Array Length (n)")
-        # graph.ylabel("Time Cost (s)")
-        # graph.plot()
+        graph.set_title(f"Average runtimes for {num_reps} repetition(s) of each algorithm")
+        graph.set_xlabel("Array Length (n)")
+        graph.set_ylabel("Time Cost (s)")
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
