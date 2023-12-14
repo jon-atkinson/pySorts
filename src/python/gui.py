@@ -5,6 +5,8 @@ from tkinter import *
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from plot import plot_algos_gui
+from statistics import median
+import numpy as np
 
 # colour pallet
 colour1 = "#B8D8D8"
@@ -38,7 +40,7 @@ class app(tk.Tk):
         content.grid_rowconfigure(0, weight=1)
         content.grid_columnconfigure(0, weight=1)
 
-        for F in (StartPage, CompareAlgorithmsPage, PageTwo, PageThree):
+        for F in (StartPage, CompareAlgorithmsPage, PageTwo, GraphPage):
             frame = F(content, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -81,27 +83,40 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent, background=colour1)
         self.controller = controller
 
-        button = ttk.Button(self, text="Compare Algorithms",
-                            style="Home.TButton",
-                            command=lambda: controller.show_frame(CompareAlgorithmsPage))
-        button.grid(row=0,column=0)
-        button4 = ttk.Button(self, text="Quit",
-                            style="Home.TButton",
-                            command=parent.parent.destroy)
-        button4.grid(row=0, column=1)
-        button2 = ttk.Button(self, text="Compare Algorithm Performance for Different Input Sortedness",
-                            style="Home.TButton",
-                            command=lambda: controller.show_frame(PageTwo))
-        button2.grid(row=1,column=0)
-        button3 = ttk.Button(self, text="Most Recently Generated Graph",
-                            style="Home.TButton",
-                            command=lambda: self.show_graph(1, 2, 3, 4, 5, 6))
-        button3.grid(row=1, column=1)
+        compareAlgosButton = ttk.Button(self, text="Compare Algorithms",
+                                        style="Home.TButton",
+                                        command=lambda: controller.show_frame(CompareAlgorithmsPage))
+        compareAlgosButton.grid(row=0,
+                                column=0,
+                                padx=10,
+                                pady=10)
+        quitButton = ttk.Button(self, text="Quit",
+                                style="Home.TButton",
+                                command=parent.parent.destroy)
+        quitButton.grid(row=0,
+                        column=1,
+                        padx=10,
+                        pady=10)
+        compareSortednessButton = ttk.Button(self, text="Compare Algorithm Performance for Different Input Sortedness",
+                                             style="Home.TButton",
+                                             command=lambda: controller.show_frame(PageTwo))
+        compareSortednessButton.grid(row=1,
+                                     column=0,
+                                     padx=10,
+                                     pady=10)
+        showGraphButton = ttk.Button(self, text="Most Recently Generated Graph",
+                                     style="Home.TButton",
+                                     command=lambda: controller.show_frame(GraphPage))
+        showGraphButton.grid(row=1,
+                             column=1,
+                             padx=10,
+                             pady=10)
 
         self.columnconfigure(1, weight=1)
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
+
 
 class CompareAlgorithmsPage(tk.Frame):
 
@@ -157,7 +172,7 @@ class CompareAlgorithmsPage(tk.Frame):
                           column=0)
             row_num += 1
             self.selected_algos.append(var)
-        
+
         button_frame = ttk.Frame(left_panel)
         button_frame.grid(row=row_num,
                           column=0,
@@ -204,10 +219,11 @@ class CompareAlgorithmsPage(tk.Frame):
                                     column=1,
                                     sticky="w")
             row_num += 1
-        
+
         sliders_container = ttk.Frame(left_panel)
         sliders_container.grid(row=max_row_num,
                                column=1)
+
         self.sweep_start = ttk.Label(sliders_container,
                                      text="Start: 00001")
         self.sweep_start.grid(row=0,
@@ -314,6 +330,34 @@ class CompareAlgorithmsPage(tk.Frame):
         self.step_slider.grid(row=2,
                          column=1,
                          pady=2)
+        self.step_subt_hundred_button = ttk.Button(sliders_container,
+                                              text="-100",
+                                              style="Increment.TButton",
+                                              command=self.step_subt_hundred)
+        self.step_subt_hundred_button.grid(row=2,
+                                      column=2,
+                                      pady=2)
+        self.step_subt_ten_button = ttk.Button(sliders_container,
+                                              text="-10",
+                                              style="Increment.TButton",
+                                              command=self.step_subt_ten)
+        self.step_subt_ten_button.grid(row=2,
+                                      column=3,
+                                      pady=2)
+        self.step_add_ten_button = ttk.Button(sliders_container,
+                                              text="+10",
+                                              style="Increment.TButton",
+                                              command=self.step_add_ten)
+        self.step_add_ten_button.grid(row=2,
+                                      column=4,
+                                      pady=2)
+        self.step_add_hundred_button = ttk.Button(sliders_container,
+                                              text="+100",
+                                              style="Increment.TButton",
+                                              command=self.step_add_hundred)
+        self.step_add_hundred_button.grid(row=2,
+                                      column=5,
+                                      pady=2)
 
         self.repeats = ttk.Label(sliders_container,
                                      text="Reps:  0001")
@@ -417,6 +461,26 @@ class CompareAlgorithmsPage(tk.Frame):
         self.max_sweep_val.set(val)
         self.on_max_slider_change(val)
 
+    def step_subt_hundred(self):
+        val = max(self.step_slider.cget("from"), self.step_val.get() - 100)
+        self.step_val.set(val)
+        self.on_step_slider_change(val)
+
+    def step_subt_ten(self):
+        val = max(self.step_slider.cget("from"), self.step_val.get() - 10)
+        self.step_val.set(val)
+        self.on_step_slider_change(val)
+    
+    def step_add_ten(self):
+        val = min(self.step_slider.cget("to"), self.step_val.get() + 10)
+        self.step_val.set(val)
+        self.on_step_slider_change(val)
+    
+    def step_add_hundred(self):
+        val = min(self.step_slider.cget("to"), self.step_val.get() + 100)
+        self.step_val.set(val)
+        self.on_step_slider_change(val)
+
     def on_step_slider_change(self, value):
         self.step.config(text=f"Step: {round(float(value)):04}")
 
@@ -424,19 +488,20 @@ class CompareAlgorithmsPage(tk.Frame):
         self.repeats.config(text=f"#Reps: {round(float(value)):04}")
 
     def show_graph(self):
-        in_strs = self.parse_algo_strs()
+        alg_names = self.parse_algo_strs()
         start = self.min_sweep_val.get()
         stop = self.max_sweep_val.get()
         step = self.step_val.get()
         arr_type = self.parse_sortedness()
         num_reps = self.reps_val.get()
-        n_steps, results = plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps)
-        self.controller.show_frame(PageThree)
-        graph = self.controller.frames[PageThree]
-        graph.plot(results, n_steps, in_strs, num_reps)
+        n_steps, results = plot_algos_gui(alg_names, start, stop, step, arr_type, num_reps)
+        self.controller.show_frame(GraphPage)
+        graph = self.controller.frames[GraphPage]
+        graph.originalResults = results
+        graph.plot(results, n_steps, alg_names, num_reps)
 
     def parse_algo_strs(self):
-        all_in_strs = ["bct",
+        all_alg_names = ["bct",
                        "bub",
                        "cnt",
                        "cbe",
@@ -462,11 +527,11 @@ class CompareAlgorithmsPage(tk.Frame):
                        "shlC",
                        "timC",
                        "treC"]
-        in_strs = []
+        alg_names = []
         for count, num in enumerate(self.selected_algos):
             if num.get() == 1:
-                in_strs.append(all_in_strs[count])
-        return in_strs
+                alg_names.append(all_alg_names[count])
+        return alg_names
     
     def parse_sortedness(self):
         match self.selected_sortedness.get():
@@ -499,27 +564,108 @@ class PageTwo(tk.Frame):
         button2.pack()
 
 
-class PageThree(tk.Frame):
+class GraphPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background=colour1)
-        button1 = ttk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.pack()
-        self.f = Figure(figsize=(5,5), dpi=100)
-        self.canvas = FigureCanvasTkAgg(self.f, self)
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.leftPanel = ttk.Frame(self)
+        self.leftPanel.grid(row=0,
+                            column=0,
+                            sticky="nsew",
+                            padx=(5,5),
+                            pady=5)
+        self.rightPanel = ttk.Frame(self)
+        self.rightPanel.grid(row=0,
+                            column=1,
+                            padx=(0, 5))
 
-    def plot(self, results, n_steps, in_strs, num_reps):
-        self.f.clear()
-        graph = self.f.add_subplot(111)
+        homeButton = ttk.Button(self.rightPanel,
+                             text="Back to Home",
+                             style="Home.TButton",
+                             command=lambda: controller.show_frame(StartPage))
+        homeButton.grid(row=0,
+                        column=0,
+                        padx=10,
+                        pady=10,
+                        sticky="nsew")
+        resetFiltersButton = ttk.Button(self.rightPanel,
+                                        text="Reset Filters",
+                                        style="Home.TButton",
+                                        command=self.resetFilters)
+        resetFiltersButton.grid(row=1,
+                                column=0,
+                                padx=10,
+                                pady=10,
+                                sticky="nsew")
+        removePeaksButton = ttk.Button(self.rightPanel,
+                                      text="Remove Peaks\n(median filter)",
+                                      command=self.medianFilterPlots)
+        removePeaksButton.grid(row=2,
+                              column=0,
+                              padx=10,
+                              pady=10,
+                              sticky="nsew")
+        smoothPlotsButton = ttk.Button(self.rightPanel,
+                                      text="Smooth Plots\n(convolution filter)",
+                                      command=self.convolveFilterPlots)
+        smoothPlotsButton.grid(row=3,
+                              column=0,
+                              padx=10,
+                              pady=10,
+                              sticky="nsew")
+
+        self.leftPanel.f = Figure(dpi=100)
+        self.leftPanel.f.set_size_inches(11, 6.4, forward=False)
+        self.canvas = FigureCanvasTkAgg(self.leftPanel.f, self.leftPanel)
+        self.canvas.draw()
+
+    def plot(self, results, n_steps, alg_names, num_reps):
+        self.leftPanel.f.clear()
+        self.results = results
+        self.n_steps = n_steps
+        self.alg_names = alg_names
+        self.num_reps = num_reps
+
+        width = self.leftPanel.winfo_width() / 100
+        height = self.leftPanel.winfo_height() / 100
+        self.leftPanel.f.set_size_inches(width, height, forward=False)
+
+        graph = self.leftPanel.f.add_subplot(111)
+        self.canvas.get_tk_widget().grid(row=0,column=0,sticky="nsew")
+        
         for elem in results:
             graph.plot(n_steps, results[elem])
-        graph.legend(in_strs)
+
+        graph.legend(alg_names)
         graph.set_title(f"Average runtimes for {num_reps} repetition(s) of each algorithm")
         graph.set_xlabel("Array Length (n)")
         graph.set_ylabel("Time Cost (s)")
         self.canvas.draw()
-        self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+
+    def resetFilters(self):
+        self.plot(self.originalResults, self.n_steps, self.alg_names, self.num_reps)
+
+    def medianFilterPlots(self):
+        smoothedResults = {}
+        for algo in self.results:
+            smoothed = []
+            paddedResults = [0,0] + self.results[algo] + [10000,10000]
+            for r in range(2, len(paddedResults) - 2):
+                smoothed.append(median(paddedResults[r-2:r+3]))
+            smoothedResults[algo] = smoothed
+        self.plot(smoothedResults, self.n_steps, self.alg_names, self.num_reps)
+
+    def convolveFilterPlots(self):
+        kernel = np.array([1, 4, 6, 4, 1]) / 16
+        smoothedResults = {}
+
+        for algo in self.results:
+            smoothedResults[algo] = self.results[algo][:2] + list(np.convolve(self.results[algo], kernel, mode="valid")) + self.results[algo][-2:]
+
+        self.plot(smoothedResults, self.n_steps, self.alg_names, self.num_reps)
+
 
 app = app()
 app.mainloop()
