@@ -316,7 +316,7 @@ class CompareAlgorithmsPage(tk.Frame):
                                       pady=2)
 
         self.step = ttk.Label(sliders_container,
-                                     text="Step:  0001")
+                                     text="Step: 0001")
         self.step.grid(row=2,
                          column=0,
                          sticky="w")
@@ -361,7 +361,7 @@ class CompareAlgorithmsPage(tk.Frame):
                                       pady=2)
 
         self.repeats = ttk.Label(sliders_container,
-                                     text="Reps:  0001")
+                                     text="Reps: 0001")
         self.repeats.grid(row=3,
                          column=0,
                          sticky="w")
@@ -376,6 +376,34 @@ class CompareAlgorithmsPage(tk.Frame):
         self.reps_slider.grid(row=3,
                          column=1,
                          pady=2)
+        self.reps_subt_hundred_button = ttk.Button(sliders_container,
+                                              text="-100",
+                                              style="Increment.TButton",
+                                              command=self.reps_subt_hundred)
+        self.reps_subt_hundred_button.grid(row=3,
+                                      column=2,
+                                      pady=2)
+        self.reps_subt_ten_button = ttk.Button(sliders_container,
+                                              text="-10",
+                                              style="Increment.TButton",
+                                              command=self.reps_subt_ten)
+        self.reps_subt_ten_button.grid(row=3,
+                                      column=3,
+                                      pady=2)
+        self.reps_add_ten_button = ttk.Button(sliders_container,
+                                              text="+10",
+                                              style="Increment.TButton",
+                                              command=self.reps_add_ten)
+        self.reps_add_ten_button.grid(row=3,
+                                      column=4,
+                                      pady=2)
+        self.reps_add_hundred_button = ttk.Button(sliders_container,
+                                              text="+100",
+                                              style="Increment.TButton",
+                                              command=self.reps_add_hundred)
+        self.reps_add_hundred_button.grid(row=3,
+                                      column=5,
+                                      pady=2)
 
         home_button = ttk.Button(right_panel,
                              text="Home",
@@ -482,11 +510,31 @@ class CompareAlgorithmsPage(tk.Frame):
         self.step_val.set(val)
         self.on_step_slider_change(val)
 
+    def reps_subt_hundred(self):
+        val = max(self.step_slider.cget("from"), self.reps_val.get() - 100)
+        self.reps_val.set(val)
+        self.on_repeats_slider_change(val)
+
+    def reps_subt_ten(self):
+        val = max(self.reps_slider.cget("from"), self.reps_val.get() - 10)
+        self.reps_val.set(val)
+        self.on_repeats_slider_change(val)
+    
+    def reps_add_ten(self):
+        val = min(self.reps_slider.cget("to"), self.reps_val.get() + 10)
+        self.reps_val.set(val)
+        self.on_repeats_slider_change(val)
+    
+    def reps_add_hundred(self):
+        val = min(self.reps_slider.cget("to"), self.reps_val.get() + 100)
+        self.reps_val.set(val)
+        self.on_repeats_slider_change(val)
+
     def on_step_slider_change(self, value):
         self.step.config(text=f"Step: {round(float(value)):04}")
 
     def on_repeats_slider_change(self, value):
-        self.repeats.config(text=f"#Reps: {round(float(value)):04}")
+        self.repeats.config(text=f"Reps: {round(float(value)):04}")
 
     def show_graph(self):
         alg_names = self.parse_algo_strs()
