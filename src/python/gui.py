@@ -617,6 +617,12 @@ class GraphPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background=colour1)
+        self.results = {}
+        self.originalResults = {}
+        self.n_steps = 0
+        self.alg_names = []
+        self.num_reps = 0
+
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.leftPanel = ttk.Frame(self)
@@ -662,6 +668,8 @@ class GraphPage(tk.Frame):
         slideContain = ttk.Frame(self.rightPanel)
         slideContain.grid(row=3,
                           column=0)
+                        #   padx=10,
+                        #   pady=10)
         self.medianFilterSize = tk.IntVar(value=3)
         self.medianFilterSizeSlider = ttk.Scale(slideContain,
                                                from_=3,
@@ -688,7 +696,9 @@ class GraphPage(tk.Frame):
 
         slideContain = ttk.Frame(self.rightPanel)
         slideContain.grid(row=5,
-                          column=0)
+                          column=0,
+                          padx=10,
+                          pady=10)
         self.gaussKernelSize = tk.IntVar(value=3)
         self.gaussKernelSizeSlider = ttk.Scale(slideContain,
                                                from_=3,
