@@ -643,33 +643,42 @@ class GraphPage(tk.Frame):
         homeButton.grid(row=0,
                         column=0,
                         padx=10,
-                        pady=10,
+                        pady=(10, 0),
                         sticky="nsew")
+
+        compareAlgosButton = ttk.Button(self.rightPanel,
+                                        text="Back to Cmp Alg",
+                                        style="Home.TButton",
+                                        command=lambda: controller.show_frame(CompareAlgorithmsPage))
+        compareAlgosButton.grid(row=1,
+                                column=0,
+                                padx=10,
+                                pady=(10, 0),
+                                sticky="nsew")
 
         resetFiltersButton = ttk.Button(self.rightPanel,
                                         text="Reset Filters",
                                         style="Home.TButton",
                                         command=self.resetFilters)
-        resetFiltersButton.grid(row=1,
+        resetFiltersButton.grid(row=2,
                                 column=0,
                                 padx=10,
-                                pady=10,
+                                pady=(10, 0),
                                 sticky="nsew")
 
         removePeaksButton = ttk.Button(self.rightPanel,
                                       text="Remove Peaks\n(median filter)",
                                       command=self.medianFilterPlots)
-        removePeaksButton.grid(row=2,
+        removePeaksButton.grid(row=3,
                               column=0,
                               padx=10,
-                              pady=10,
+                              pady=(10, 0),
                               sticky="nsew")
 
         slideContain = ttk.Frame(self.rightPanel)
-        slideContain.grid(row=3,
-                          column=0)
-                        #   padx=10,
-                        #   pady=10)
+        slideContain.grid(row=4,
+                          column=0,
+                          padx=10)
         self.medianFilterSize = tk.IntVar(value=3)
         self.medianFilterSizeSlider = ttk.Scale(slideContain,
                                                from_=3,
@@ -688,17 +697,16 @@ class GraphPage(tk.Frame):
         smoothPlotsButton = ttk.Button(self.rightPanel,
                                       text="Smooth Plots\n(conv. filter)",
                                       command=self.convolveFilterPlots)
-        smoothPlotsButton.grid(row=4,
+        smoothPlotsButton.grid(row=5,
                                column=0,
                                padx=10,
-                               pady=10,
+                               pady=(10, 0),
                                sticky="nsew")
 
         slideContain = ttk.Frame(self.rightPanel)
-        slideContain.grid(row=5,
+        slideContain.grid(row=6,
                           column=0,
-                          padx=10,
-                          pady=10)
+                          padx=10)
         self.gaussKernelSize = tk.IntVar(value=3)
         self.gaussKernelSizeSlider = ttk.Scale(slideContain,
                                                from_=3,
