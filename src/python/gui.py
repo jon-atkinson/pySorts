@@ -412,6 +412,7 @@ class CompareAlgorithmsPage(tk.Frame):
         home_button.grid(row=0,
                          column=0,
                          pady=10)
+
         plot_button = ttk.Button(right_panel,
                                  text="Plot",
                                  style="Plot.Home.TButton",
@@ -420,11 +421,20 @@ class CompareAlgorithmsPage(tk.Frame):
                          column=0,
                          padx=20,
                          pady=20)
+        
+        lastGraphButton = ttk.Button(right_panel,
+                                     text="Last Graph",
+                                     style="Home.TButton",
+                                     command=lambda: controller.show_frame(GraphPage))
+        lastGraphButton.grid(row=2,
+                     column=0,
+                     pady=10)
+
         compare_sortedness_button = ttk.Button(right_panel,
                              text="Page Two",
                              style="Home.TButton",
                              command=lambda: controller.show_frame(PageTwo))
-        compare_sortedness_button.grid(row=2,
+        compare_sortedness_button.grid(row=3,
                      column=0,
                      pady=10)
 
