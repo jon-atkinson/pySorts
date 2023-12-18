@@ -1,4 +1,3 @@
-# import random
 from matplotlib.figure import Figure
 import tkinter as tk
 from tkinter import *
