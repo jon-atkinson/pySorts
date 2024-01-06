@@ -1,4 +1,5 @@
 import readline
+from typing import NewType
 import operation
 import os
 import traceback
@@ -35,7 +36,7 @@ def commandLoop():
                     os.system('clear')
                 case _:
                     raise Exception("incorrect command format")
-        except Exception as e:
+        except Exception as _:
             print(traceback.format_exc())
         command_str = input(formatPrompt("operation: "))
         command = command_str.split(" ")[0]
