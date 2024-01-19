@@ -100,14 +100,21 @@ class StartPage(tk.Frame):
         compareSortednessButton = ttk.Button(self, text="Compare Algorithm Performance for Different Input Sortedness",
                                              style="Home.TButton",
                                              command=lambda: controller.show_frame(PageTwo))
-        compareSortednessButton.grid(row=1,
+        compareSortednessButton.grid(row=2,
+                                     column=0,
+                                     padx=10,
+                                     pady=10)
+        evaluateStabilityButton = ttk.Button(self, text="Evaluate Algorithm Stability",
+                                             style="Home.TButton",
+                                             command=lambda: controller.show_frame(TODO))
+        evaluateStabilityButton.grid(row=1,
                                      column=0,
                                      padx=10,
                                      pady=10)
         showGraphButton = ttk.Button(self, text="Most Recently Generated Graph",
                                      style="Home.TButton",
                                      command=lambda: controller.show_frame(GraphPage))
-        showGraphButton.grid(row=1,
+        showGraphButton.grid(row=2,
                              column=1,
                              padx=10,
                              pady=10)
