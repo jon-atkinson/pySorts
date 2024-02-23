@@ -5,10 +5,6 @@ class AVL_Node(object):
         self.left = None
         self.right = None
 
-# class AVL_Tree(object):
-#     def __init__(self, data = 0):
-#         self.root = AVL_Node(data=data)
-
 
 def avl_insert(root, data):
     if not root:

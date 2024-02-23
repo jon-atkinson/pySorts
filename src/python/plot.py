@@ -3,6 +3,7 @@ import create_arrays
 import operation
 import timeit
 
+
 def plot_algos_cli(command_args):
     """ Plots the O(n) response of multiple algorithms on one input type
     algos: list of refs to algorithms to compare
@@ -88,6 +89,47 @@ def plot_algos_cli(command_args):
     return
 
 
+def plot_sortedness_gui(algo_str, start, stop, step, arr_types, num_reps):
+    """ Calculates the O(n) response of one algorithms on multiple input types
+    algo_str: string corresponding to the algo being evaluated
+    start, stop, step: start and stop for the sweep and step = granularity
+    arr_types: list of strings representing the sortedness of the arrays
+    num_reps: number of reps (with newly gen arrs per rep) to be avged
+    """
+    print("in sortedness")
+
+    algo = operation.get_algo(algo_str)
+
+    results = dict()
+    for i, elem in enumerate(arr_types):
+        results.update({arr_types[i]: []})
+    n_steps = []
+
+    i = 0
+    for n in range(start, stop + 1, step):
+        n_steps.append(n)
+
+        for _ in range(num_reps):
+            for arr_type in arr_types:
+                arr = operation.get_arr(arr_type)(n, "python")
+
+                if arr is None:
+                    print('error in input sortedness type (implementation bug)')
+                    return None
+
+                for j, elem in enumerate(arr_types):
+                    if len(results[elem]) <= i:
+                        results[elem].append(0)
+                    if (algo_str[-1] == "C"):
+                        results[elem][i] += timeit.timeit(lambda: algo(create_arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
+                    else:
+                        results[elem][i] += timeit.timeit(lambda: algo(operation.deep_array_copy(arr), n), number=1) / num_reps
+
+        i += 1
+
+    return n_steps, results
+
+
 def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
     """ Calculates the O(n) response of multiple algorithms on one input type
     in_strs: list of strings corresponding to the algos being compared
@@ -95,6 +137,7 @@ def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
+    print("in algos")
 
     algos = []
     for in_str in in_strs:

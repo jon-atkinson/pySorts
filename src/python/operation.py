@@ -3,7 +3,6 @@ import create_arrays
 import timeit
 import os
 import ctypes
-from matplotlib import pyplot as plt
 
 def compare_sort_algos(command_args):
     verbose = '-v' in command_args or '--verbose' in command_args

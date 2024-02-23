@@ -50,9 +50,7 @@ def to_c_arr(arr, n):
 
 
 if __name__ == "__main__":
-    # import sorts
     import operation
-    # print(sorts.selection_sort(gen_rand_arr(100, "python"), 100))
     n = 10
     arr = []
     for i in range(n):
