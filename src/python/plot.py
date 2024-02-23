@@ -96,7 +96,6 @@ def plot_sortedness_gui(algo_str, start, stop, step, arr_types, num_reps):
     arr_types: list of strings representing the sortedness of the arrays
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
-    print("in sortedness")
 
     algo = operation.get_algo(algo_str)
 
@@ -137,7 +136,6 @@ def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
     arr_type: string representing the sortedness of the array
     num_reps: number of reps (with newly gen arrs per rep) to be avged
     """
-    print("in algos")
 
     algos = []
     for in_str in in_strs:
