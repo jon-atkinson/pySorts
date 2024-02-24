@@ -19,6 +19,6 @@ I recommend starting with the command ```algo -p -o``` and then hitting enter fo
 Use the ```q``` command to exit.
 
 ## Running pySorts using a GUI
-Use the ```./app``` script to run the CLI from a bash terminal in the projects root directory. Pick an option from the buttons on the splash page, then set the comparison you want using the widgets and hit plot. Everything's single threaded at the moment so more complex/larger sorts may take a longer time depending on your hardware. 
+Use the ```./app``` script to run the GUI from a bash terminal in the projects root directory. Pick an option from the buttons on the splash page, then set the comparison you want using the widgets and hit plot. Everything's single threaded at the moment so more complex/larger sorts may take a longer time depending on your hardware. 
 
 Happy Sorting!
