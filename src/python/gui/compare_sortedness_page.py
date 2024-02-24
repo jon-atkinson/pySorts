@@ -470,7 +470,7 @@ class CompareSortednessPage(tk.Frame):
             n_steps,
             arr_types,
             num_reps,
-            f"Average runtimes for {num_reps} repetition{'' if num_reps <= 1 else num_reps} of each sortedness"
+            f"Average runtimes for {num_reps} repetition{'' if num_reps <= 1 else num_reps} of each sortedness with {alg_name}"
         )
         self.controller.show_frame("GraphPage")
 
