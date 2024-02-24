@@ -1,7 +1,7 @@
 # pySorts
 Simple collection of sorts, testing and comparison CLI for comparing the implementations of many commonly used and some slightly unusual simple sorting algorithms. Algorithm implementations available only in python and C for the moment. 
 
-## Getting setup
+## Getting Set Up
 To use pySorts just clone this repo into a local directory.
 ```
 git clone git@github.com:jon-atkinson/pySorts.git
