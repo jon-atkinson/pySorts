@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from plot import plot_sortedness_gui
-from colour import Colour
+from gui.colour import Colour
 
 class CompareSortednessPage(tk.Frame):
 
@@ -463,7 +463,6 @@ class CompareSortednessPage(tk.Frame):
         num_reps = self.reps_val.get()
 
         n_steps, results = plot_sortedness_gui(alg_name, start, stop, step, arr_types, num_reps)
-        self.controller.show_frame("GraphPage")
         graph = self.controller.frames["GraphPage"]
         graph.originalResults = results
         graph.plot(
@@ -473,6 +472,7 @@ class CompareSortednessPage(tk.Frame):
             num_reps,
             f"Average runtimes for {num_reps} repetition{'' if num_reps <= 1 else num_reps} of each sortedness"
         )
+        self.controller.show_frame("GraphPage")
 
     def parse_arr_types(self):
         result = []

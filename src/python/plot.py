@@ -78,7 +78,6 @@ def plot_algos_cli(command_args):
         i += 1
 
     # plotting algorithm time response curves
-    print("plotting!")
     for elem in results:
         plt.plot(n_steps, results[elem])
     plt.legend(in_strs)
@@ -100,7 +99,7 @@ def plot_sortedness_gui(algo_str, start, stop, step, arr_types, num_reps):
     algo = operation.get_algo(algo_str)
 
     results = dict()
-    for i, elem in enumerate(arr_types):
+    for i in range(len(arr_types)):
         results.update({arr_types[i]: []})
     n_steps = []
 
@@ -113,16 +112,14 @@ def plot_sortedness_gui(algo_str, start, stop, step, arr_types, num_reps):
                 arr = operation.get_arr(arr_type)(n, "python")
 
                 if arr is None:
-                    print('error in input sortedness type (implementation bug)')
-                    return None
+                    raise Exception("array to be sorted cannot not be empty")
 
-                for j, elem in enumerate(arr_types):
-                    if len(results[elem]) <= i:
-                        results[elem].append(0)
-                    if (algo_str[-1] == "C"):
-                        results[elem][i] += timeit.timeit(lambda: algo(create_arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
-                    else:
-                        results[elem][i] += timeit.timeit(lambda: algo(operation.deep_array_copy(arr), n), number=1) / num_reps
+                if len(results[arr_type]) <= i:
+                    results[arr_type].append(0)
+                if (algo_str[-1] == "C"):
+                    results[arr_type][i] += timeit.timeit(lambda: algo(create_arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
+                else:
+                    results[arr_type][i] += timeit.timeit(lambda: algo(operation.deep_array_copy(arr), n), number=1) / num_reps
 
         i += 1
 

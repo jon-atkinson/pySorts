@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from statistics import median
 import numpy as np
 import math
-from colour import Colour
+from gui.colour import Colour
 
 class GraphPage(tk.Frame):
 
@@ -185,7 +185,7 @@ class GraphPage(tk.Frame):
             self.n_steps,
             self.alg_names,
             self.num_reps,
-            f"Average runtimes for {self.num_reps} repetition{'' if self.num_reps <= 1 else 's'} of each algorithm"
+            self.last_title
         )
 
     def convolveFilterPlots(self):
@@ -200,7 +200,7 @@ class GraphPage(tk.Frame):
             self.n_steps,
             self.alg_names,
             self.num_reps,
-            f"Average runtimes for {self.num_reps} repetition{'' if self.num_reps <= 1 else 's'} of each algorithm"
+            self.last_title
         )
 
     def genKernel(self):

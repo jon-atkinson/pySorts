@@ -7,6 +7,7 @@ import ctypes
 def compare_sort_algos(command_args):
     verbose = '-v' in command_args or '--verbose' in command_args
     pretty = '-p' in command_args or '--pretty' in command_args
+    ordered = '-o' in command_args or '--ordered' in command_args
 
     in_strs = input("Enter algorithm(s) (single line, split on spaces, default all configured): ").strip().split()
     if in_strs == []:
@@ -43,12 +44,19 @@ def compare_sort_algos(command_args):
         raise Exception("Error: an algo didn't populate correctly")
 
     results = compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose)
+
+    # optional ordering of output
+    if ordered:
+        keys = sorted(results, key=lambda x: results[x])
+    else:
+        keys = [key for key in results.keys()]
+
     if pretty:
         unit = min(results.values())
-        for elem in results.keys():
+        for elem in keys:
             print(elem + '\t\t' + '#' * int(results[elem] / unit) + f"\t({round(results[elem] / unit, 2)} * {[k for k, v in results.items() if v == unit][0]})")
     else:
-        for elem in results.keys():
+        for elem in keys:
             print(elem + "\t\t" + str(results[elem]))
     return
 

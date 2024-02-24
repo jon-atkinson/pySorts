@@ -4,18 +4,6 @@ import operation
 import os
 import traceback
 import plot
-# import sys
-# ideal eventual control flow:
-#              ask user for operation (time, race, plot, ???) ------ plot = ask for algos as a space seperated string of strings ------
-#                  /                            \
-#       time = ask for algo, n,         race = ask for algos as a space seperated string of strings
-#       input sortedness                         |
-#                 |                     ask for algo names (3 letter codes)
-#                 |                              |
-#                 |                     ask for input sortedness
-#                  \                            /
-# generate printout for all run algos format: algoName\t\t<time_taken in ms (timeit)>
-# (consider sorting this output for fastest runtime to slowest)
 
 def commandLoop():
     command_str = input(formatPrompt("operation: "))
@@ -48,6 +36,10 @@ def helpPySort():
     print("  - sorting: compares the runtime of different sortedness inputs of a given algorithm")
     print("  - plot: plots two algorithms' big O response for a given sortedness")
 
+    print("\nAvailable modifiers (these can be combined): ")
+    print(" -p pretty prints the output")
+    print(" -o orders the output fastest to slowest (default ordering is user provided at input time)")
+
     print("\nAvailable input array configurations include:")
     print("  - sorted: pre-sorted array of n ints")
     print("  - reverse: reverse-sorted array of n ints")
@@ -78,5 +70,5 @@ def formatPrompt(promptMsg):
 
 if __name__ == '__main__': #
     os.system('clear')
-    print(formatPrompt("Welcome to pySort, please enter a command:"))
+    print(formatPrompt("Welcome to pySorts, please enter a command:"))
     commandLoop()
