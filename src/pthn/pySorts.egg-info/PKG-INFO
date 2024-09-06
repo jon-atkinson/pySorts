@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: pySorts
+Version: 0.0.1
+Summary: An application that compares sorting algorithm implementations by language and algorithm.
+Author: Jon Atkinson
+Author-email: Jon Atkinson <jon@example.com>
+License: MIT
+License-File: LICENSE
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Provides-Extra: dev
+Requires-Dist: unittest; extra == "dev"

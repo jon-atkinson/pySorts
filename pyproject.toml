@@ -1,9 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "pySorts"
 version = "0.0.1"
-dependencies = []
+description = "An application that compares sorting algorithm implementations by language and algorithm."
+authors = [{name = "Jon Atkinson", email = "jon@example.com"}]
+license = {text = "MIT"}
 
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+dependencies = [
+    "matplotlib",
+    "numpy"
+]
 
+[project.optional-dependencies]
+dev = ["unittest"]
+
+# Entry point to create a CLI command for your app
+[project.scripts]
+pySortsApp = "pthn.gui.main:main"
+pySortsCli = "pthn.cli:runCLI"

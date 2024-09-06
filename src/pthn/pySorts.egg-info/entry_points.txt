@@ -1,0 +1,2 @@
+[console_scripts]
+pySorts = pthn.gui.main:main

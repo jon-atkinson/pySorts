@@ -1,2 +1,1 @@
-python3 ./src/python/gui/main.py
-
+python3 -m src.python.gui.main
