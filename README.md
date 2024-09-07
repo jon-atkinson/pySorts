@@ -14,7 +14,7 @@ up to date version should exist in that directory already.
 ## Getting Set Up
 To use pySorts just clone this repo into a local directory.
 ```
-git clone git@github.com:jon-atkinson/pySorts.git
+git clone https://github.com/jon-atkinson/pySorts.git
 ```
 
 Then run the following command from the pySorts directory to build the package.
