@@ -80,3 +80,6 @@ class app(tk.Tk):
 
 app = app()
 app.mainloop()
+
+def main():
+    return
