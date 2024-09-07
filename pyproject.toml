@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "pySorts"
 version = "0.0.1"
 description = "An application that compares sorting algorithm implementations by language and algorithm."
-authors = [{name = "Jon Atkinson", email = "jon@example.com"}]
+authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
 license = {text = "MIT"}
 
 dependencies = [
@@ -17,7 +17,6 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["unittest"]
 
-# Entry point to create a CLI command for your app
 [project.scripts]
 pySortsApp = "pthn.gui.main:main"
 pySortsCli = "pthn.cli:runCLI"

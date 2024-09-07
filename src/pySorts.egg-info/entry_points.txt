@@ -1,3 +1,0 @@
-[console_scripts]
-pySortsApp = pthn.gui.main:main
-pySortsCli = pthn.cli:runCLI
