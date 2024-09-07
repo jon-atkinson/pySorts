@@ -1,5 +1,5 @@
-import sorts
-import create_arrays
+import pthn.sorts as sorts
+import pthn.create_arrays as create_arrays
 import timeit
 import os
 import ctypes

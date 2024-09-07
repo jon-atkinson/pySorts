@@ -1,9 +1,9 @@
 import readline
 from typing import NewType
-import operation
+import pthn.operation as operation
 import os
 import traceback
-import plot
+import pthn.plot as plot
 
 def commandLoop():
     command_str = input(formatPrompt("operation: "))
@@ -68,7 +68,7 @@ def helpPySort():
 def formatPrompt(promptMsg):
     return ("\033[94m {}\033[00m".format(promptMsg)).strip()
 
-if __name__ == '__main__': #
+def runCLI():
     os.system('clear')
     print(formatPrompt("Welcome to pySorts, please enter a command:"))
     commandLoop()

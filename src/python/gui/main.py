@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from gui.colour import Colour
-from gui.compare_algorithms_page import CompareAlgorithmsPage
-from gui.feature_in_progress_page import FeatureInProgressPage
-from gui.graph_page import GraphPage
-from gui.start_page import StartPage
-from gui.compare_sortedness_page import CompareSortednessPage
+from pthn.gui.colour import Colour
+from pthn.gui.compare_algorithms_page import CompareAlgorithmsPage
+from pthn.gui.feature_in_progress_page import FeatureInProgressPage
+from pthn.gui.graph_page import GraphPage
+from pthn.gui.start_page import StartPage
+from pthn.gui.compare_sortedness_page import CompareSortednessPage
 
 
 class app(tk.Tk):
@@ -80,3 +80,6 @@ class app(tk.Tk):
 
 app = app()
 app.mainloop()
+
+def main():
+    return
