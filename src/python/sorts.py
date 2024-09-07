@@ -1,5 +1,5 @@
 from sys import setrecursionlimit
-from pthn.avl import AVL_Node, avl_insert
+from python.avl import AVL_Node, avl_insert
 
 def selection_sort(arr, n):
     min_idx = 0

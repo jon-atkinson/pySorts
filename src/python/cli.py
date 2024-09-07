@@ -1,9 +1,9 @@
 import readline
 from typing import NewType
-import pthn.operation as operation
+import python.operation as operation
 import os
 import traceback
-import pthn.plot as plot
+import python.plot as plot
 
 def commandLoop():
     command_str = input(formatPrompt("operation: "))

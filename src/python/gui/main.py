@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from pthn.gui.colour import Colour
-from pthn.gui.compare_algorithms_page import CompareAlgorithmsPage
-from pthn.gui.feature_in_progress_page import FeatureInProgressPage
-from pthn.gui.graph_page import GraphPage
-from pthn.gui.start_page import StartPage
-from pthn.gui.compare_sortedness_page import CompareSortednessPage
+from python.gui.colour import Colour
+from python.gui.compare_algorithms_page import CompareAlgorithmsPage
+from python.gui.feature_in_progress_page import FeatureInProgressPage
+from python.gui.graph_page import GraphPage
+from python.gui.start_page import StartPage
+from python.gui.compare_sortedness_page import CompareSortednessPage
 
 
 class app(tk.Tk):

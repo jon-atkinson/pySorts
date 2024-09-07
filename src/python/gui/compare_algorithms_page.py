@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from pthn.plot import plot_algos_gui
-from pthn.gui.colour import Colour
+from python.plot import plot_algos_gui
+from python.gui.colour import Colour
 
 class CompareAlgorithmsPage(tk.Frame):
 
