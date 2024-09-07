@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-import create_arrays
-import operation
+import pthn.create_arrays as create_arrays
+import pthn.operation as operation
 import timeit
 
 
