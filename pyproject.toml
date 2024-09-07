@@ -18,5 +18,5 @@ dependencies = [
 dev = ["unittest"]
 
 [project.scripts]
-pySortsApp = "pthn.gui.main:main"
-pySortsCli = "pthn.cli:runCLI"
+pySortsApp = "python.gui.main:main"
+pySortsCli = "python.cli:runCLI"
