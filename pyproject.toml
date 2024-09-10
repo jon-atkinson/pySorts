@@ -5,6 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pySorts"
 version = "0.0.1"
+reqires-python = ">= 3.11"
 description = "An application that compares sorting algorithm implementations by language and algorithm."
 authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
 license = {text = "MIT"}
@@ -20,3 +21,4 @@ dev = ["unittest"]
 [project.scripts]
 pySortsApp = "python.gui.main:main"
 pySortsCli = "python.cli:runCLI"
+
