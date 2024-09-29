@@ -4,7 +4,7 @@ implementations of many commonly used and some more complex sorting algorithms.
 Algorithm implementations available only in python and C for the moment. 
 
 ## Requirements
-To use pySorts, you'll need git and a compatible python3 and pip3 installed.
+To use pySorts, you'll need git and a compatible python3 (>=3.10.12) and pip3 installed.
 
 Ctypes is used to call C algorithm implementations from python, it requires an up
 to date cSorts.so. A bash script for library compilation is included
