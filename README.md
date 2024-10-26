@@ -25,8 +25,11 @@ pip install .
 
 ## Running
 
+### Running pySorts using the GUI
+After building, run the command ```pySortsApp``` to run the GUI interface (note that whatever directory your python3 version installs binaries into must be added to your path to run the script).
+
 ### Running pySorts from the terminal
-After building, run the command ```pySortsCli``` to run the CLI interface.
+After building, run the command ```pySortsCli``` to run the CLI interface (see the note in parentheses above, the same issue is relevant here).
 
 I recommend starting with the command ```algo -p -o``` and then hitting enter for all other default options (shown below). 
 ![image](https://github.com/jon-atkinson/pySorts/assets/95665780/182abf9b-fd3e-4c00-8138-5afca3c9d1be)
