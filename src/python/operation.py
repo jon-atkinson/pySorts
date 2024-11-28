@@ -1,5 +1,4 @@
 import python.sorts as sorts
-import python.create_arrays as create_arrays
 import timeit
 import os
 import ctypes
@@ -84,14 +83,14 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
         if not verbose:
             for j, elem in enumerate(in_strs):
                 if (elem[-1] == "C"):
-                    results[elem] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(deep_array_copy(arr), n), n), number=1)
+                    results[elem] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
         else: # TODO refactor eventually, this is quite an inelegant and inefficient soln. to this problem
             print('(running in verbose mode)')
             for j, elem in enumerate(in_strs):
                 if (elem[-1] == "C"):
-                    inArray = create_arrays.to_c_arr(deep_array_copy(arr), n)
+                    inArray = arrays.to_c_arr(deep_array_copy(arr), n)
                     sortedArray = algos[j](inArray, n)
                 else:
                     sortedArray = algos[j](deep_array_copy(arr), n)
@@ -99,7 +98,7 @@ def compute_algo_comparisons(algos, in_strs, n, arr_type, num_reps, verbose):
                 print("\n\n(" + elem + ")\nInitial: " + str(arr[0:n]) + "\nFinal: " + str(sortedArray[0:n]), end="")
 
                 if (elem[-1] == "C"):
-                    results[elem] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(deep_array_copy(arr), n), n), number=1)
+                    results[elem] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(deep_array_copy(arr), n), n), number=1)
                 else:
                     results[elem] += timeit.timeit(lambda: algos[j](deep_array_copy(arr), n), number=1)
 
@@ -198,19 +197,19 @@ def get_arr(inStr):
     """
     match inStr:
         case "sorted":
-            return create_arrays.gen_pre_sorted_arr
+            return arrays.gen_pre_sorted_arr
         case "reverse":
-            return create_arrays.gen_rev_sorted_arr
+            return arrays.gen_rev_sorted_arr
         case "rand":
-            return create_arrays.gen_rand_arr
+            return arrays.gen_rand_arr
         case "manyRep":
-            return create_arrays.gen_many_rep_arr
+            return arrays.gen_many_rep_arr
         case "norm":
-            return create_arrays.gen_norm_rand_arr
+            return arrays.gen_norm_rand_arr
         case "posSkew":
-            return create_arrays.gen_pos_skew_arr
+            return arrays.gen_pos_skew_arr
         case "negSkew":
-            return create_arrays.gen_neg_skew_arr
+            return arrays.gen_neg_skew_arr
         case _:
             return None
 

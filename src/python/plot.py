@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import python.create_arrays as create_arrays
+import python.arrays as arrays
 import python.operation as operation
 import timeit
 
@@ -71,7 +71,7 @@ def plot_algos_cli(command_args):
                 if len(results[elem]) <= i:
                     results[elem].append(0)
                 if (elem[-1] == "C"):
-                    results[elem][i] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
+                    results[elem][i] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
                 else:
                     results[elem][i] += timeit.timeit(lambda: algos[j](operation.deep_array_copy(arr), n), number=1) / num_reps
 
@@ -117,7 +117,7 @@ def plot_sortedness_gui(algo_str, start, stop, step, arr_types, num_reps):
                 if len(results[arr_type]) <= i:
                     results[arr_type].append(0)
                 if (algo_str[-1] == "C"):
-                    results[arr_type][i] += timeit.timeit(lambda: algo(create_arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
+                    results[arr_type][i] += timeit.timeit(lambda: algo(arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
                 else:
                     results[arr_type][i] += timeit.timeit(lambda: algo(operation.deep_array_copy(arr), n), number=1) / num_reps
 
@@ -161,7 +161,7 @@ def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
                 if len(results[elem]) <= i:
                     results[elem].append(0)
                 if (elem[-1] == "C"):
-                    results[elem][i] += timeit.timeit(lambda: algos[j](create_arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
+                    results[elem][i] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
                 else:
                     results[elem][i] += timeit.timeit(lambda: algos[j](operation.deep_array_copy(arr), n), number=1) / num_reps
 

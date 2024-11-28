@@ -1,6 +1,6 @@
 import unittest
 from src.python.sorts import is_sorted
-from src.python.create_arrays import *
+from python.arrays import *
 
 
 class TestArrayGen(unittest.TestCase):
