@@ -1,9 +1,9 @@
-import readline
-from typing import NewType
-import python.operation as operation
+import requests
 import os
 import traceback
 import python.plot as plot
+
+API = "http://127.0.0.1:8000/compare-algorithms"
 
 def commandLoop():
     command_str = input(formatPrompt("operation: "))
@@ -15,9 +15,10 @@ def commandLoop():
                 case "h":
                     helpPySort()
                 case "algo":
-                    operation.compare_sort_algos(command_args)
-                case "sorting":
-                    operation.compare_sortedness(command_args)
+                    # operation.compare_sort_algos(command_args)
+                    compare_algorithms(command_args)
+                # case "sorting":
+                    # operation.compare_sortedness(command_args)
                 case "plot":
                     plot.plot_algos_cli(command_args)
                 case "clear":
@@ -29,6 +30,47 @@ def commandLoop():
         command_str = input(formatPrompt("operation: "))
         command = command_str.split(" ")[0]
         command_args = command_str.split(" ")[1:]
+
+def compare_algorithms(command_args):
+    """
+    Sends a POST request ot he compare_algorithms API route and priunts the results to terminal.
+    """
+    try:
+        algorithms = command_args[0].split(",")
+        low = int(command_args[1])
+        high = int(command_args[2])
+        arr_type = command_args[3]
+        num_reps = int(command_args[4])
+        step = int(command_args[5])
+
+        request_body = {
+            "algorithms": [
+                {
+                    "algorithm": algorithm.strip(),
+                    "language": "python"
+                } for algorithm in algorithms
+            ],
+            "low": low,
+            "high": high,
+            "arr_type": arr_type,
+            "num_reps": num_reps,
+            "step": step,
+        }
+
+        response = requests.post(API, json=request_body)
+
+        if response.status_code == 200:
+            results = response.json()["results"]
+            print("Results:")
+            for algorithm, language, series in results:
+                print(f"Algorithm: {algorithm}, Language: {language}")
+                for length, avg_time in series:
+                    print(f"  Length: {length}, Average Time: {avg_time}")
+        else:
+            print(f"Error: {response.status_code} - {response.text}") 
+
+    except Exception as e:
+        print(f"Error processing command: {str(e)}")
 
 def helpPySort():
     print("Available operations include:")
@@ -72,3 +114,6 @@ def runCLI():
     os.system('clear')
     print(formatPrompt("Welcome to pySorts, please enter a command:"))
     commandLoop()
+
+if __name__ == "__main__":
+    runCLI()
