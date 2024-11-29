@@ -1,5 +1,7 @@
 import python.sorts as sort_impls
 
+API_URL = "http://127.0.0.1:8000/compare-algorithms"
+
 algorithms = {
     "python": {
         "selection_sort": sort_impls.selection_sort,

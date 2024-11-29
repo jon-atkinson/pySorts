@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import python.arrays as arrays
 import python.operation as operation
 import timeit
+from python.config import API_URL as API_URL
+import requests
 
 
 def plot_algos_cli(command_args):
@@ -127,44 +129,75 @@ def plot_sortedness_gui(algo_str, start, stop, step, arr_types, num_reps):
 
 
 def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
-    """ Calculates the O(n) response of multiple algorithms on one input type
-    in_strs: list of strings corresponding to the algos being compared
-    start, stop, step: start and stop for the sweep and step = granularity
-    arr_type: string representing the sortedness of the array
-    num_reps: number of reps (with newly gen arrs per rep) to be avged
-    """
+    # """ Calculates the O(n) response of multiple algorithms on one input type
+    # in_strs: list of strings corresponding to the algos being compared
+    # start, stop, step: start and stop for the sweep and step = granularity
+    # arr_type: string representing the sortedness of the array
+    # num_reps: number of reps (with newly gen arrs per rep) to be avged
+    # """
 
-    algos = []
-    for in_str in in_strs:
-        algos.append(operation.get_algo(in_str))
-    # should only be hit by a bug, user input shouldn't touch unspecified cases here
-    if (None in algos):
-        raise Exception("Error: an algo didn't populate correctly")
+    data = {
+        # "algorithms": [{"algorithm": algo, "language": "python"} for algo in in_strs],
+        "algorithms": [{"algorithm": "bubble_sort", "language": "python"}],
+        "low": start,
+        "high": stop,
+        "arr_type": arr_type,
+        "num_reps": num_reps,
+        "step": step
+    }
 
-    results = dict()
-    for i, elem in enumerate(in_strs):
-        results.update({in_strs[i]: []})
-    n_steps = []
+    try: 
+        print("attempting to call api in plot_algos_gui()")
+        response = requests.post(API_URL, json=data)
+        response.raise_for_status()
+        result_data = response.json()
+        print("successful call to api in plot_algos_gui()")
 
-    i = 0
-    for n in range(start, stop + 1, step):
-        n_steps.append(n)
+        results = dict()
+        n_steps = []
 
-        for _ in range(num_reps):
-            arr = operation.get_arr(arr_type)(n, "python")
+        for algorithm, language, series in result_data["results"]:
+            results[algorithm] = [x[1] for x in series]
+            n_steps = [x[0] for x in series]
 
-            if arr is None:
-                print('error in input array type')
-                return None
+        return n_steps, results
 
-            for j, elem in enumerate(in_strs):
-                if len(results[elem]) <= i:
-                    results[elem].append(0)
-                if (elem[-1] == "C"):
-                    results[elem][i] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
-                else:
-                    results[elem][i] += timeit.timeit(lambda: algos[j](operation.deep_array_copy(arr), n), number=1) / num_reps
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred while calling the API: {e}")
+        return None
 
-        i += 1
+    # algos = []
+    # for in_str in in_strs:
+    #     algos.append(operation.get_algo(in_str))
+    # # should only be hit by a bug, user input shouldn't touch unspecified cases here
+    # if (None in algos):
+    #     raise Exception("Error: an algo didn't populate correctly")
 
-    return n_steps, results
+    # results = dict()
+    # for i, elem in enumerate(in_strs):
+    #     results.update({in_strs[i]: []})
+    # n_steps = []
+
+    # i = 0
+    # for n in range(start, stop + 1, step):
+    #     n_steps.append(n)
+
+    #     for _ in range(num_reps):
+    #         arr = operation.get_arr(arr_type)(n, "python")
+
+    #         if arr is None:
+    #             print('error in input array type')
+    #             return None
+
+    #         for j, elem in enumerate(in_strs):
+    #             if len(results[elem]) <= i:
+    #                 results[elem].append(0)
+    #             if (elem[-1] == "C"):
+    #                 results[elem][i] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
+    #             else:
+    #                 results[elem][i] += timeit.timeit(lambda: algos[j](operation.deep_array_copy(arr), n), number=1) / num_reps
+
+    #     i += 1
+
+    # return n_steps, results
+

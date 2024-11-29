@@ -2,8 +2,7 @@ import requests
 import os
 import traceback
 import python.plot as plot
-
-API = "http://127.0.0.1:8000/compare-algorithms"
+from config import API_URL as API_URL
 
 def commandLoop():
     command_str = input(formatPrompt("operation: "))
@@ -19,6 +18,7 @@ def commandLoop():
                     compare_algorithms(command_args)
                 # case "sorting":
                     # operation.compare_sortedness(command_args)
+                    # compare_sortedness(command_args)
                 case "plot":
                     plot.plot_algos_cli(command_args)
                 case "clear":
@@ -57,7 +57,7 @@ def compare_algorithms(command_args):
             "step": step,
         }
 
-        response = requests.post(API, json=request_body)
+        response = requests.post(API_URL, json=request_body)
 
         if response.status_code == 200:
             results = response.json()["results"]
