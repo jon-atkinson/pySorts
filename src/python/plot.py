@@ -165,39 +165,3 @@ def plot_algos_gui(in_strs, start, stop, step, arr_type, num_reps):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred while calling the API: {e}")
         return None
-
-    # algos = []
-    # for in_str in in_strs:
-    #     algos.append(operation.get_algo(in_str))
-    # # should only be hit by a bug, user input shouldn't touch unspecified cases here
-    # if (None in algos):
-    #     raise Exception("Error: an algo didn't populate correctly")
-
-    # results = dict()
-    # for i, elem in enumerate(in_strs):
-    #     results.update({in_strs[i]: []})
-    # n_steps = []
-
-    # i = 0
-    # for n in range(start, stop + 1, step):
-    #     n_steps.append(n)
-
-    #     for _ in range(num_reps):
-    #         arr = operation.get_arr(arr_type)(n, "python")
-
-    #         if arr is None:
-    #             print('error in input array type')
-    #             return None
-
-    #         for j, elem in enumerate(in_strs):
-    #             if len(results[elem]) <= i:
-    #                 results[elem].append(0)
-    #             if (elem[-1] == "C"):
-    #                 results[elem][i] += timeit.timeit(lambda: algos[j](arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
-    #             else:
-    #                 results[elem][i] += timeit.timeit(lambda: algos[j](operation.deep_array_copy(arr), n), number=1) / num_reps
-
-    #     i += 1
-
-    # return n_steps, results
-

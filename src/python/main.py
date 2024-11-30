@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, HTTPException
 from typing import List
 import python.arrays as arrays
 import python.sorter as sorter
 from pydantic import BaseModel 
+import python.config
 
 class Algorithm(BaseModel):
     algorithm: str
@@ -18,9 +19,14 @@ class CompareAlgorithmsRequest(BaseModel):
 
 app = FastAPI() 
 
-@app.get("/")
+@app.get("/algorithms")
 async def root():
-    return {"message": "Welcome to pySorts, please hit another endpoint to do something useful"}
+    """
+    Return the algorithms configured in all supported languages
+    """
+    algorithm_configuration = python.config.algorithms
+    return {language: list(algorithms.keys()) for language, algorithms in algorithm_configuration.items()}
+
 
 @app.post("/compare-algorithms")
 async def compare_algorithms(request: CompareAlgorithmsRequest):
@@ -54,8 +60,8 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
                 )
                 current_round[(algorithm.algorithm, algorithm.language)].append(time)
 
-        for (algorithm, language), times in current_round.items():
-            average_time = sum(times) / len(times)
+        for (algorithm, language), timing in current_round.items():
+            average_time = sum(timing) / len(timing)
             results[(algorithm, language)].append((current_length, average_time))
 
     reformatted = [
