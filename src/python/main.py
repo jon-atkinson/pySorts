@@ -25,8 +25,15 @@ async def root():
     Return the algorithms configured in all supported languages
     """
     algorithm_configuration = python.config.algorithms
-    return {language: list(algorithms.keys()) for language, algorithms in algorithm_configuration.items()}
+    return {language: [*algorithms] for language, algorithms in algorithm_configuration.items()}
 
+@app.get("/arrays")
+async def root():
+    """
+    Return the arrays configured
+    """
+    array_configuration = python.arrays.generators
+    return [*array_configuration]
 
 @app.post("/compare-algorithms")
 async def compare_algorithms(request: CompareAlgorithmsRequest):

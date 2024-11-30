@@ -1,7 +1,5 @@
 import ctypes
 import numpy as np
-from typing import List
-from copy import deepcopy
 
 language_converters = {
     "python": lambda array : array,
