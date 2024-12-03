@@ -1,13 +1,21 @@
 import json
 import os
-import traceback
 
 import requests
 
-from config import API_URL as API_URL
+from python.config import API_URL as API_URL
 
 
-def command_loop(configuration):
+def command_loop(configuration: dict):
+    """
+    Main command loop for the cli frontend
+
+    Args:
+        configuration (dict): Backend API configuration
+
+    Raises:
+        ValueError: invalid command or filename input
+    """
     command = input(formatPrompt("operation: ")).split(" ")
     while command[0] not in ["q", "Q", "quit", "Quit"]:
         try:
@@ -18,29 +26,25 @@ def command_loop(configuration):
                     # operation.compare_sort_algos(command_args)
                     if len(command) > 2:
                         raise (
-                            Exception(
+                            ValueError(
                                 f"algo expected single filename argument, received={command[1:]}"
                             )
                         )
                     compare_algorithms(command[1], configuration)
-                # case "sorting":
-                # operation.compare_sortedness(command_args)
-                # compare_sortedness(command_args)
-                case "plot":
-                    # plot.plot_algos_cli(command_args)
-                    print("plotting from this cli interface has been depricated")
+                case "sorting":
+                    # operation.compare_sortedness(command_args)
+                    compare_sortedness(command[1], configuration)
                 case "clear":
                     os.system("clear")
                 case _:
-                    raise Exception(
-                        f'incorrect command format. Expected one of "h", "algo", Recieved={command}'
+                    raise ValueError(
+                        f'incorrect command format. Expected one of "h", "algo", "sorting", Recieved={command}'
                     )
-        except Exception as _:
-            print(traceback.format_exc())
+        except ValueError as e:
+            print(e)
         command = input(formatPrompt("operation: ")).split(" ")
 
-
-def parse_cla(filename: str, configuration: dict):
+def parse_compare_algorithms_cla(filename: str, configuration: dict):
     """
     Parse and validate the JSON file provided as a command-line argument using
             provided configuration.
@@ -51,25 +55,12 @@ def parse_cla(filename: str, configuration: dict):
 
     Returns:
         tuple: Parsed and validated configuration values.
-
-    Raises:
-        FileNotFoundError: If the specified file does not exist.
-        json.JSONDecodeError: If the file is not a valid JSON file.
-        ValueError: If the JSON content is missing required fields or contains
-                illegal configurations.
     """
-    try:
-        with open(filename, "r") as file:
-            request = json.load(file)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"The file '{filename}' does not exist.")
-    except json.JSONDecodeError as e:
-        raise json.JSONDecodeError(
-            f"Invalid JSON format in file '{filename}': {e}", doc=e.doc, pos=e.pos
-        )
+    request = read_and_decode_file(filename)
 
     compare_algorithms_request_well_formed(request)
     compare_algorithms_request_values_valid(request, configuration)
+
     algorithms = request["algorithms"]
     low = request["low"]
     high = request["high"]
@@ -79,8 +70,7 @@ def parse_cla(filename: str, configuration: dict):
 
     return algorithms, low, high, arr_type, num_reps, step
 
-
-def compare_algorithms_request_values_valid(request, configuration):
+def compare_algorithms_request_values_valid(request: dict, configuration: dict):
     """
     Validates that the values in the compare algorithms request are within the
     expected ranges and that the algorithms specified have corresponding
@@ -114,7 +104,6 @@ def compare_algorithms_request_values_valid(request, configuration):
             raise ValueError(
                 f"No implementation for '{algorithm}' in '{language}' configured."
             )
-
 
 def compare_algorithms_request_well_formed(request: dict):
     """
@@ -171,14 +160,96 @@ def compare_algorithms_request_well_formed(request: dict):
     if not isinstance(arr_type, str):
         raise ValueError("'array type' must be a string.")
 
+def compare_sortedness_request_well_formed(request: dict):
+    required_keys = [
+        "algorithm",
+        "low",
+        "high",
+        "array types",
+        "number repetitions",
+        "step",
+    ]
+    missing_keys = [key for key in required_keys if key not in request]
+    if missing_keys:
+        raise ValueError(f"Missing required keys in request: {', '.join(missing_keys)}")
 
-def compare_algorithms(filename: str, configuration):
+    array_types = request.get("array types", [])
+    if not isinstance(array_types, list) or not all(
+        isinstance(entry, str)
+        for entry in array_types
+    ):
+        raise ValueError(
+            "Invalid 'array types' format. Each entry must be a string."
+        )
+
+    low = request["low"]
+    high = request["high"]
+    num_reps = request["number repetitions"]
+    step = request["step"]
+    if not (
+        isinstance(low, int)
+        and isinstance(high, int)
+        and isinstance(num_reps, int)
+        and isinstance(step, int)
+    ):
+        raise ValueError(
+            "'low', 'high', 'number repetitions', and 'step' must all be integers."
+        )
+
+    algorithm = request["algorithm"]
+    if not isinstance(algorithm, dict) or "algorithm" not in algorithm or "language" not in algorithm:
+        raise ValueError("'algorithm' must be a dict with keys 'algorithm' and 'language'.")
+
+def compare_sortedness(filename: str, configuration: dict):
+    """
+    Sends a POST request to the compare-sortedness API route and prints the
+            formatted results to terminal.
+
+    Args:
+        filename (str): file containing the query
+        configuration (dict): json config of the backend API
+    """
+    try:
+        algorithm, low, high, arr_types, num_reps, step = parse_compare_sortedness_cla(
+            filename, configuration
+        )
+
+        request_body = {
+            "algorithm": algorithm,
+            "low": low,
+            "high": high,
+            "arr_types": arr_types,
+            "num_reps": num_reps,
+            "step": step,
+        }
+
+        response = requests.post(API_URL + "/compare-sortedness", json=request_body)
+
+        if response.status_code == 200:
+            results = response.json()
+            print("Results:")
+            for sortedness, series in results:
+                print(f"  {sortedness}:")
+                for length, avg_time in series:
+                    print(f"  Input Length: {length}, Average Time: {avg_time}")
+        else:
+            print(f"Error: {response.status_code} - {response.text}")
+
+    except Exception as e:
+        print(f"Error in CLI: {str(e)}")
+
+
+def compare_algorithms(filename: str, configuration: dict):
     """
     Sends a POST request to the compare-algorithms API route and prints the
             formatted results to terminal.
+
+    Args:
+        filename (str): file containing the query
+        configuration (_type_): json config of the backend API
     """
     try:
-        algorithms, low, high, arr_type, num_reps, step = parse_cla(
+        algorithms, low, high, arr_type, num_reps, step = parse_compare_algorithms_cla(
             filename, configuration
         )
 
@@ -206,6 +277,55 @@ def compare_algorithms(filename: str, configuration):
     except Exception as e:
         print(f"Error processing command: {str(e)}")
 
+def parse_compare_sortedness_cla(filename: str, configuration: dict):
+    request = read_and_decode_file(filename)
+
+    compare_sortedness_request_well_formed(request)
+    compare_sortedness_request_values_valid(request, configuration)
+
+    algorithm = request["algorithm"]
+    low = request["low"]
+    high = request["high"]
+    arr_types = request["array types"]
+    num_reps = request["number repetitions"]
+    step = request["step"]
+
+    return algorithm, low, high, arr_types, num_reps, step
+
+def read_and_decode_file(filename: str) -> dict:
+    try:
+        with open(filename, "r") as file:
+            request = json.load(file)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"The file '{filename}' does not exist.")
+    except json.JSONDecodeError as e:
+        raise json.JSONDecodeError(
+            f"Invalid JSON format in file '{filename}': {e}", doc=e.doc, pos=e.pos
+        )
+    return request
+
+def compare_sortedness_request_values_valid(request: dict, configuration: dict):
+    low = request["low"]
+    high = request["high"]
+    num_reps = request["number repetitions"]
+    step = request["step"]
+    algorithm = request["algorithm"]
+    array_types = request["array types"]
+    if low >= high:
+        raise ValueError("'low' must be less than 'high'.")
+    if num_reps <= 0 or step <= 0:
+        raise ValueError("'number repetitions' and 'step' must be positive integers.")
+    if algorithm["language"] not in configuration["algorithms"].keys():
+        language = algorithm["language"]
+        raise ValueError(
+            f"No implementation for '{algorithm}' in '{language}' configured."
+        )
+
+    for array_type in array_types:
+        if array_type not in configuration["array types"]:
+            raise ValueError(
+                f"'{array_type}' input type not configured."
+            )
 
 def helpPySort():
     print("Usage: algo query_filename")

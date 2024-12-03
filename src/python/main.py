@@ -17,6 +17,14 @@ class CompareAlgorithmsRequest(BaseModel):
     num_reps: int = 1
     step: int = 1
 
+class CompareSortednessRequest(BaseModel):
+    algorithm: Algorithm
+    low: int = 0
+    high: int = 10000
+    arr_types: List[str] = ["random"]
+    num_reps: int
+    step: int = 1
+
 app = FastAPI() 
 
 @app.get("/config")
@@ -97,4 +105,49 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
         (algorithm, language, series)
         for (algorithm, language), series in results.items()
     ]
+    return reformatted
+
+@app.post("/compare-sortedness")
+async def compare_sortedness(request: CompareSortednessRequest):
+    """
+    Compare algorithm performance on sorting different input sortedness arrays
+            and return time taken to run for a range of input lengths
+    """
+    algorithm = request.algorithm
+    low = request.low
+    high = request.high
+    arr_types = request.arr_types
+    num_reps = request.num_reps
+    step = request.step
+    config.algorithms
+
+    if algorithm.language not in config.algorithms or algorithm.algorithm not in config.algorithms[algorithm.language]:
+        raise HTTPException(status_code=400, detail=f"Unsupported algorithm-language pairing {algorithm}")
+
+    results = {sortedness: [] for sortedness in arr_types}
+
+    for current_length in range(low, high + 1, step):
+        current_round = {sortedness: [] for sortedness in arr_types}
+
+        for _ in range(num_reps):
+
+            for sortedness in arr_types:
+                array_generator = config.arrays[sortedness]
+                array = array_generator(current_length)
+                _, time = sorter.call(
+                    algorithm.algorithm,
+                    algorithm.language,
+                    array,
+                )
+                current_round[sortedness].append(time)
+
+        for sortedness, timing in current_round.items():
+            average_time = sum(timing) / len(timing)
+            results[sortedness].append((current_length, average_time))
+
+    reformatted = [
+        (sortedness, series)
+        for sortedness, series in results.items()
+    ]
+    
     return reformatted
