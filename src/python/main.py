@@ -3,7 +3,7 @@ from typing import List
 import python.arrays as arrays
 import python.sorter as sorter
 from pydantic import BaseModel 
-import python.config
+import python.config as config
 
 class Algorithm(BaseModel):
     algorithm: str
@@ -19,21 +19,43 @@ class CompareAlgorithmsRequest(BaseModel):
 
 app = FastAPI() 
 
+@app.get("/config")
+async def root():
+    """
+    Exposes configured algorithms, implemented languages and input array types.
+
+    Returns:
+        dict: keys=algorithms, array types
+    """
+    result = {}
+
+    result["algorithms"] = {
+        language: list(algorithms.keys())
+        for language, algorithms
+        in config.algorithms.items()
+    }
+
+    result["array types"] = list(config.arrays.keys())
+
+    return result
+
 @app.get("/algorithms")
 async def root():
     """
     Return the algorithms configured in all supported languages
     """
-    algorithm_configuration = python.config.algorithms
-    return {language: [*algorithms] for language, algorithms in algorithm_configuration.items()}
+    return {
+        language: list(algorithms.keys())
+        for language, algorithms
+        in config.algorithms.items()
+    }
 
 @app.get("/arrays")
 async def root():
     """
     Return the arrays configured
     """
-    array_configuration = python.arrays.generators
-    return [*array_configuration]
+    return list(config.arrays.keys())
 
 @app.post("/compare-algorithms")
 async def compare_algorithms(request: CompareAlgorithmsRequest):
@@ -47,11 +69,11 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     num_reps = request.num_reps
     step = request.step
 
-    if arr_type not in arrays.generators.keys():
+    if arr_type not in config.arrays:
         raise HTTPException(status_code=400, detail=f"Unsupported array type {arr_type}")
 
     results = {(algorithm.algorithm, algorithm.language): [] for algorithm in algorithms}
-    array_generator = arrays.generators[arr_type]
+    array_generator = config.arrays[arr_type]
 
     for current_length in range(low, high + 1, step):
         current_round = {(algorithm.algorithm, algorithm.language): [] for algorithm in algorithms}
@@ -63,7 +85,7 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
                 _, time = sorter.call(
                     algorithm.algorithm,
                     algorithm.language,
-                    arrays.deep_copy(array),
+                    array,
                 )
                 current_round[(algorithm.algorithm, algorithm.language)].append(time)
 
@@ -75,4 +97,4 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
         (algorithm, language, series)
         for (algorithm, language), series in results.items()
     ]
-    return {"results": reformatted}
+    return reformatted

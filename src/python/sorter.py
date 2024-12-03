@@ -19,10 +19,10 @@ def call(algorithm: str, language: str, array: List[int]) -> Tuple[List[int], fl
     """
     if language not in config.algorithms.keys():
         raise ValueError(f"Unsupported language: {language}")
-    if algorithm not in config.algorithms[language].keys():
-        raise ValueError(f"No implementation for {algorithm} written in {language} exists")
     if language not in arrays.language_converters.keys():
         raise ValueError(f"Unsupported language: {language}")
+    if algorithm not in list(config.algorithms[language].keys()):
+        raise ValueError(f"No implementation for {algorithm} written in {language} exists")
 
     algorithm = config.algorithms[language][algorithm]
     array = arrays.language_converters[language](array)

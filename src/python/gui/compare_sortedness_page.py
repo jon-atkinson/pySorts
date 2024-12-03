@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from python.plot import plot_sortedness_gui
+from python.gui.plot import plot_sortedness_gui
 from python.gui.colour import Colour
+import python.gui.config as config
 
 class CompareSortednessPage(tk.Frame):
 
@@ -24,32 +25,14 @@ class CompareSortednessPage(tk.Frame):
                         sticky="esw")
         right_panel.columnconfigure(0, weight=1)
 
-        self.algorithms = {
-            "Bucket Sort    (py)": "bct",
-            "Bubble Sort    (py)": "bub",
-            "Count Sort     (py)": "cnt",
-            "Heap Sort      (py)": "hep",
-            "Insertion Sort (py)": "ins",
-            "Merge Sort     (py)": "mrg",
-            "Quick Sort     (py)": "qck",
-            "Radix Sort     (py)": "rdx",
-            "Selection Sort (py)": "sel",
-            "Shell Sort     (py)": "shl",
-            "Tim Sort       (py)": "tim",
-            "Tree Sort      (py)": "tre",
-            # "Bucket Sort    (c)": "bctC", - TODO
-            "Bubble Sort    (c)": "bubC",
-            # "Count Sort     (c)": "cntC", - TODO
-            "Heap Sort      (c)": "hepC",
-            "Insertion Sort (c)": "insC",
-            # "Merge Sort     (c)": "mrgC", - TODO
-            # "Quick Sort     (c)": "qckC", - TODO
-            # "Radix Sort     (c)": "rdxC", - TODO
-            "Selection Sort (c)": "selC",
-            # "Shell Sort     (c)": "shlC", - TODO
-            # "Tim Sort       (c)": "timC", - TODO
-            # "Tree Sort      (c)": "treC"  - TODO
-        }
+        self.algorithms = {}
+        for language, algorithms in config.config["algorithms"].items():
+            for algorithm in algorithms:
+                key = f"{algorithm.title()} ({language})"
+                self.algorithms[key] = {
+                    "algorithm": algorithm,
+                    "language": language
+                }
         self.selected_algorithm = tk.StringVar()
         row_num = 0
         for idx, key in enumerate(self.algorithms.keys()):

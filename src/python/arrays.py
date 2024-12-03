@@ -6,16 +6,6 @@ language_converters = {
     "c": lambda array : (ctypes.c_int * len(array))(*array),
 }
 
-generators = {
-    "random": lambda n : np.random.randint(0, n, n),
-    "normal": lambda n : np.random.normal(loc=n / 2, scale=1, size=n).astype(int),
-    "sorted" : lambda n : np.arange(0, n),
-    "reverse sorted" : lambda n : np.arange(0, n, -1),
-    "positive skew" : lambda n: (np.random.exponential(scale=n / 10, size=n)).astype(int),
-    "negative skew" : lambda n: (n - 1 - np.random.exponential(scale=n / 10, size=n)).astype(int),
-    "many repeats" : lambda n : np.random.randint(n // 10, size=n),
-}
-
 def deep_copy(array: np.ndarray) -> np.ndarray:
     """
     Creates a deep copy of an array.
@@ -27,3 +17,24 @@ def deep_copy(array: np.ndarray) -> np.ndarray:
         np.ndarray: A deep copy of the input array.
     """
     return np.copy(array)
+
+def generate_random_array(n: int):
+    return np.random.randint(0, n, n)
+
+def generate_normal_array(n: int):
+    return np.random.normal(loc=n / 2, scale=1, size=n).astype(int)
+
+def generate_sorted_array(n: int):
+    return np.arange(0, n)
+
+def generate_reverse_sorted_array(n: int):
+    return np.arange(0, n, -1)
+
+def generate_positive_skew_array(n: int):
+    return (np.random.exponential(scale=n / 10, size=n)).astype(int)
+
+def generate_negative_skew_array(n: int):
+    return (n - 1 - np.random.exponential(scale=n / 10, size=n)).astype(int)
+
+def generate_many_repeats_array(n: int):
+    return np.random.randint(n // 10, size=n)

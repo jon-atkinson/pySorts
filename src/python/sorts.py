@@ -1,5 +1,5 @@
-from sys import setrecursionlimit
-from python.avl import AVL_Node, avl_insert
+from python.avl import avl_insert
+import ctypes
 
 def selection_sort(arr, n):
     min_idx = 0
@@ -305,47 +305,7 @@ def is_sorted(arr):
             return False
     return True
 
-if __name__ == "__main__":
-    import python.arrays as arrays
-    from matplotlib import pyplot as plt
-    import numpy as np
-
-    algorithm = tim_sort
-    n = 100
-    # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
-    # arr = gen_data_sets.gen_pos_skew_arr(n, "python")
-    arr = arrays.gen_rand_arr(n, "python")
-    # arr.sort()
-    print(arr)
-    # arr = gen_data_sets.gen_norm_rand_arr(n, "python")
-    # print(arr)
-
-
-    import matplotlib
-    matplotlib.use('TkAgg')
-    plt.title("array distribution")
-    plt.plot(np.arange(0,n), arr, "red")
-    # plt.show()
-    arr = algorithm(arr, n)
-    print(arr)
-    plt.plot(np.arange(0,n), arr, "green")
-    plt.show()
-
-    # print("\n", is_sorted(algorithm(gen_data_sets.gen_rand_arr(n, "python"), n)))
-    # print("\n", is_sorted(algorithm(gen_data_sets.gen_pre_sorted_arr(n, "python"), n)))
-    # print("\n", is_sorted(algorithm(gen_data_sets.gen_rev_sorted_arr(n, "python"), n)))
-    # print("\n", is_sorted(algorithm(gen_data_sets.gen_many_rep_arr(n, "python"), n)))
-
-
-    # nums = [1, 63, 64, 65, 127, 128]
-    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[0], "python"), nums[0]))))
-    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[1], "python"), nums[1]))))
-    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[3], "python"), nums[3]))))
-    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[4], "python"), nums[4]))))
-    # print("\n" + str(is_sorted(algorithm(gen_data_sets.gen_rand_arr(nums[5], "python"), nums[5]))))
-
-    # n = 1000
-    # arr = gen_data_sets.gen_rand_arr(n, "python")
-    # returned = algorithm(arr, n)
-    # print("\n" + str(is_sorted(returned)))
-    # print(returned)
+def construct_c_algorithm(algo_ref):
+    algo_ref.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int]
+    algo_ref.restype = ctypes.POINTER(ctypes.c_int)
+    return algo_ref

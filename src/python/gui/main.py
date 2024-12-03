@@ -7,6 +7,8 @@ from python.gui.feature_in_progress_page import FeatureInProgressPage
 from python.gui.graph_page import GraphPage
 from python.gui.start_page import StartPage
 from python.gui.compare_sortedness_page import CompareSortednessPage
+import requests
+import python.gui.config as gui_config
 
 
 class app(tk.Tk):
@@ -15,6 +17,8 @@ class app(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "pySorts sorting algorithm runtime comparison tool")
         self.geometry("1280x720")
+
+        gui_config.config = self.fetch_config()
 
         container = tk.Frame(self)
         container.pack(expand=True, fill="both", side="top")
@@ -77,6 +81,21 @@ class app(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+    def fetch_config(self):
+        """
+        Makes a GET request to fetch backend data and stores it in the shared state.
+
+        Returns:
+            dict: The data fetched from the backend.
+        """
+        try:
+            response = requests.get(gui_config.API_URL + "/config")
+            response.raise_for_status()
+            data = response.json()
+            return data
+        except requests.RequestException as e:
+            print(f"Error fetching backend data: {str(e)}")
+            return {}
 
 app = app()
 app.mainloop()

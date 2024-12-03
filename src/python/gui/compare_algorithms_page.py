@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from python.plot import plot_algos_gui
+from python.gui.plot import plot_algos_gui
 from python.gui.colour import Colour
+import python.gui.config as config
 
 class CompareAlgorithmsPage(tk.Frame):
 
@@ -24,32 +25,14 @@ class CompareAlgorithmsPage(tk.Frame):
                         sticky="esw")
         right_panel.columnconfigure(0, weight=1)
 
-        self.algorithms = {
-            "Bucket Sort    (py)": "bct",
-            "Bubble Sort    (py)": "bub",
-            "Count Sort     (py)": "cnt",
-            "Heap Sort      (py)": "hep",
-            "Insertion Sort (py)": "ins",
-            "Merge Sort     (py)": "mrg",
-            "Quick Sort     (py)": "qck",
-            "Radix Sort     (py)": "rdx",
-            "Selection Sort (py)": "sel",
-            "Shell Sort     (py)": "shl",
-            "Tim Sort       (py)": "tim",
-            "Tree Sort      (py)": "tre",
-            # "Bucket Sort    (c)": "bctC", - TODO
-            "Bubble Sort    (c)": "bubC",
-            # "Count Sort     (c)": "cntC", - TODO
-            "Heap Sort      (c)": "hepC",
-            "Insertion Sort (c)": "insC",
-            # "Merge Sort     (c)": "mrgC", - TODO
-            # "Quick Sort     (c)": "qckC", - TODO
-            # "Radix Sort     (c)": "rdxC", - TODO
-            "Selection Sort (c)": "selC",
-            # "Shell Sort     (c)": "shlC", - TODO
-            # "Tim Sort       (c)": "timC", - TODO
-            # "Tree Sort      (c)": "treC"  - TODO
-        }
+        self.algorithms = {}
+        for language, algorithms in config.config["algorithms"].items():
+            for algorithm in algorithms:
+                key = f"{algorithm.title()} ({language})"
+                self.algorithms[key] = {
+                    "algorithm": algorithm,
+                    "language": language
+                }
         self.selected_algos = {}
         row_num = 0
         for algo in self.algorithms.keys():
@@ -480,14 +463,14 @@ class CompareAlgorithmsPage(tk.Frame):
             case "Sorted":
                 return "sorted"
             case "Reverse Sorted":
-                return "reverse"
+                return "reverse sorted"
             case "Random":
-                return "rand"
+                return "random"
             case "Many Repeated":
-                return "manyRep"
+                return "many repeated"
             case "Positive Skew":
-                return "posSkew"
+                return "positive skew"
             case "Negative Skew":
-                return "negSkew"
+                return "negative skew"
             case _:
                 raise Exception("no match found for sortedness")
