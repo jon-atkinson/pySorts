@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from typing import List
-import python.arrays as arrays
 import python.sorter as sorter
 from pydantic import BaseModel 
 import python.config as config

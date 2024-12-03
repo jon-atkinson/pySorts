@@ -55,8 +55,11 @@ class CompareSortednessPage(tk.Frame):
 
         self.sortedness_options = {
             "Sorted": "sorted",
-            "Reverse Sorted": "reverse",
-            "Random": "rand"
+            "Reverse Sorted": "reverse sorted",
+            "Random": "random",
+            # "Many Repeats": "many repeats",
+            "Positive Skew": "positive skew",
+            "Negative Skew": "negative skew"
         }
         self.selected_sortedness = {}
         row_num = 0
