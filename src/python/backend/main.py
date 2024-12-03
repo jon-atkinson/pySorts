@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from typing import List
-import python.sorter as sorter
+import python.backend.sorter as sorter
 from pydantic import BaseModel 
-import python.config as config
+import python.backend.config as config
 
 class Algorithm(BaseModel):
     algorithm: str

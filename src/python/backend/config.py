@@ -1,7 +1,7 @@
-import python.sorts as sort_impls
+import python.backend.sorts as sort_impls
 import os
 import ctypes
-import python.arrays as arrays_manager
+import python.backend.arrays as arrays_manager
 
 API_URL = "http://127.0.0.1:8000"
 """
@@ -10,7 +10,7 @@ pySorts backend API address
 
 # load the c sorting algorithm implementations and expose in path
 script_dir = os.path.abspath(os.path.dirname(__file__))
-lib_path = os.path.join(script_dir, "../c/cSorts.so")
+lib_path = os.path.join(script_dir, "../../c/cSorts.so")
 cSorts = ctypes.cdll.LoadLibrary(lib_path)
 
 """

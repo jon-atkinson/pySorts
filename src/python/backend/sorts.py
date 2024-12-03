@@ -1,4 +1,4 @@
-from python.avl import avl_insert
+from python.backend.avl import avl_insert
 import ctypes
 
 def selection_sort(arr, n):

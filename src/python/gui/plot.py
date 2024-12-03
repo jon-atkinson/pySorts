@@ -22,7 +22,6 @@ def plot_sortedness_gui(algorithm, start, stop, step, arr_types, num_reps):
         "step": step
     }
 
-    print(data)
     try: 
         response = requests.post(API_URL + "/compare-sortedness", json=data)
         response.raise_for_status()
