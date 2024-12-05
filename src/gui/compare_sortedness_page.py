@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 
-import gui_config as gui_config
-from colour import Colour
-from plot import plot_sortedness_gui
+import gui.gui_config as gui_config
+from gui.colour import Colour
+from gui.plot import plot_sortedness_gui
 
 
 class CompareSortednessPage(tk.Frame):
@@ -456,4 +456,3 @@ class CompareSortednessPage(tk.Frame):
     #             return "negSkew"
     #         case _:
     # raise Exception("no match found for sortedness")
-

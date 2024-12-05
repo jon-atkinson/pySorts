@@ -14,8 +14,8 @@ dependencies = ["matplotlib", "numpy", "fastapi[standard]", "requests"]
 requires-python = ">=3.11"
 
 [project.scripts]
-pySortsApp = "src.gui.main:main"
-pySortsCli = "src.cli.cli:runCLI"
+pySortsApp = "gui.main:main"
+pySortsCli = "cli.cli:runCLI"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

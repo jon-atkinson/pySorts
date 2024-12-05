@@ -1,15 +1,15 @@
 import tkinter as tk
-from tkinter import *
 from tkinter import ttk
 
-import gui_config as gui_config
 import requests
-from colour import Colour
-from compare_algorithms_page import CompareAlgorithmsPage
-from compare_sortedness_page import CompareSortednessPage
-from feature_in_progress_page import FeatureInProgressPage
-from graph_page import GraphPage
-from start_page import StartPage
+
+import gui.gui_config as gui_config
+from gui.colour import Colour
+from gui.compare_algorithms_page import CompareAlgorithmsPage
+from gui.compare_sortedness_page import CompareSortednessPage
+from gui.feature_in_progress_page import FeatureInProgressPage
+from gui.graph_page import GraphPage
+from gui.start_page import StartPage
 
 
 class app(tk.Tk):
@@ -116,5 +116,5 @@ app.mainloop()
 
 
 def main():
-    return
 
+    return

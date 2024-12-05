@@ -1,1 +1,0 @@
-clear && pip uninstall pySorts && pip cache purge && pip install . --verbose && ./up.sh

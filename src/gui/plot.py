@@ -1,7 +1,8 @@
 from typing import Dict, List, Tuple
 
 import requests
-from gui_config import API_URL
+
+from gui.gui_config import API_URL
 
 
 def plot_sortedness_gui(algorithm, start, stop, step, arr_types, num_reps):

@@ -4,15 +4,18 @@ from statistics import median
 from tkinter import *
 from tkinter import ttk
 
+import matplotlib
 import numpy as np
-from colour import Colour
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+
+from gui.colour import Colour
 
 
 class GraphPage(tk.Frame):
 
     def __init__(self, parent, controller):
+        matplotlib.use("TkAgg")
         tk.Frame.__init__(self, parent, background=Colour.colour1)
         self.results = {}
         self.originalResults = {}

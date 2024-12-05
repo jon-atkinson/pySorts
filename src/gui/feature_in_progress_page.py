@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 
-from colour import Colour
+from gui.colour import Colour
 
 
 class FeatureInProgressPage(tk.Frame):
