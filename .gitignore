@@ -17,6 +17,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+src/backend/sorts/c/cSorts
+src/backend/sorts/c/cSorts.so
 
 .*
 !.gitignore
