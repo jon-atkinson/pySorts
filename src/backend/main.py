@@ -1,12 +1,16 @@
-from fastapi import FastAPI, HTTPException
 from typing import List
-import backend.sorter as sorter
-from pydantic import BaseModel 
-import backend.config as config
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+import src.backend.backend_config as config
+import src.backend.sorter as sorter
+
 
 class Algorithm(BaseModel):
     algorithm: str
     language: str
+
 
 class CompareAlgorithmsRequest(BaseModel):
     algorithms: List[Algorithm]
@@ -16,6 +20,7 @@ class CompareAlgorithmsRequest(BaseModel):
     num_reps: int = 1
     step: int = 1
 
+
 class CompareSortednessRequest(BaseModel):
     algorithm: Algorithm
     low: int = 0
@@ -24,7 +29,9 @@ class CompareSortednessRequest(BaseModel):
     num_reps: int
     step: int = 1
 
-app = FastAPI() 
+
+app = FastAPI()
+
 
 @app.get("/config")
 async def root():
@@ -38,13 +45,13 @@ async def root():
 
     result["algorithms"] = {
         language: list(algorithms.keys())
-        for language, algorithms
-        in config.algorithms.items()
+        for language, algorithms in config.algorithms.items()
     }
 
     result["array types"] = list(config.arrays.keys())
 
     return result
+
 
 @app.get("/algorithms")
 async def root():
@@ -53,9 +60,9 @@ async def root():
     """
     return {
         language: list(algorithms.keys())
-        for language, algorithms
-        in config.algorithms.items()
+        for language, algorithms in config.algorithms.items()
     }
+
 
 @app.get("/arrays")
 async def root():
@@ -63,6 +70,7 @@ async def root():
     Return the arrays configured
     """
     return list(config.arrays.keys())
+
 
 @app.post("/compare-algorithms")
 async def compare_algorithms(request: CompareAlgorithmsRequest):
@@ -77,13 +85,19 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     step = request.step
 
     if arr_type not in config.arrays:
-        raise HTTPException(status_code=400, detail=f"Unsupported array type {arr_type}")
+        raise HTTPException(
+            status_code=400, detail=f"Unsupported array type {arr_type}"
+        )
 
-    results = {(algorithm.algorithm, algorithm.language): [] for algorithm in algorithms}
+    results = {
+        (algorithm.algorithm, algorithm.language): [] for algorithm in algorithms
+    }
     array_generator = config.arrays[arr_type]
 
     for current_length in range(low, high + 1, step):
-        current_round = {(algorithm.algorithm, algorithm.language): [] for algorithm in algorithms}
+        current_round = {
+            (algorithm.algorithm, algorithm.language): [] for algorithm in algorithms
+        }
 
         for _ in range(num_reps):
             array = array_generator(current_length)
@@ -106,6 +120,7 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     ]
     return reformatted
 
+
 @app.post("/compare-sortedness")
 async def compare_sortedness(request: CompareSortednessRequest):
     """
@@ -120,8 +135,14 @@ async def compare_sortedness(request: CompareSortednessRequest):
     step = request.step
     config.algorithms
 
-    if algorithm.language not in config.algorithms or algorithm.algorithm not in config.algorithms[algorithm.language]:
-        raise HTTPException(status_code=400, detail=f"Unsupported algorithm-language pairing {algorithm}")
+    if (
+        algorithm.language not in config.algorithms
+        or algorithm.algorithm not in config.algorithms[algorithm.language]
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported algorithm-language pairing {algorithm}",
+        )
 
     results = {sortedness: [] for sortedness in arr_types}
 
@@ -144,9 +165,6 @@ async def compare_sortedness(request: CompareSortednessRequest):
             average_time = sum(timing) / len(timing)
             results[sortedness].append((current_length, average_time))
 
-    reformatted = [
-        (sortedness, series)
-        for sortedness, series in results.items()
-    ]
-    
+    reformatted = [(sortedness, series) for sortedness, series in results.items()]
+
     return reformatted

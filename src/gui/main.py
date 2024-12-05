@@ -1,14 +1,15 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from gui.colour import Colour
-from gui.compare_algorithms_page import CompareAlgorithmsPage
-from gui.feature_in_progress_page import FeatureInProgressPage
-from gui.graph_page import GraphPage
-from gui.start_page import StartPage
-from gui.compare_sortedness_page import CompareSortednessPage
+
+import gui_config as gui_config
 import requests
-import gui.gui_config as gui_config
+from colour import Colour
+from compare_algorithms_page import CompareAlgorithmsPage
+from compare_sortedness_page import CompareSortednessPage
+from feature_in_progress_page import FeatureInProgressPage
+from graph_page import GraphPage
+from start_page import StartPage
 
 
 class app(tk.Tk):
@@ -26,8 +27,16 @@ class app(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
         self.frames = {}
 
-        titleBar = tk.Frame(container, width=1280, height=100, borderwidth=20, background=Colour.colour3)
-        title = tk.Label(titleBar, text="pySorts", font=("Quicksand", 30, "bold"), foreground=Colour.colour5, background=Colour.colour3)
+        titleBar = tk.Frame(
+            container, width=1280, height=100, borderwidth=20, background=Colour.colour3
+        )
+        title = tk.Label(
+            titleBar,
+            text="pySorts",
+            font=("Quicksand", 30, "bold"),
+            foreground=Colour.colour5,
+            background=Colour.colour3,
+        )
         title.pack()
         title.configure(anchor="center")
         titleBar.pack(side="top", fill="both", expand=False)
@@ -43,7 +52,7 @@ class app(tk.Tk):
             "CompareAlgorithmsPage": CompareAlgorithmsPage,
             "FeatureInProgressPage": FeatureInProgressPage,
             "GraphPage": GraphPage,
-            "CompareSortednessPage": CompareSortednessPage
+            "CompareSortednessPage": CompareSortednessPage,
         }
         for key in self.frames.keys():
             frame = self.frames[key](content, self)
@@ -52,30 +61,34 @@ class app(tk.Tk):
         self.show_frame("StartPage")
 
         style = ttk.Style()
-        style.configure(".",
-                        font=("TkFixedFont", 10, "bold"),
-                        background=Colour.colour1,
-                        foreground=Colour.colour3)
-        style.configure("TButton",
-                        font=("TkFixedFont", 10, "bold", "underline"),
-                        foreground=Colour.colour3,
-                        background=Colour.colour4,
-                        anchor="center")
-        style.configure("Home.TButton",
-                        padding=20)
-        style.configure("Plot.Home.TButton",
-                        background=Colour.colour5,
-                        foreground=Colour.colour4)
-        style.configure("Increment.TButton",
-                        font=("TkFixedFont", 6, "bold"),
-                        height=5,
-                        width=5)
-        style.configure("TCheckbutton",
-                        background=Colour.colour1,
-                        foreground=Colour.colour3,
-                        indicatorcolor=Colour.colour4,
-                        width=30,
-                        anchor="w")
+        style.configure(
+            ".",
+            font=("TkFixedFont", 10, "bold"),
+            background=Colour.colour1,
+            foreground=Colour.colour3,
+        )
+        style.configure(
+            "TButton",
+            font=("TkFixedFont", 10, "bold", "underline"),
+            foreground=Colour.colour3,
+            background=Colour.colour4,
+            anchor="center",
+        )
+        style.configure("Home.TButton", padding=20)
+        style.configure(
+            "Plot.Home.TButton", background=Colour.colour5, foreground=Colour.colour4
+        )
+        style.configure(
+            "Increment.TButton", font=("TkFixedFont", 6, "bold"), height=5, width=5
+        )
+        style.configure(
+            "TCheckbutton",
+            background=Colour.colour1,
+            foreground=Colour.colour3,
+            indicatorcolor=Colour.colour4,
+            width=30,
+            anchor="w",
+        )
 
     def show_frame(self, page_name):
         frame = self.frames[page_name]
@@ -97,8 +110,11 @@ class app(tk.Tk):
             print(f"Error fetching backend data: {str(e)}")
             return {}
 
+
 app = app()
 app.mainloop()
 
+
 def main():
     return
+

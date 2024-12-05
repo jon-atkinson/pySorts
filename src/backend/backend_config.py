@@ -1,8 +1,9 @@
-import backend.sorts.python.python_sorts as sort_impls
-import backend.sorts.helpers as helpers
-import os
 import ctypes
-import backend.arrays as arrays_manager
+import os
+
+import src.backend.arrays as arrays_manager
+import src.backend.sorts.helpers as helpers
+import src.backend.sorts.python.python_sorts as sort_impls
 
 API_URL = "http://127.0.0.1:8000"
 """
@@ -51,10 +52,10 @@ algorithms = {
 
 arrays = {
     "random": lambda n: arrays_manager.generate_random_array(n),
-    "normal": lambda n : arrays_manager.generate_normal_array(n),
-    "sorted" : lambda n : arrays_manager.generate_sorted_array(n),
-    "reverse sorted" : lambda n : arrays_manager.generate_reverse_sorted_array(n),
-    "positive skew" : lambda n: arrays_manager.generate_positive_skew_array(n),
-    "negative skew" : lambda n: arrays_manager.generate_negative_skew_array(n),
-    "many repeats" : lambda n : arrays_manager.generate_many_repeats_array(n),
+    "normal": lambda n: arrays_manager.generate_normal_array(n),
+    "sorted": lambda n: arrays_manager.generate_sorted_array(n),
+    "reverse sorted": lambda n: arrays_manager.generate_reverse_sorted_array(n),
+    "positive skew": lambda n: arrays_manager.generate_positive_skew_array(n),
+    "negative skew": lambda n: arrays_manager.generate_negative_skew_array(n),
+    "many repeats": lambda n: arrays_manager.generate_many_repeats_array(n),
 }

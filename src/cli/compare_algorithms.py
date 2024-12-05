@@ -1,7 +1,7 @@
+import helpers as helpers
 import requests
+from cli_config import API_URL as API_URL
 
-from backend.config import API_URL as API_URL
-import cli.helpers as helpers
 
 def compare_algorithms(filename: str, configuration: dict):
     """
@@ -41,6 +41,7 @@ def compare_algorithms(filename: str, configuration: dict):
     except Exception as e:
         print(f"Error processing command: {str(e)}")
 
+
 def parse_cla(filename: str, configuration: dict):
     """
     Parse and validate the JSON file provided as a command-line argument using
@@ -66,6 +67,7 @@ def parse_cla(filename: str, configuration: dict):
     step = request["step"]
 
     return algorithms, low, high, arr_type, num_reps, step
+
 
 def request_well_formed(request: dict):
     """
@@ -121,6 +123,7 @@ def request_well_formed(request: dict):
     arr_type = request["array type"]
     if not isinstance(arr_type, str):
         raise ValueError("'array type' must be a string.")
+
 
 def request_values_valid(request: dict, configuration: dict):
     """

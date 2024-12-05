@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from gui.plot import plot_algos_gui
-from gui.colour import Colour
-import gui.gui_config as gui_config
+
+import gui_config as gui_config
+from colour import Colour
+from plot import plot_algos_gui
+
 
 class CompareAlgorithmsPage(tk.Frame):
 

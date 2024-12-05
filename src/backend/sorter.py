@@ -1,7 +1,8 @@
 import time
 from typing import List, Tuple
-import backend.config as config
-import backend.arrays as arrays
+
+import src.backend.arrays as arrays
+import src.backend.backend_config as config
 
 
 def call(algorithm: str, language: str, array: List[int]) -> Tuple[List[int], float]:
@@ -22,7 +23,9 @@ def call(algorithm: str, language: str, array: List[int]) -> Tuple[List[int], fl
     if language not in arrays.language_converters.keys():
         raise ValueError(f"Unsupported language: {language}")
     if algorithm not in list(config.algorithms[language].keys()):
-        raise ValueError(f"No implementation for {algorithm} written in {language} exists")
+        raise ValueError(
+            f"No implementation for {algorithm} written in {language} exists"
+        )
 
     algorithm = config.algorithms[language][algorithm]
     array = arrays.language_converters[language](array)

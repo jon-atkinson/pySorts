@@ -1,10 +1,11 @@
-from gui.gui_config import API_URL
+from typing import Dict, List, Tuple
+
 import requests
-from typing import List, Dict, Tuple
+from gui_config import API_URL
 
 
 def plot_sortedness_gui(algorithm, start, stop, step, arr_types, num_reps):
-    """ Calculates the O(n) response of one algorithms on multiple input types
+    """Calculates the O(n) response of one algorithms on multiple input types
     algo_str: string corresponding to the algo being evaluated
     start, stop, step: start and stop for the sweep and step = granularity
     arr_types: list of strings representing the sortedness of the arrays
@@ -16,10 +17,10 @@ def plot_sortedness_gui(algorithm, start, stop, step, arr_types, num_reps):
         "high": stop,
         "arr_types": arr_types,
         "num_reps": num_reps,
-        "step": step
+        "step": step,
     }
 
-    try: 
+    try:
         response = requests.post(API_URL + "/compare-sortedness", json=data)
         response.raise_for_status()
         result_data = response.json()
@@ -37,7 +38,10 @@ def plot_sortedness_gui(algorithm, start, stop, step, arr_types, num_reps):
         print(f"An error occurred while calling the API: {e}")
         return None
 
-def plot_algos_gui(algorithms: dict, start: int, stop: int, step: int, arr_type: str, num_reps: int) -> Tuple[List[int],Dict[str,List[int]]]:
+
+def plot_algos_gui(
+    algorithms: dict, start: int, stop: int, step: int, arr_type: str, num_reps: int
+) -> Tuple[List[int], Dict[str, List[int]]]:
     """
     Requests API for time series comparison of the requested algorithms
 
@@ -59,10 +63,10 @@ def plot_algos_gui(algorithms: dict, start: int, stop: int, step: int, arr_type:
         "high": stop,
         "arr_type": arr_type,
         "num_reps": num_reps,
-        "step": step
+        "step": step,
     }
 
-    try: 
+    try:
         response = requests.post(API_URL + "/compare-algorithms", json=data)
         response.raise_for_status()
         result_data = response.json()
