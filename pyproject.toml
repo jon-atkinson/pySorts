@@ -18,7 +18,7 @@ pySortsCli = "src.cli.cli:runCLI"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["pySorts"]
+packages = ["backend", "cli", "gui"]
 
 [tool.setuptools.package-data]
 "backend.sorts.c" = ["cSorts.so"]
