@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from python.gui.plot import plot_algos_gui
-from python.gui.colour import Colour
-import python.gui.gui_config as gui_config
+from gui.plot import plot_sortedness_gui
+from gui.colour import Colour
+import gui.gui_config as gui_config
 
-class CompareAlgorithmsPage(tk.Frame):
+class CompareSortednessPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, background=Colour.colour1)
@@ -33,69 +33,72 @@ class CompareAlgorithmsPage(tk.Frame):
                     "algorithm": algorithm,
                     "language": language
                 }
-        self.selected_algos = {}
+        self.selected_algorithm = tk.StringVar()
         row_num = 0
-        for algo in self.algorithms.keys():
+        for idx, key in enumerate(self.algorithms.keys()):
+            input_radio_button = ttk.Radiobutton(left_panel,
+                                                 text=key,
+                                                 variable=self.selected_algorithm,
+                                                 value=key,
+                                                 width=30)
+            input_radio_button.grid(row=idx,
+                                    column=0,
+                                    sticky="w")
+            row_num += 1
+        self.selected_algorithm.set("Bubble Sort    (c)");
+
+
+
+
+
+
+
+        self.sortedness_options = {
+            "Sorted": "sorted",
+            "Reverse Sorted": "reverse sorted",
+            "Random": "random",
+            # "Many Repeats": "many repeats",
+            "Positive Skew": "positive skew",
+            "Negative Skew": "negative skew"
+        }
+        self.selected_sortedness = {}
+        row_num = 0
+        for sortedness in self.sortedness_options.keys():
             var = tk.IntVar()
             checkbox = ttk.Checkbutton(left_panel,
                                    style="TCheckbutton",
-                                   text=algo,
+                                   text=sortedness,
                                    variable=var)
             checkbox.grid(row=row_num,
-                          column=0)
+                          column=1,
+                          sticky="w")
             row_num += 1
-            self.selected_algos.update({algo:var})
+            self.selected_sortedness.update({sortedness:var})
+
+
+
+
+
 
         button_frame = ttk.Frame(left_panel)
-        button_frame.grid(row=row_num,
+        button_frame.grid(row=len(self.algorithms),
                           column=0,
                           sticky="w",
                           pady=10)
-        select_all_algos_button = ttk.Button(button_frame, text="Select All",
-                                             command=self.select_all_algos,
-                                             width=10)
-        select_all_algos_button.grid(row=0,
-                                     column=0)
-        deselect_all_algos_button = ttk.Button(button_frame, text="Deselect All",
-                                             command=self.deselect_all_algos,
-                                             width=10)
-        deselect_all_algos_button.grid(row=0,
-                                     column=1)
-        select_py_algos_button = ttk.Button(button_frame, text="Select py",
-                                             command=self.select_py_algos,
-                                             width=10)
-        select_py_algos_button.grid(row=1,
-                                     column=0)
-        select_c_algos_button = ttk.Button(button_frame, text="Select c",
-                                             command=self.select_c_algos,
-                                             width=10)
-        select_c_algos_button.grid(row=1,
-                                     column=1)
-        max_row_num = row_num
 
-        row_num = 0
-        input_options = ["Sorted",
-                         "Reverse Sorted",
-                         "Random",
-                        #  "Many Repeated",
-                        #  "Positive Skew",
-                        #  "Negative Skew"
-                        ]
-        self.selected_sortedness = tk.StringVar()
-        for input_option in input_options:
-            input_radio_button = ttk.Radiobutton(left_panel,
-                                                 text=input_option,
-                                                 variable=self.selected_sortedness,
-                                                 value=input_option,
-                                                 width=30)
-            input_radio_button.grid(row=row_num,
-                                    column=1,
-                                    sticky="w")
-            row_num += 1
-        self.selected_sortedness.set("Random");
+        select_all_sortedness_button = ttk.Button(button_frame, text="Select All",
+                                             command=self.select_all_sortedness,
+                                             width=10)
+        select_all_sortedness_button.grid(row=0,
+                                     column=0)
+        deselect_all_sortedness_button = ttk.Button(button_frame, text="Deselect All",
+                                             command=self.deselect_all_sortedness,
+                                             width=10)
+        deselect_all_sortedness_button.grid(row=0,
+                                     column=1)
 
         sliders_container = ttk.Frame(left_panel)
-        sliders_container.grid(row=max_row_num,
+        sliders_container.grid(row=len(self.algorithms),
                                column=1,
                                sticky="s")
 
@@ -279,6 +282,11 @@ class CompareAlgorithmsPage(tk.Frame):
                                       column=5,
                                       pady=2)
 
+
+
+
+
+
         home_button = ttk.Button(right_panel,
                              text="Home",
                              style="Home.TButton",
@@ -313,13 +321,13 @@ class CompareAlgorithmsPage(tk.Frame):
                      column=0,
                      pady=10)
 
-    def select_all_algos(self):
-        for algo in self.algorithms.keys():
-            self.selected_algos[algo].set(1)
+    def select_all_sortedness(self):
+        for sortedness in self.sortedness_options.keys():
+            self.selected_sortedness[sortedness].set(1)
 
-    def deselect_all_algos(self):
-        for algo in self.algorithms.keys():
-            self.selected_algos[algo].set(0)
+    def deselect_all_sortedness(self):
+        for sortedness in self.sortedness_options.keys():
+            self.selected_sortedness[sortedness].set(0)
 
     def select_py_algos(self):
         for algo in self.algorithms.keys():
@@ -433,44 +441,52 @@ class CompareAlgorithmsPage(tk.Frame):
             self.plot_button_text.set("Plot")
 
     def show_graph(self):
-        alg_names = self.parse_algo_strs()
+        alg_name = self.algorithms[self.selected_algorithm.get()]
         start = self.min_sweep_val.get()
         stop = self.max_sweep_val.get()
         step = self.step_val.get()
-        arr_type = self.parse_sortedness()
+        arr_types = self.parse_arr_types()
         num_reps = self.reps_val.get()
-        n_steps, results = plot_algos_gui(alg_names, start, stop, step, arr_type, num_reps)
-        self.controller.show_frame("GraphPage")
+
+        n_steps, results = plot_sortedness_gui(alg_name, start, stop, step, arr_types, num_reps)
         graph = self.controller.frames["GraphPage"]
         graph.originalResults = results
         graph.plot(
             results,
             n_steps,
-            alg_names,
+            arr_types,
             num_reps,
-            f"Average runtimes for {num_reps} repetition{'' if num_reps <= 1 else num_reps} of each algorithm"
+            f"Average runtimes for {num_reps} repetition{'' if num_reps <= 1 else num_reps} of each sortedness with {alg_name}"
         )
+        self.controller.show_frame("GraphPage")
 
-    def parse_algo_strs(self):
-        alg_names = []
-        for algo in self.selected_algos:
-            if self.selected_algos[algo].get() == 1:
-                alg_names.append(self.algorithms[algo])
-        return alg_names
+    def parse_arr_types(self):
+        result = []
+        for sortedness in self.sortedness_options.keys():
+            if self.selected_sortedness[sortedness].get() == 1:
+                result.append(self.sortedness_options[sortedness])
+        return result
+
+    # def parse_algo_strs(self):
+    #     alg_names = []
+    #     for algo in self.selected_algos:
+    #         if self.selected_algos[algo].get() == 1:
+    #             alg_names.append(self.algorithms[algo])
+    #     return alg_names
     
-    def parse_sortedness(self):
-        match self.selected_sortedness.get():
-            case "Sorted":
-                return "sorted"
-            case "Reverse Sorted":
-                return "reverse sorted"
-            case "Random":
-                return "random"
-            case "Many Repeated":
-                return "many repeated"
-            case "Positive Skew":
-                return "positive skew"
-            case "Negative Skew":
-                return "negative skew"
-            case _:
-                raise Exception("no match found for sortedness")
+    # def parse_sortedness(self):
+    #     match self.selected_sortedness.get():
+    #         case "Sorted":
+    #             return "sorted"
+    #         case "Reverse Sorted":
+    #             return "reverse"
+    #         case "Random":
+    #             return "rand"
+    #         case "Many Repeated":
+    #             return "manyRep"
+    #         case "Positive Skew":
+    #             return "posSkew"
+    #         case "Negative Skew":
+    #             return "negSkew"
+    #         case _:
+                # raise Exception("no match found for sortedness")

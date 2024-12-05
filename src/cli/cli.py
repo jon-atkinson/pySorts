@@ -2,9 +2,9 @@ import os
 
 import requests
 
-from python.cli.cli_config import API_URL as API_URL
-import python.cli.compare_algorithms as compare_algorithms
-import python.cli.compare_sortedness as compare_sortedness
+from cli.cli_config import API_URL as API_URL
+import cli.compare_algorithms as compare_algorithms
+import cli.compare_sortedness as compare_sortedness
 
 
 def command_loop(configuration: dict):

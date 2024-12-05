@@ -1,7 +1,7 @@
 import requests
 
-from python.backend.config import API_URL as API_URL
-import python.cli.helpers as helpers
+from backend.config import API_URL as API_URL
+import cli.helpers as helpers
 
 def compare_algorithms(filename: str, configuration: dict):
     """

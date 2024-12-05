@@ -1,14 +1,14 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from python.gui.colour import Colour
-from python.gui.compare_algorithms_page import CompareAlgorithmsPage
-from python.gui.feature_in_progress_page import FeatureInProgressPage
-from python.gui.graph_page import GraphPage
-from python.gui.start_page import StartPage
-from python.gui.compare_sortedness_page import CompareSortednessPage
+from gui.colour import Colour
+from gui.compare_algorithms_page import CompareAlgorithmsPage
+from gui.feature_in_progress_page import FeatureInProgressPage
+from gui.graph_page import GraphPage
+from gui.start_page import StartPage
+from gui.compare_sortedness_page import CompareSortednessPage
 import requests
-import python.gui.gui_config as gui_config
+import gui.gui_config as gui_config
 
 
 class app(tk.Tk):

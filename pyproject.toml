@@ -5,19 +5,20 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pySorts"
 version = "0.0.1"
-reqires-python = ">= 3.11"
 description = "An application that compares sorting algorithm implementations by language and algorithm."
-authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
+readme = "README.md"
 license = {text = "MIT"}
-
-dependencies = [
-    "matplotlib",
-    "numpy"
-]
-
-[project.optional-dependencies]
+keywords = ["sort", "sorts", "sorting", "complexity", "example", "teach", "learn"]
+authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
+dependencies = ["matplotlib", "numpy"]
 
 [project.scripts]
-pySortsApp = "python.gui.main:main"
-pySortsCli = "python.cli:runCLI"
+pySortsApp = "src.gui.main:main"
+pySortsCli = "src.cli.cli:runCLI"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["pySorts"]
+
+[tool.setuptools.package-data]
+"backend.sorts.c" = ["cSorts.so"]

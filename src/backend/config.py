@@ -1,7 +1,8 @@
-import python.backend.sorts as sort_impls
+import backend.sorts.python.python_sorts as sort_impls
+import backend.sorts.helpers as helpers
 import os
 import ctypes
-import python.backend.arrays as arrays_manager
+import backend.arrays as arrays_manager
 
 API_URL = "http://127.0.0.1:8000"
 """
@@ -10,7 +11,7 @@ pySorts backend API address
 
 # load the c sorting algorithm implementations and expose in path
 script_dir = os.path.abspath(os.path.dirname(__file__))
-lib_path = os.path.join(script_dir, "../../c/cSorts.so")
+lib_path = os.path.join(script_dir, "sorts/c/cSorts.so")
 cSorts = ctypes.cdll.LoadLibrary(lib_path)
 
 """
@@ -34,14 +35,14 @@ algorithms = {
     },
     "c": {
         # "bucket sort": sort_impls.construct_c_algorithm(cSorts.bucketSort),
-        "bubble sort": sort_impls.construct_c_algorithm(cSorts.bubbleSort),
+        "bubble sort": helpers.construct_c_algorithm(cSorts.bubbleSort),
         # "count sort": sort_impls.construct_c_algorithm(cSorts.countSort),
-        "heap sort": sort_impls.construct_c_algorithm(cSorts.heapSort),
-        "insertion sort": sort_impls.construct_c_algorithm(cSorts.insertionSort),
+        "heap sort": helpers.construct_c_algorithm(cSorts.heapSort),
+        "insertion sort": helpers.construct_c_algorithm(cSorts.insertionSort),
         # "merge sort": sort_impls.construct_c_algorithm(cSorts.mergeSort),
         # "quick sort": sort_impls.construct_c_algorithm(cSorts.quickSort),
         # "radix sort": sort_impls.construct_c_algorithm(cSorts.radixSort),
-        "selection sort": sort_impls.construct_c_algorithm(cSorts.selectionSort),
+        "selection sort": helpers.construct_c_algorithm(cSorts.selectionSort),
         # "shell sort": sort_impls.construct_c_algorithm(cSorts.shellSort),
         # "tim sort": sort_impls.construct_c_algorithm(cSorts.timSort),
         # "tree sort": sort_impls.construct_c_algorithm(cSorts.treeSort),

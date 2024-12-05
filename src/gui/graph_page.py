@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from statistics import median
 import numpy as np
 import math
-from python.gui.colour import Colour
+from gui.colour import Colour
 
 class GraphPage(tk.Frame):
 

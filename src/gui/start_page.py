@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from python.gui.colour import Colour
+from gui.colour import Colour
 
 class StartPage(tk.Frame):
 

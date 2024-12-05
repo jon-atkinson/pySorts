@@ -1,7 +1,4 @@
-import python.arrays as arrays
-import python.operation as operation
-import timeit
-from python.gui.gui_config import API_URL
+from gui.gui_config import API_URL
 import requests
 from typing import List, Dict, Tuple
 
@@ -39,38 +36,6 @@ def plot_sortedness_gui(algorithm, start, stop, step, arr_types, num_reps):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred while calling the API: {e}")
         return None
-
-    # print("arr types", arr_types)
-
-    # algo = operation.get_algo(algo_str)
-
-    # results = dict()
-    # for i in range(len(arr_types)):
-    #     results.update({arr_types[i]: []})
-    # n_steps = []
-
-    # i = 0
-    # for n in range(start, stop + 1, step):
-    #     n_steps.append(n)
-
-    #     for _ in range(num_reps):
-    #         for arr_type in arr_types:
-    #             # arr = operation.get_arr(arr_type)(n, "python")
-
-    #             if arr is None:
-    #                 raise Exception("array to be sorted cannot not be empty")
-
-    #             if len(results[arr_type]) <= i:
-    #                 results[arr_type].append(0)
-    #             if (algo_str[-1] == "C"):
-    #                 results[arr_type][i] += timeit.timeit(lambda: algo(arrays.to_c_arr(operation.deep_array_copy(arr), n), n), number=1) / num_reps
-    #             else:
-    #                 results[arr_type][i] += timeit.timeit(lambda: algo(operation.deep_array_copy(arr), n), number=1) / num_reps
-
-    #     i += 1
-
-    # return n_steps, results
-
 
 def plot_algos_gui(algorithms: dict, start: int, stop: int, step: int, arr_type: str, num_reps: int) -> Tuple[List[int],Dict[str,List[int]]]:
     """

@@ -1,5 +1,4 @@
-from python.backend.avl import avl_insert
-import ctypes
+from backend.sorts.python.avl import avl_insert
 
 def selection_sort(arr, n):
     min_idx = 0
@@ -13,7 +12,6 @@ def selection_sort(arr, n):
 
     return arr
 
-
 def bubble_sort(arr, n):
     for i in range(n):
         swap = False
@@ -26,7 +24,6 @@ def bubble_sort(arr, n):
 
     return arr
 
-
 def insertion_sort(arr, n):
     for i in range(1, n):
         val = arr[i]
@@ -37,7 +34,6 @@ def insertion_sort(arr, n):
         arr[j + 1] = val
 
     return arr
-
 
 def heap_sort(arr, n):
     build_max_heap(arr, n)
@@ -66,7 +62,6 @@ def build_max_heap(arr, n):
  
 def parent_idx(idx):
     return int((idx - 1) / 2)
-
 
 def quick_sort(arr, n):
     # setrecursionlimit(n + 1)
@@ -105,7 +100,6 @@ def median_of_three(arr, low, high):
         return c, high - 1
     return a, low
 
-
 def merge_sort(arr, n):
     if n > 1:
         mid = n // 2
@@ -131,7 +125,6 @@ def merge_sort(arr, n):
             j += 1
             k += 1
     return arr
-
 
 def bucket_sort(arr, n):
     if n <= 1:
@@ -167,7 +160,6 @@ def bucket_sort(arr, n):
 
     return arr
 
-
 def radix_sort(arr, n):
     exp = 1
     while n / exp >= 1:
@@ -196,7 +188,6 @@ def radix_count_help(arr, n, exp):
     for i in range(n):
         arr[i] = out[i]
 
-
 def count_sort(arr, n):
     count = [0] * (n + 1)
 
@@ -213,7 +204,6 @@ def count_sort(arr, n):
 
     return arr
 
-
 def shell_sort(arr, n):
     interval = n // 2
     while(interval > 0):
@@ -229,7 +219,6 @@ def shell_sort(arr, n):
             i += 1
         interval = interval // 2
     return arr
-
 
 def tim_sort(arr, n):
     run_size = calc_run_size(n)
@@ -286,26 +275,12 @@ def tim_merge(arr, left_idx, mid_idx, right_idx):
         j += 1 
         k += 1
 
-
 def tree_sort(arr, n):
     tree = None
     for num in arr: 
         tree = avl_insert(tree, num) 
     return arr
 
-
 def cube_sort(arr, n):
     print("TODO - implement this sort")
     return arr
-
-
-def is_sorted(arr):
-    for i in range(len(arr) - 1):
-        if (arr[i] > arr[i + 1]):
-            return False
-    return True
-
-def construct_c_algorithm(algo_ref):
-    algo_ref.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int]
-    algo_ref.restype = ctypes.POINTER(ctypes.c_int)
-    return algo_ref
