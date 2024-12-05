@@ -3,7 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from python.gui.plot import plot_sortedness_gui
 from python.gui.colour import Colour
-import python.gui.config as config
+import python.gui.gui_config as gui_config
 
 class CompareSortednessPage(tk.Frame):
 
@@ -26,7 +26,7 @@ class CompareSortednessPage(tk.Frame):
         right_panel.columnconfigure(0, weight=1)
 
         self.algorithms = {}
-        for language, algorithms in config.config["algorithms"].items():
+        for language, algorithms in gui_config.config["algorithms"].items():
             for algorithm in algorithms:
                 key = f"{algorithm.title()} ({language})"
                 self.algorithms[key] = {

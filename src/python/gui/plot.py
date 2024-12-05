@@ -1,7 +1,7 @@
 import python.arrays as arrays
 import python.operation as operation
 import timeit
-from python.gui.config import API_URL
+from python.gui.gui_config import API_URL
 import requests
 from typing import List, Dict, Tuple
 

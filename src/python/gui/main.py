@@ -8,7 +8,7 @@ from python.gui.graph_page import GraphPage
 from python.gui.start_page import StartPage
 from python.gui.compare_sortedness_page import CompareSortednessPage
 import requests
-import python.gui.config as gui_config
+import python.gui.gui_config as gui_config
 
 
 class app(tk.Tk):
