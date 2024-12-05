@@ -16,7 +16,6 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["unittest"]
 
 [project.scripts]
 pySortsApp = "python.gui.main:main"
