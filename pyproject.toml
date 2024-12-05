@@ -10,7 +10,7 @@ readme = "README.md"
 license = {text = "MIT"}
 keywords = ["sort", "sorts", "sorting", "complexity", "example", "teach", "learn"]
 authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
-dependencies = ["matplotlib", "numpy"]
+dependencies = ["matplotlib", "numpy", "fastapi[standard]"]
 
 [project.scripts]
 pySortsApp = "src.gui.main:main"
