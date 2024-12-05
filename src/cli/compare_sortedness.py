@@ -1,7 +1,7 @@
+import helpers as helpers
 import requests
+from cli_config import API_URL as API_URL
 
-from backend.config import API_URL as API_URL
-import cli.helpers as helpers
 
 def compare_sortedness(filename: str, configuration: dict):
     """
@@ -41,6 +41,7 @@ def compare_sortedness(filename: str, configuration: dict):
     except Exception as e:
         print(f"Error in CLI: {str(e)}")
 
+
 def parse_cla(filename: str, configuration: dict):
     request = helpers.read_and_decode_file(filename)
 
@@ -55,6 +56,7 @@ def parse_cla(filename: str, configuration: dict):
     step = request["step"]
 
     return algorithm, low, high, arr_types, num_reps, step
+
 
 def request_well_formed(request: dict):
     required_keys = [
@@ -71,12 +73,9 @@ def request_well_formed(request: dict):
 
     array_types = request.get("array types", [])
     if not isinstance(array_types, list) or not all(
-        isinstance(entry, str)
-        for entry in array_types
+        isinstance(entry, str) for entry in array_types
     ):
-        raise ValueError(
-            "Invalid 'array types' format. Each entry must be a string."
-        )
+        raise ValueError("Invalid 'array types' format. Each entry must be a string.")
 
     low = request["low"]
     high = request["high"]
@@ -93,8 +92,15 @@ def request_well_formed(request: dict):
         )
 
     algorithm = request["algorithm"]
-    if not isinstance(algorithm, dict) or "algorithm" not in algorithm or "language" not in algorithm:
-        raise ValueError("'algorithm' must be a dict with keys 'algorithm' and 'language'.")
+    if (
+        not isinstance(algorithm, dict)
+        or "algorithm" not in algorithm
+        or "language" not in algorithm
+    ):
+        raise ValueError(
+            "'algorithm' must be a dict with keys 'algorithm' and 'language'."
+        )
+
 
 def request_values_valid(request: dict, configuration: dict):
     low = request["low"]
@@ -115,6 +121,4 @@ def request_values_valid(request: dict, configuration: dict):
 
     for array_type in array_types:
         if array_type not in configuration["array types"]:
-            raise ValueError(
-                f"'{array_type}' input type not configured."
-            )
+            raise ValueError(f"'{array_type}' input type not configured.")

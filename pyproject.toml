@@ -10,15 +10,15 @@ readme = "README.md"
 license = {text = "MIT"}
 keywords = ["sort", "sorts", "sorting", "complexity", "example", "teach", "learn"]
 authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
-dependencies = ["matplotlib", "numpy", "fastapi[standard]"]
+dependencies = ["matplotlib", "numpy", "fastapi[standard]", "requests"]
 
 [project.scripts]
 pySortsApp = "src.gui.main:main"
-pySortsCli = "src.cli.cli:runCLI"
+pySortsCli = "cli.cli:runCLI"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
 packages = ["backend", "cli", "gui"]
+package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
 "backend.sorts.c" = ["cSorts.so"]
