@@ -36,7 +36,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://127.0.0.1:3000"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -87,26 +87,22 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     """
     Compare sorting algorithms and return time taken to run for a range of input lengths
     """
-    print("recieved request")
     algorithms = request.algorithms
     low = request.low
     high = request.high
     arr_type = request.arr_type
     num_reps = request.num_reps
     step = request.step
-    print("all components present")
 
     if arr_type not in config.arrays:
         raise HTTPException(
             status_code=400, detail=f"Unsupported array type {arr_type}"
         )
-    print("all types found")
 
     results = {
         (algorithm.algorithm, algorithm.language): [] for algorithm in algorithms
     }
     array_generator = config.arrays[arr_type]
-    print("array generator configured")
 
     for current_length in range(low, high + 1, step):
         current_round = {

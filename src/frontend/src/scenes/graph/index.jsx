@@ -14,7 +14,7 @@ const Graph = () => {
       { algorithm: "bubble sort", language: "c" },
     ],
     low: 1,
-    high: 100,
+    high: 5,
     "array type": "random",
     "number repetitions": 1,
     step: 1,
@@ -30,7 +30,7 @@ const Graph = () => {
             headers: {
               "Content-Type": "application/json",
             },
-          },
+          }
         );
         setData(response.data);
       } catch (err) {

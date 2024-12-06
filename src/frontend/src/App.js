@@ -3,7 +3,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-// import Dashboard from "./scenes/Dashboard";
+import Dashboard from "./scenes/dashboard";
 // import CompareAlgorithms from "./scenes/CompareAlgorithms";
 // import CompareSortedness from "./scenes/CompareSortedness";
 // import Previous from "./scenes/Previous";
@@ -24,7 +24,7 @@ function App() {
           <main className="content">
             <Topbar />
             <Routes>
-              {/* <Route path="/" element={<Dashboard />} /> */}
+              <Route path="/" element={<Dashboard />} />
               {/* <Route path="/algorithms" element={<CompareAlgorithms />} /> */}
               {/* <Route path="/sortedness" element={<CompareSortedness />} /> */}
               {/* <Route path="/previous" element={<Previous />} /> */}
