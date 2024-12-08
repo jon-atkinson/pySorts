@@ -63,42 +63,41 @@ def build_max_heap(arr, n):
 def parent_idx(idx):
     return int((idx - 1) / 2)
 
-def quick_sort(arr, n):
-    # setrecursionlimit(n + 1)
-    return quicksort_help(arr, 0, n)
-
-def quicksort_help(arr, low, high):
-    if low < high:
-        piv = partition(arr, low, high)
-        quicksort_help(arr, low, piv)
-        quicksort_help(arr, piv + 1, high)
+def quick_sort(arr):
+    stack = [(0, len(arr) - 1)]
+    while stack:
+        low, high = stack.pop()
+        if low < high:
+            pivot_index = partition_with_median_of_three(arr, low, high)
+            stack.append((low, pivot_index - 1))
+            stack.append((pivot_index + 1, high))
     return arr
 
-def partition(arr, low, high):
-    pivot, new_low = median_of_three(arr, low, high)
-    arr[low], arr[new_low] = arr[new_low], arr[low]
-    i = low + 1
-    for j in range(low + 1, high, 1):
-        if (arr[j] < pivot):
-            arr[i], arr[j] = arr[j], arr[i]
+def partition_with_median_of_three(arr, low, high):
+    pivot_index = median_of_three(arr, low, high)
+    pivot = arr[pivot_index]
+
+    arr[pivot_index], arr[high] = arr[high], arr[pivot_index]
+
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] < pivot:
             i += 1
-    arr[low], arr[i - 1] = arr[i - 1], arr[low]
-    return i - 1
+            arr[i], arr[j] = arr[j], arr[i]
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
 
 def median_of_three(arr, low, high):
-    mid = (low + high - 1) // 2
-    a = arr[low]
-    b = arr[mid]
-    c = arr[high - 1]
-    if a <= b <= c:
-        return b, mid
-    if c <= b <= a:
-        return b, mid
-    if a <= c <= b:
-        return c, high - 1
-    if b <= c <= a:
-        return c, high - 1
-    return a, low
+    mid = (low + high) // 2
+    a, b, c = arr[low], arr[mid], arr[high]
+
+    if (a <= b <= c) or (c <= b <= a):
+        return mid
+    elif (b <= a <= c) or (c <= a <= b):
+        return low
+    else:
+        return high
 
 def merge_sort(arr, n):
     if n > 1:

@@ -37,17 +37,17 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({ selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selected, setSelected] = useState("Dashboard");
 
   return (
     <ProSidebar
       collapsed={isCollapsed}
       rootStyles={{
         height: "100vh",
+        position: "sticky",
         [`.${sidebarClasses.container}`]: {
           backgroundColor: `${colors.primary[400]}`,
         },
@@ -82,7 +82,7 @@ const Sidebar = () => {
           )}
         </MenuItem>
         {/* User */}
-        {!isCollapsed && (
+        {/* {!isCollapsed && (
           <Box mb="25px">
             <Box display="flex" justifyContent="center" alignItems="center">
               <img
@@ -107,7 +107,7 @@ const Sidebar = () => {
               </Typography>
             </Box>
           </Box>
-        )}
+        )} */}
 
         {/* Menu Items */}
         <Box paddingLeft={isCollapsed ? undefined : "10%"}>

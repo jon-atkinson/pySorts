@@ -1,36 +1,82 @@
 import { ColorModeContext, useMode } from "./theme.js";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
-// import CompareAlgorithms from "./scenes/CompareAlgorithms";
-// import CompareSortedness from "./scenes/CompareSortedness";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import CompareAlgorithms from "./scenes/compareAlgorithms";
+import CompareArrays from "./scenes/compareArrays";
 // import Previous from "./scenes/Previous";
-// import About from "./scenes/About";
+import About from "./scenes/about";
 // import FAQ from "./scenes/FAQ";
 import Graph from "./scenes/graph";
 // import Languages from "./scenes/Languages";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [loading, setLoading] = useState(true);
+  const [config, setConfig] = useState(null);
+  const [error, setError] = useState(null);
+  const [graphData, setGraphData] = useState(null);
+  const [selected, setSelected] = useState("Dashboard");
+
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/config");
+        setConfig(response.data);
+      } catch (err) {
+        setError(err.message);
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConfig();
+  }, []);
+
+  if (loading) {
+    return <Typography>Requesting config...</Typography>;
+  }
+
+  if (error) {
+    return <Typography color="red">Error: {error}</Typography>;
+  }
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar />
+          <Sidebar selected={selected} setSelected={setSelected} />
           <main className="content">
             <Topbar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              {/* <Route path="/algorithms" element={<CompareAlgorithms />} /> */}
-              {/* <Route path="/sortedness" element={<CompareSortedness />} /> */}
+              <Route
+                path="/algorithms"
+                element={
+                  <CompareAlgorithms
+                    config={config}
+                    setGraphData={setGraphData}
+                    setSelected={setSelected}
+                  />
+                }
+              />
+              <Route path="/sortedness" element={
+                <CompareArrays
+                  config={config}
+                  setGraphData={setGraphData}
+                  setSelected={setSelected}
+                />}
+              />
               {/* <Route path="/previous" element={<Previous />} /> */}
-              {/* <Route path="/about" element={<About />} /> */}
+              <Route path="/about" element={<About />} />
               {/* <Route path="/faq" element={<FAQ />} /> */}
-              <Route path="/graph" element={<Graph />} />
+              <Route path="/graph" element={<Graph graphData={graphData} />} />
               {/* <Route path="/languages" element={<Languages />} /> */}
             </Routes>
           </main>
