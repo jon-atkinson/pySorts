@@ -66,7 +66,6 @@ const CompareSortedness = ({ config, setGraphData, setSelected }) => {
   
   const transformData = (data = null) => {
     return data.map((item) => {
-      console.log(item)
       const arrayType = item[0];
 
       const dataPoints = item[1].map(([x, y]) => ({

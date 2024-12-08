@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, Button } from "@mui/material";
+import { Box, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
@@ -52,7 +52,6 @@ const Previous = ({setGraphData}) => {
         };
       });
     } else {
-      console.log(response);
       return response.data.map((item) => {
         const arrayType = item[0];
         const dataPoints = item[1].map(([x, y]) => ({
@@ -74,7 +73,6 @@ const Previous = ({setGraphData}) => {
       const response = await axios.get(`http://127.0.0.1:8000/comparison/${id}`);
       const data = response.data;
 
-      console.log("data: ", data)
       setGraphData(transformData(data));
       navigate("/graph");
     } catch (error) {

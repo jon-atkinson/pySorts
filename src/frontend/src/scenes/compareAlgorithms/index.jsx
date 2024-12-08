@@ -79,8 +79,6 @@ const CompareAlgorithms = ({ config, setGraphData, setSelected }) => {
   };
 
   const handleSubmit = async (values) => {
-    console.log(values);
-
     const requestBody = {
       algorithms: values.algorithms,
       low: values.lowerBound,
