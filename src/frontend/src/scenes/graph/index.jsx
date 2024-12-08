@@ -3,10 +3,6 @@ import LineChart from "../../components/LineChart";
 import Header from "../../components/Header";
 
 const Graph = ({graphData}) => {
-  if (graphData === null) {
-    graphData = [{color: "black", data: [{x: 0, y: 0}], id: "empty"}];
-  }
-
   return (
     <Box m="20px">
       <Header title="Results" subtitle="Selected/Most Recent Run" />

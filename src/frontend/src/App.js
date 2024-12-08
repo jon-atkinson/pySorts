@@ -19,7 +19,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [config, setConfig] = useState(null);
   const [error, setError] = useState(null);
-  const [graphData, setGraphData] = useState(null);
+  const [graphData, setGraphData] = useState([{color: "black", data: [{x: 0, y: 0}], id: "empty"}]);
   const [selected, setSelected] = useState("Dashboard");
 
   useEffect(() => {
