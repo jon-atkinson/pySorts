@@ -1,5 +1,5 @@
 import { ColorModeContext, useMode } from "./theme.js";
-import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
+import { CssBaseline, keyframes, ThemeProvider, Typography } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CompareAlgorithms from "./scenes/compareAlgorithms";
 import CompareArrays from "./scenes/compareArrays";
-// import Previous from "./scenes/Previous";
+import Previous from "./scenes/previous";
 import About from "./scenes/about";
-// import FAQ from "./scenes/FAQ";
+import FAQ from "./scenes/faq";
 import Graph from "./scenes/graph";
 // import Languages from "./scenes/Languages";
 
@@ -66,16 +66,26 @@ function App() {
                   />
                 }
               />
-              <Route path="/sortedness" element={
-                <CompareArrays
-                  config={config}
-                  setGraphData={setGraphData}
-                  setSelected={setSelected}
-                />}
+              <Route
+                path="/sortedness"
+                element={
+                  <CompareArrays
+                    config={config}
+                    setGraphData={setGraphData}
+                    setSelected={setSelected}
+                  />
+                }
               />
-              {/* <Route path="/previous" element={<Previous />} /> */}
+              <Route
+                path="/previous" 
+                element={
+                  <Previous
+                    setGraphData={setGraphData}
+                  />
+                }
+              />
               <Route path="/about" element={<About />} />
-              {/* <Route path="/faq" element={<FAQ />} /> */}
+              <Route path="/faq" element={<FAQ />} />
               <Route path="/graph" element={<Graph graphData={graphData} />} />
               {/* <Route path="/languages" element={<Languages />} /> */}
             </Routes>

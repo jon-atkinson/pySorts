@@ -1,5 +1,9 @@
+import hashlib
+import json
+import uuid
 from typing import List
 
+import redis
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -7,6 +11,8 @@ from pydantic import BaseModel
 
 import src.backend.backend_config as config
 import src.backend.sorter as sorter
+
+redis_client = redis.Redis(host="localhost", port=6379, db=0)
 
 
 class Algorithm(BaseModel):
@@ -30,6 +36,22 @@ class CompareSortednessRequest(BaseModel):
     arr_types: List[str] = ["random"]
     num_reps: int
     step: int = 1
+
+
+class DataPoint(BaseModel):
+    length: int
+    time: float
+
+
+class Series(BaseModel):
+    label: str
+    data: List[DataPoint]
+
+
+class ComparisonResult(BaseModel):
+    id: str
+    description: str
+    results: List[Series]
 
 
 app = FastAPI()
@@ -59,7 +81,6 @@ async def get_config():
     }
 
     result["array types"] = list(config.arrays.keys())
-
     return result
 
 
@@ -87,6 +108,15 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     """
     Compare sorting algorithms and return time taken to run for a range of input lengths
     """
+
+    # Check for cache
+    cache_request = json.dumps(request.dict(), sort_keys=True)
+    key = hashlib.sha256(cache_request.encode()).hexdigest()
+
+    result = redis_client.get(key)
+    if result:
+        return json.loads(result.decode())
+
     algorithms = request.algorithms
     low = request.low
     high = request.high
@@ -128,6 +158,18 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
         (algorithm, language, series)
         for (algorithm, language), series in results.items()
     ]
+
+    result_data = {
+        "type": "compare-algorithms",
+        "data": reformatted,
+    }
+
+    comparison_id = f"compare-algorithms:{uuid.uuid4()}"
+    redis_client.set(comparison_id, json.dumps(result_data))
+    redis_client.lpush("comparisons", comparison_id)
+
+    redis_client.set(key, json.dumps(result_data))
+
     return reformatted
 
 
@@ -137,18 +179,24 @@ async def compare_sortedness(request: CompareSortednessRequest):
     Compare algorithm performance on sorting different input sortedness arrays
             and return time taken to run for a range of input lengths
     """
+
+    # check for cached
+    cache_request = json.dumps(request.dict(), sort_keys=True)
+    key = hashlib.sha256(cache_request.encode()).hexdigest()
+
+    result = redis_client.get(key)
+    if result:
+        return json.loads(result.decode())
+
     algorithm = request.algorithm
     low = request.low
     high = request.high
     arr_types = request.arr_types
     num_reps = request.num_reps
     step = request.step
-    config.algorithms
 
-    if (
-        algorithm.language not in config.algorithms
-        or algorithm.algorithm not in config.algorithms[algorithm.language]
-    ):
+    algorithms = config.algorithms.get(algorithm.language)
+    if algorithms is None or algorithm.algorithm not in algorithms:
         raise HTTPException(
             status_code=400,
             detail=f"Unsupported algorithm-language pairing {algorithm}",
@@ -177,4 +225,71 @@ async def compare_sortedness(request: CompareSortednessRequest):
 
     reformatted = [(sortedness, series) for sortedness, series in results.items()]
 
+    result = {
+        "type": "compare-sortedness",
+        "data": reformatted,
+    }
+    comparison_id = f"compare-sortedness:{uuid.uuid4()}"
+    redis_client.set(comparison_id, json.dumps(result))
+    redis_client.lpush("comparisons", comparison_id)
+    
+    redis_client.set(key, json.dumps(result))
+
     return reformatted
+
+
+@app.post("/cache-comparison")
+def cache_comparison(result: ComparisonResult):
+    """
+    Cache a comparison result
+    """
+    key = f"comparison:{result.id}"
+    redis_client.set(key, json.dumps(result.dict()))
+    redis_client.lpush("comparisons", result.id)
+    return {"message": "Success: comparison cached"}
+
+
+@app.get("/history")
+def get_comparisons():
+    """
+    Return list of all previous comparisons
+    """
+    ids = redis_client.lrange("comparisons", 0, -1)
+    comparisons = []
+    
+    for id in ids:
+        full_id = id.decode()
+        comparison_type, comparison_id = full_id.split(":")
+        comparison_key = f"{comparison_type}:{comparison_id}"
+        data = redis_client.get(comparison_key)
+
+        if data:
+            comparison = json.loads(data)
+            comparisons.append(
+                {
+                    "id": comparison_id,
+                    "type": comparison["type"],
+                    "data": comparison["data"],
+                }
+            )
+
+    return {"comparisons": comparisons}
+
+
+@app.get("/comparison/{id}")
+def get_comparison(id: str):
+    """
+    Retrieve a comparison
+    """
+    key = f"compare-algorithms:{id}"
+    result = redis_client.get(key)
+    
+    # secondary, reroll this in future
+    if result == None:
+        key = f"compare-sortedness:{id}"
+        result = redis_client.get(key)
+        
+    if result is None:
+        raise HTTPException(status_code=404, detail="Comparison not found")
+
+    return json.loads(result)

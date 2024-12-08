@@ -1,28 +1,31 @@
 from backend.sorts.python.avl import avl_insert
 
+
 def selection_sort(arr, n):
     min_idx = 0
-    
+
     for curr_idx in range(n):
         for j in range(curr_idx, n):
-            if (arr[j] < arr[min_idx]):
+            if arr[j] < arr[min_idx]:
                 min_idx = j
         arr[min_idx], arr[curr_idx] = arr[curr_idx], arr[min_idx]
         min_idx = curr_idx + 1
 
     return arr
 
+
 def bubble_sort(arr, n):
     for i in range(n):
         swap = False
         for j in range(n - i - 1):
-            if (arr[j] > arr[j + 1]):
+            if arr[j] > arr[j + 1]:
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swap = True
-        if (swap == False):
+        if swap == False:
             break
 
     return arr
+
 
 def insertion_sort(arr, n):
     for i in range(1, n):
@@ -35,6 +38,7 @@ def insertion_sort(arr, n):
 
     return arr
 
+
 def heap_sort(arr, n):
     build_max_heap(arr, n)
     for i in range(n - 1, 0, -1):
@@ -42,7 +46,7 @@ def heap_sort(arr, n):
         j, index = 0, 0
         while True:
             index = 2 * j + 1
-            if (index < (i - 1) and arr[index] < arr[index + 1]):
+            if index < (i - 1) and arr[index] < arr[index + 1]:
                 index += 1
             if index < i and arr[j] < arr[index]:
                 arr[j], arr[index] = arr[index], arr[j]
@@ -52,6 +56,7 @@ def heap_sort(arr, n):
 
     return arr
 
+
 def build_max_heap(arr, n):
     for i in range(n):
         if arr[i] > arr[parent_idx(i)]:
@@ -59,12 +64,14 @@ def build_max_heap(arr, n):
             while arr[j] > arr[parent_idx(j)]:
                 (arr[j], arr[parent_idx(j)]) = (arr[parent_idx(j)], arr[j])
                 j = parent_idx(j)
- 
+
+
 def parent_idx(idx):
     return int((idx - 1) / 2)
 
-def quick_sort(arr):
-    stack = [(0, len(arr) - 1)]
+
+def quick_sort(arr, n):
+    stack = [(0, n - 1)]
     while stack:
         low, high = stack.pop()
         if low < high:
@@ -72,6 +79,7 @@ def quick_sort(arr):
             stack.append((low, pivot_index - 1))
             stack.append((pivot_index + 1, high))
     return arr
+
 
 def partition_with_median_of_three(arr, low, high):
     pivot_index = median_of_three(arr, low, high)
@@ -88,6 +96,7 @@ def partition_with_median_of_three(arr, low, high):
     arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
 
+
 def median_of_three(arr, low, high):
     mid = (low + high) // 2
     a, b, c = arr[low], arr[mid], arr[high]
@@ -98,6 +107,7 @@ def median_of_three(arr, low, high):
         return low
     else:
         return high
+
 
 def merge_sort(arr, n):
     if n > 1:
@@ -125,6 +135,7 @@ def merge_sort(arr, n):
             k += 1
     return arr
 
+
 def bucket_sort(arr, n):
     if n <= 1:
         return arr
@@ -135,13 +146,13 @@ def bucket_sort(arr, n):
 
     rnge = n / num_buckets
     buckets = []
-    
+
     for i in range(num_buckets):
         buckets.append([])
 
     for i in range(n):
         delta = arr[i] / rnge - int(arr[i] / rnge)
-        if(delta == 0 and arr[i] != 0):
+        if delta == 0 and arr[i] != 0:
             buckets[int(arr[i] / rnge) - 1].append(arr[i])
         else:
             buckets[int(arr[i] / rnge)].append(arr[i])
@@ -159,12 +170,14 @@ def bucket_sort(arr, n):
 
     return arr
 
+
 def radix_sort(arr, n):
     exp = 1
     while n / exp >= 1:
         radix_count_help(arr, n, exp)
         exp *= 10
     return arr
+
 
 def radix_count_help(arr, n, exp):
     out = [0] * n
@@ -187,6 +200,7 @@ def radix_count_help(arr, n, exp):
     for i in range(n):
         arr[i] = out[i]
 
+
 def count_sort(arr, n):
     count = [0] * (n + 1)
 
@@ -196,16 +210,17 @@ def count_sort(arr, n):
     idx = 0
     for i in range(n + 1):
         num = count[i]
-        while(num > 0):
+        while num > 0:
             arr[idx] = i
             idx += 1
             num -= 1
 
     return arr
 
+
 def shell_sort(arr, n):
     interval = n // 2
-    while(interval > 0):
+    while interval > 0:
         i = interval
         while i < n:
             j = i - interval
@@ -219,12 +234,13 @@ def shell_sort(arr, n):
         interval = interval // 2
     return arr
 
+
 def tim_sort(arr, n):
     run_size = calc_run_size(n)
 
     for first in range(0, n, run_size):
         last = min(first + run_size - 1, n - 1)
-        arr[first:last + 1] = insertion_sort(arr[first:last + 1], last - first + 1)
+        arr[first : last + 1] = insertion_sort(arr[first : last + 1], last - first + 1)
 
     merge_size = run_size
     while merge_size < n:
@@ -237,6 +253,7 @@ def tim_sort(arr, n):
         merge_size *= 2
     return arr
 
+
 def calc_run_size(n):
     minRun = 32
     run = 0
@@ -245,9 +262,16 @@ def calc_run_size(n):
         n >>= 1
     return n + run
 
+
 def tim_merge(arr, left_idx, mid_idx, right_idx):
     n1, n2 = mid_idx - left_idx + 1, right_idx - mid_idx
-    left, right, = [], []
+    (
+        left,
+        right,
+    ) = (
+        [],
+        [],
+    )
 
     for i in range(0, n1):
         left.append(arr[left_idx + i])
@@ -266,19 +290,21 @@ def tim_merge(arr, left_idx, mid_idx, right_idx):
 
     while i < n1:
         arr[k] = left[i]
-        i += 1 
+        i += 1
         k += 1
 
     while j < n2:
         arr[k] = right[j]
-        j += 1 
+        j += 1
         k += 1
+
 
 def tree_sort(arr, n):
     tree = None
-    for num in arr: 
-        tree = avl_insert(tree, num) 
+    for num in arr:
+        tree = avl_insert(tree, num)
     return arr
+
 
 def cube_sort(arr, n):
     print("TODO - implement this sort")
