@@ -1,5 +1,5 @@
 import { ColorModeContext, useMode } from "./theme.js";
-import { CssBaseline, keyframes, ThemeProvider, Typography } from "@mui/material";
+import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
