@@ -1,7 +1,7 @@
 import hashlib
 import json
 import uuid
-from typing import List
+from typing import Any, Dict, List, Union
 
 import redis
 from fastapi import FastAPI, HTTPException
@@ -65,8 +65,8 @@ app.add_middleware(
 )
 
 
-@app.get("/config")
-async def get_config():
+@app.get("/config", response_model=Dict[str, Any])
+async def get_config() -> Dict[str, Any]:
     """
     Exposes configured algorithms, implemented languages and input array types.
 
@@ -84,8 +84,8 @@ async def get_config():
     return result
 
 
-@app.get("/algorithms")
-async def get_algorithms():
+@app.get("/algorithms", response_model=Dict[str, List[str]])
+async def get_algorithms() -> Dict[str, List[str]]:
     """
     Return the algorithms configured in all supported languages
     """
@@ -95,16 +95,21 @@ async def get_algorithms():
     }
 
 
-@app.get("/arrays")
-async def get_arrays():
+@app.get("/arrays", response_model=List[str])
+async def get_arrays() -> List[str]:
     """
     Return the arrays configured
     """
     return list(config.arrays.keys())
 
 
-@app.post("/compare-algorithms")
-async def compare_algorithms(request: CompareAlgorithmsRequest):
+@app.post(
+    "/compare-algorithms",
+    response_model=List[Dict[str, Union[str, List[Dict[str, Any]]]]],
+)
+async def compare_algorithms(
+    request: CompareAlgorithmsRequest,
+) -> List[Dict[str, Union[str, List[Dict[str, Any]]]]]:
     """
     Compare sorting algorithms and return time taken to run for a range of input lengths
     """
@@ -173,8 +178,8 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     return reformatted
 
 
-@app.post("/compare-sortedness")
-async def compare_sortedness(request: CompareSortednessRequest):
+@app.post("/compare-sortedness", response_model=List[Dict[str, Any]])
+async def compare_sortedness(request: CompareSortednessRequest) -> List[Dict[str, Any]]:
     """
     Compare algorithm performance on sorting different input sortedness arrays
             and return time taken to run for a range of input lengths
@@ -232,14 +237,14 @@ async def compare_sortedness(request: CompareSortednessRequest):
     comparison_id = f"compare-sortedness:{uuid.uuid4()}"
     redis_client.set(comparison_id, json.dumps(result))
     redis_client.lpush("comparisons", comparison_id)
-    
+
     redis_client.set(key, json.dumps(result))
 
     return reformatted
 
 
-@app.post("/cache-comparison")
-def cache_comparison(result: ComparisonResult):
+@app.post("/cache-comparison", response_model=Dict[str, str])
+def cache_comparison(result: ComparisonResult) -> Dict[str, str]:
     """
     Cache a comparison result
     """
@@ -249,14 +254,14 @@ def cache_comparison(result: ComparisonResult):
     return {"message": "Success: comparison cached"}
 
 
-@app.get("/history")
-def get_comparisons():
+@app.get("/history", response_model=Dict[str, List[Dict[str, Any]]])
+def get_comparisons() -> Dict[str, List[Dict[str, Any]]]:
     """
     Return list of all previous comparisons
     """
     ids = redis_client.lrange("comparisons", 0, -1)
     comparisons = []
-    
+
     for id in ids:
         full_id = id.decode()
         comparison_type, comparison_id = full_id.split(":")
@@ -276,19 +281,19 @@ def get_comparisons():
     return {"comparisons": comparisons}
 
 
-@app.get("/comparison/{id}")
-def get_comparison(id: str):
+@app.get("/comparison/{id}", response_model=Dict[str, Any])
+def get_comparison(id: str) -> Dict[str, Any]:
     """
     Retrieve a comparison
     """
     key = f"compare-algorithms:{id}"
     result = redis_client.get(key)
-    
+
     # secondary, reroll this in future
     if result == None:
         key = f"compare-sortedness:{id}"
         result = redis_client.get(key)
-        
+
     if result is None:
         raise HTTPException(status_code=404, detail="Comparison not found")
 
