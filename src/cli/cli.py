@@ -20,13 +20,13 @@ def command_loop(configuration: dict):
     while command[0] not in ["q", "Q", "quit", "Quit"]:
         try:
             match command[0]:
-                case "h":
+                case "help":
                     helpPySort()
-                case "algo":
+                case "algorithm":
                     if len(command) > 2:
                         raise (
                             ValueError(
-                                f"algo expected single filename argument, received={command[1:]}"
+                                f"algorithm expected single filename argument, received={command[1:]}"
                             )
                         )
                     compare_algorithms.compare_algorithms(command[1], configuration)
@@ -36,14 +36,15 @@ def command_loop(configuration: dict):
                     os.system("clear")
                 case _:
                     raise ValueError(
-                        f'incorrect command format. Expected one of "h", "algo", "sorting", Recieved={command}'
+                        f"incorrect command format. Expected one of \"help\", \"algorithm\", \"sorting\", Recieved={command}"
                     )
         except ValueError as e:
             print(e)
         command = input(formatPrompt("operation: ")).split(" ")
 
 def helpPySort():
-    print("Usage: algo query_filename")
+    print("Usage: algorithm query_filename")
+    print("Usage: sorting query_filename")
 
 def formatPrompt(promptMsg):
     return ("\033[94m {}\033[00m".format(promptMsg)).strip()
