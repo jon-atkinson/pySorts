@@ -32,28 +32,17 @@ def compare_sortedness(filename: str, configuration: dict):
             results = response.json()
             print("Results:")
             for sortedness, series in results:
-                print(f"Sortedness: {sortedness}")
+                print(f"  {sortedness}:")
                 for length, avg_time in series:
                     print(f"  Input Length: {length}, Average Time: {avg_time}")
         else:
             print(f"Error: {response.status_code} - {response.text}")
 
     except Exception as e:
-        print(f"Error processing command: {str(e)}")
+        print(f"Error in CLI: {str(e)}")
 
 
 def parse_cla(filename: str, configuration: dict):
-    """
-    Parse and validate the JSON file provided as a command-line argument using
-            provided configuration
-
-    Args:
-        command_args (str): Path to the JSON configuration file.
-        backend_config (dict): Backend configuration for validation.
-
-    Returns:
-        tuple: Parse and validated configuration values
-    """
     request = helpers.read_and_decode_file(filename)
 
     request_well_formed(request)
@@ -70,21 +59,6 @@ def parse_cla(filename: str, configuration: dict):
 
 
 def request_well_formed(request: dict):
-    """
-    Checks that the compare algorithms request is well-formed and contains all
-            required keys with values of the correct types.
-
-    Args:
-        request (dict): The request dictionary containing comparison parameters
-                and algorithms.
-            Required keys include "algorithm", "low", "high", "array types",
-                    "nuymber repetitions", and "step".
-
-    Raises:
-        ValueError: If required keys are missing, if the 'algorithms' key is not
-                a list of dictionaries with 'algorithm' and 'language' keys, if
-                numeric values are not integers, or if 'array type' is not a string.
-    """
     required_keys = [
         "algorithm",
         "low",
@@ -129,22 +103,6 @@ def request_well_formed(request: dict):
 
 
 def request_values_valid(request: dict, configuration: dict):
-    """
-    Validates that he values in the compare sortedness request are within the
-    expected ranges and theat the algorithm specified have corresponding
-    implementations in the configuration.
-
-    Args:
-        request (dict): The request dictionary containing comparison parameters
-                and array types.
-            Expected keys include "low", "high", "number repetitions", "step",
-                    "algorithm", and "array types".
-
-    Raises:
-        ValueError: If 'low' is not less than 'high', if 'number repetitions' or
-                'step' are not positive integers, or if any specified algorithm
-                or input type does not have a configured implementation.
-    """
     low = request["low"]
     high = request["high"]
     num_reps = request["number repetitions"]

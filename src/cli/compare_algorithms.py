@@ -135,20 +135,19 @@ def request_values_valid(request: dict, configuration: dict):
         request (dict): The request dictionary containing comparison parameters
                 and algorithms.
             Expected keys include "low", "high", "number repetitions", "step",
-                    "algorithms", and "array type".
+                    and "algorithms".
         configuration (dict): The configuration dictionary specifying available
                 algorithm implementations.
 
     Raises:
         ValueError: If 'low' is not less than 'high', if 'number repetitions' or
                 'step' are not positive integers, or if any specified algorithm
-                or input type does not have a configured implementation.
+                does not have a configured implementation.
     """
     low = request["low"]
     high = request["high"]
     num_reps = request["number repetitions"]
     step = request["step"]
-    array_type = request["array type"]
     if low >= high:
         raise ValueError("'low' must be less than 'high'.")
     if num_reps <= 0 or step <= 0:
@@ -160,5 +159,3 @@ def request_values_valid(request: dict, configuration: dict):
             raise ValueError(
                 f"No implementation for '{algorithm}' in '{language}' configured."
             )
-    if array_type not in configuration["array types"]:
-        raise ValueError(f"'{array_type}' input type not configured.")
