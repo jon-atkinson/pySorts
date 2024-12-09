@@ -1,6 +1,7 @@
 __pycache__/
 .py[cod]
 
+# python, pip, misc.
 .Python
 build/
 develop-eggs/
@@ -17,11 +18,15 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# c binaries, build artifacts
 src/backend/sorts/c/cSorts
 src/backend/sorts/c/cSorts.so
 src/backend/sorts/c/cSorts.dSYM
 
+# redis
 dump.rdb
 
+# git
 .*
 !.gitignore
