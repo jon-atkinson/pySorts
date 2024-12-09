@@ -21,5 +21,7 @@ src/backend/sorts/c/cSorts
 src/backend/sorts/c/cSorts.so
 src/backend/sorts/c/cSorts.dSYM
 
+dump.rdb
+
 .*
 !.gitignore
