@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Button, MenuItem, Select, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { Formik, Field, FieldArray } from "formik";
 import { tokens } from "../../theme";
 import * as yup from "yup";
@@ -58,14 +65,14 @@ const CompareAlgorithms = ({ config, setGraphData, setSelected }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
   const transformData = (data = null) => {
     return data.map((item) => {
-      const algorithm = item[0];
-      const language = item[1];
+      const algorithm = item["algorithm"];
+      const language = item["language"];
       const algorithmId = `${algorithm} (${language})`;
 
-      const dataPoints = item[2].map(([x, y]) => ({
+      const dataPoints = item["data"].map(([x, y]) => ({
         x: String(x),
         y: y,
       }));
@@ -83,7 +90,7 @@ const CompareAlgorithms = ({ config, setGraphData, setSelected }) => {
       algorithms: values.algorithms,
       low: values.lowerBound,
       high: values.upperBound,
-      arr_type: values.arrayTypes,
+      arrayType: values.arrayTypes,
       num_reps: values.repeats,
       step: values.step,
     };
@@ -92,22 +99,21 @@ const CompareAlgorithms = ({ config, setGraphData, setSelected }) => {
       const response = await axios.post(
         "http://127.0.0.1:8000/compare-algorithms",
         requestBody,
-        {timeout: 10000},
+        { timeout: 10000 },
       );
-      setGraphData(transformData(response.data));
+      setGraphData(transformData(response.data["data_series"]));
       setSelected("Results");
       navigate("/graph");
-    } catch (error) {}
+    } catch (error) {
+      alert("Failed to compare algorithms. Please try again.");
+    }
   };
 
   const languages = Object.keys(config.algorithms);
   const arrayTypes = config["array types"] || [];
 
   return (
-    <Box
-      m="20px"
-      overflow="hidden"
-    >
+    <Box m="20px" overflow="hidden">
       <Header
         title="Compare Algorithms"
         subtitle="Configure an Algorithms Comparison"

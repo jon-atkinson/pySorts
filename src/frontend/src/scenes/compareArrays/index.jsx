@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Button, MenuItem, Select, TextField, Checkbox, FormControlLabel, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  useTheme,
+} from "@mui/material";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
 import { tokens } from "../../theme";
@@ -34,7 +43,7 @@ const compareSortednessFormSchema = yup.object().shape({
       function (value) {
         const { lowerBound } = this.parent;
         return value === undefined || value > lowerBound;
-      }
+      },
     ),
   step: yup
     .number()
@@ -46,7 +55,7 @@ const compareSortednessFormSchema = yup.object().shape({
       function (value) {
         const { upperBound } = this.parent;
         return upperBound === undefined || value <= upperBound;
-      }
+      },
     ),
   repeats: yup
     .number()
@@ -63,12 +72,12 @@ const CompareSortedness = ({ config, setGraphData, setSelected }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
-  const transformData = (data = null) => {
-    return data.map((item) => {
-      const arrayType = item[0];
 
-      const dataPoints = item[1].map(([x, y]) => ({
+  const transformData = (data = null) => {
+    return data["data_series"].map((item) => {
+      const arrayType = item["array_type"];
+
+      const dataPoints = item["data"].map(([x, y]) => ({
         x: String(x),
         y: y,
       }));
@@ -95,9 +104,9 @@ const CompareSortedness = ({ config, setGraphData, setSelected }) => {
       const response = await axios.post(
         "http://127.0.0.1:8000/compare-sortedness",
         requestBody,
-        {timeout: 100000},
+        { timeout: 100000 },
       );
-      
+
       setGraphData(transformData(response.data));
       setSelected("Graph");
       navigate("/graph");
@@ -180,7 +189,10 @@ const CompareSortedness = ({ config, setGraphData, setSelected }) => {
                   value={values.algorithm.language}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={!!touched.algorithm?.language && !!errors.algorithm?.language}
+                  error={
+                    !!touched.algorithm?.language &&
+                    !!errors.algorithm?.language
+                  }
                 >
                   {languages.map((lang) => (
                     <MenuItem key={lang} value={lang}>
@@ -194,7 +206,10 @@ const CompareSortedness = ({ config, setGraphData, setSelected }) => {
                   value={values.algorithm.algorithm}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={!!touched.algorithm?.algorithm && !!errors.algorithm?.algorithm}
+                  error={
+                    !!touched.algorithm?.algorithm &&
+                    !!errors.algorithm?.algorithm
+                  }
                 >
                   {config.algorithms[values.algorithm.language]?.map((algo) => (
                     <MenuItem key={algo} value={algo}>
@@ -224,7 +239,10 @@ const CompareSortedness = ({ config, setGraphData, setSelected }) => {
                             selectedArrayTypes.splice(index, 1);
                           }
                           handleChange({
-                            target: { name: "arrayTypes", value: selectedArrayTypes },
+                            target: {
+                              name: "arrayTypes",
+                              value: selectedArrayTypes,
+                            },
                           });
                         }}
                       />
