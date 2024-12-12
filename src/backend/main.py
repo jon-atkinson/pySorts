@@ -110,8 +110,6 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
     Compare sorting algorithms and return time taken to run for a range of input lengths
     """
 
-    # Check for cache (TODO)
-
     algorithms = request.algorithms
     low = request.low
     high = request.high
@@ -174,8 +172,6 @@ async def compare_sortedness(request: CompareSortednessRequest):
     Compare algorithm performance on sorting different input sortedness arrays
             and return time taken to run for a range of input lengths
     """
-
-    # check for cached
 
     algorithm = request.algorithm
     low = request.low
