@@ -1,3 +1,5 @@
+import numpy as np
+
 class AVL_Node(object):
     def __init__(self, data):
         self.data = data
@@ -10,12 +12,12 @@ def avl_insert(root, data):
     if not root:
         return AVL_Node(data=data)
     elif data < root.data:
-        root.left = avl_insert(root.right, data)
+        root.left = avl_insert(root.left, data)
     else:
-        root.right = avl_insert(root.left, data)
-    
+        root.right = avl_insert(root.right, data)
+
     root.depth = 1 + max(avl_get_depth(root.left), avl_get_depth(root.right))
-    
+
     bal_factor = avl_get_balance_factor(root)
 
     if bal_factor > 1:
@@ -47,26 +49,31 @@ def avl_get_balance_factor(root):
 
 def avl_left_rotate(root):
     a = root.right
-    new_root = a.left
+    root.right = a.left
     a.left = root
-    root.right = new_root
     root.depth = 1 + max(avl_get_depth(root.left), avl_get_depth(root.right))
     a.depth = 1 + max(avl_get_depth(a.left), avl_get_depth(a.right))
-    return new_root
+    return a
 
 
 def avl_right_rotate(root):
     a = root.left
-    new_root = a.right
+    root.left = a.right
     a.right = root
-    root.left = new_root
     root.depth = 1 + max(avl_get_depth(root.left), avl_get_depth(root.right))
     a.depth = 1 + max(avl_get_depth(a.left), avl_get_depth(a.right))
-    return new_root
+    return a
 
-def avl_to_sorted_array(root, array=[]):
-    if root != None:
-        array = avl_to_sorted_array(root.left, array)
-        array.append(root.data)
-        array = avl_to_sorted_array(root.right, array)
-    return array
+
+def avl_to_sorted_array(root, array=None, index=0):
+    if array is None:
+        array = np.zeros(0, dtype=int)
+    if root is not None:
+        index = avl_to_sorted_array(root.left, array, index)
+
+        array[index] = root.data
+        index += 1
+
+        index = avl_to_sorted_array(root.right, array, index)
+
+    return index

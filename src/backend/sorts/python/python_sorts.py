@@ -1,4 +1,4 @@
-from backend.sorts.python.avl import avl_insert
+from backend.sorts.python.avl import avl_insert, avl_to_sorted_array
 
 
 def selection_sort(arr, n):
@@ -303,6 +303,8 @@ def tree_sort(arr, n):
     tree = None
     for num in arr:
         tree = avl_insert(tree, num)
+    avl_to_sorted_array(tree, arr)
+
     return arr
 
 
