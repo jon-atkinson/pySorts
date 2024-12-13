@@ -98,17 +98,24 @@ class Database:
         except redis.exceptions.RedisError as e:
             raise RuntimeError(f"Failed to retrieve all metadata: {str(e)}")
 
-    def delete_comparison(self, comparison_id: str) -> None:
+    def delete_comparison(self, comparison_id: str) -> int:
         """
         Delete a comparison by ID.
+        Returns number of deleted comparisons
         """
         try:
             with self.client.pipeline() as pipe:
                 pipe.delete(self._generate_key("comparison", comparison_id))
                 pipe.hdel(self._generate_key("metadata"), comparison_id)
                 pipe.lrem(self._generate_key("ids"), 0, comparison_id)
-                pipe.execute()
-            logger.info(f"Deleted comparison with id: {comparison_id}")
+                results = pipe.execute()
+            if all(result == 0 for result in results):
+                logger.warning(f"No values were deleted for comparison ID: {comparison_id}")
+                return 0
+            else:
+                logger.info(f"Deleted comparison with ID: {comparison_id}")
+                return 1
+
         except redis.exceptions.RedisError as e:
             raise RuntimeError(f"Failed to delete comparison {comparison_id}: {str(e)}")
 

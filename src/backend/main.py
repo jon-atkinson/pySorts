@@ -1,7 +1,3 @@
-import hashlib
-import json
-import re
-import uuid
 from typing import List
 
 import redis
@@ -60,6 +56,8 @@ class ComparisonResult(BaseModel):
 
 app = FastAPI()
 
+app.db = db
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -77,15 +75,14 @@ async def get_config():
     Returns:
         dict: keys=algorithms, array types
     """
-    result = {}
 
-    result["algorithms"] = {
-        language: list(algorithms.keys())
-        for language, algorithms in config.algorithms.items()
+    return {
+        "algorithms": {
+            language: list(algorithms.keys())
+            for language, algorithms in config.algorithms.items()
+        },
+        "array types": list(config.arrays.keys()),
     }
-
-    result["array types"] = list(config.arrays.keys())
-    return result
 
 
 @app.get("/algorithms")
@@ -164,7 +161,7 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
         ],
     }
 
-    db.store_comparison(reformatted)
+    app.db.store_comparison(reformatted)
 
     return reformatted
 
@@ -225,7 +222,7 @@ async def compare_sortedness(request: CompareSortednessRequest):
         ],
     }
 
-    db.store_comparison(reformatted)
+    app.db.store_comparison(reformatted)
 
     return reformatted
 
@@ -235,7 +232,7 @@ def get_comparisons():
     """
     Return list of all previous comparisons
     """
-    return {"comparisons": db.get_all_metadata()}
+    return {"comparisons": app.db.get_all_metadata()}
 
 
 @app.get("/comparison/{id}")
@@ -243,7 +240,7 @@ def get_comparison(id: str):
     """
     Retrieve a comparison
     """
-    result = db.get_comparison(id)
+    result = app.db.get_comparison(id)
 
     if result is None:
         raise HTTPException(status_code=404, detail="Comparison not found")
@@ -256,5 +253,10 @@ def delete_comparison(id: str):
     """
     delete a comparison
     """
-    db.delete_comparison(id)
-    return {"comparisons": db.get_all_metadata()}
+    try:
+        if app.db.delete_comparison(id) == 0:
+            raise HTTPException(status_code=404, detail="Comparison not found")
+    except RuntimeError as e:
+        raise HTTPException(status_code=404, detail=f"Comparison not found: {e}")
+
+    return {"comparisons": app.db.get_all_metadata()}
