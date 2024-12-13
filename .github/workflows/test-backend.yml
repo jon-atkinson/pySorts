@@ -30,6 +30,7 @@ jobs:
 
       - name: Run tests
         run: |
+          uv venv
           pytest --maxfail=5 --disable-warnings --junitxml=test-results.xml
 
       - name: Upload test results
