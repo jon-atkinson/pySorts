@@ -29,4 +29,6 @@ dump.rdb
 
 # git
 .*
+!.github
+!.github/**
 !.gitignore
