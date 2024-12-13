@@ -21,6 +21,7 @@ pySortsCli = "cli.cli:runCLI"
 dev = [
     "pytest",
     "scipy",
+    "fakeredis",
     "black",
 ]
 

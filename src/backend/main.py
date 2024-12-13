@@ -4,6 +4,7 @@ import re
 import uuid
 from typing import List
 
+import redis
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -13,7 +14,9 @@ import src.backend.backend_config as config
 import src.backend.sorter as sorter
 from backend.db_interface import Database
 
-db = Database("localhost", 6379, 0)
+db = Database(
+    namespace="comparisons", client=redis.Redis(host="localhost", port=6379, db=0)
+)
 
 
 class Algorithm(BaseModel):

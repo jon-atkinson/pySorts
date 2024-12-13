@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 class Database:
-    def __init__(self, host: str, port: int, db: int, namespace: str = "comparisons"):
-        self.client = redis.Redis(host=host, port=port, db=db)
+    def __init__(self, namespace: str = "comparisons", client=None):
+        self.client = client
         self.namespace = namespace
 
     def _generate_id(self, comparison_type: str) -> str:

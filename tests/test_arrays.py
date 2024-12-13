@@ -4,7 +4,7 @@ import scipy.stats as stats
 import backend.backend_config as config
 import tests.helpers as helpers
 
-TEST_ARRAY_LEN = 10000
+TEST_ARRAY_LEN = 100000
 
 
 class TestArrays:
