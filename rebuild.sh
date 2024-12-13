@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 run_script() {
   script_name="$1"

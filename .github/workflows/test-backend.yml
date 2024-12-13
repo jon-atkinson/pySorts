@@ -29,7 +29,9 @@ jobs:
           uv venv
           uv pip install ".[dev]"
       - name: Build compiled components
+        shell: bash
         run: |
+          chmod +x rebuild.sh
           ./rebuild.sh
 
       - name: Run tests
