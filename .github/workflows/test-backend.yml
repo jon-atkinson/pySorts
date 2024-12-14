@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test:
+  backend-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,11 +31,12 @@ jobs:
       - name: Build compiled components
         shell: bash
         run: |
-          chmod +x rebuild.sh
-          ./rebuild.sh
+          chmod +x backend/compile.sh
+          ./backend/compile.sh
 
       - name: Run tests
         run: |
+          cd backend && |
           uv run pytest --maxfail=5 --disable-warnings --junitxml=test-results.xml
 
       - name: Upload test results

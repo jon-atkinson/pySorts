@@ -2,39 +2,42 @@ services:
   redis:
     image: redis:latest
     container_name: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "6379:6379"
     networks:
       - app-network
 
   pysorts-backend:
+    container_name: pysorts-backend
     build:
       context: ./backend/
       dockerfile: Dockerfile.backend
-    container_name: pysorts-backend
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - redis
     ports:
       - "8000:8000"
     networks:
       - app-network
-    volumes:
-      - .:/app
-      - ./.venv:/app/.venv:cached
 
   pysorts-frontend:
+    container_name: pysorts-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.frontend
-    container_name: pysorts-frontend
     depends_on:
       - pysorts-backend
     ports:
       - "3000:3000"
     networks:
       - app-network
-    volumes:
-      - .:/app
 
 networks:
   app-network:
