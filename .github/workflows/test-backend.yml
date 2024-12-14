@@ -13,16 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install build tooling
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essentials
-
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
+
+      - name: Install build tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essentials
+
+      - name: Build compiled components
+        shell: bash
+        run: |
+          pwd
+          chmod +x backend/compile.sh
+          ./backend/compile.sh
 
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v4
@@ -34,12 +41,7 @@ jobs:
           cd backend
           uv venv
           uv pip install ".[dev]"
-      - name: Build compiled components
-        shell: bash
-        run: |
-          pwd
-          chmod +x backend/compile.sh
-          ./backend/compile.sh
+
       - name: DBG find build artifact
         run: |
           find backend -type f
