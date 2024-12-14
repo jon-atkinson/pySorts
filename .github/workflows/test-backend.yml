@@ -37,7 +37,7 @@ jobs:
 
       - name: Run tests
         run: |
-          cd backend && |
+          cd backend
           uv run pytest --maxfail=5 --disable-warnings --junitxml=test-results.xml
 
       - name: Upload test results
