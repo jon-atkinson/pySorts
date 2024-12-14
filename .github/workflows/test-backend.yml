@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install build tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essentials
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -32,8 +37,12 @@ jobs:
       - name: Build compiled components
         shell: bash
         run: |
+          pwd
           chmod +x backend/compile.sh
           ./backend/compile.sh
+      - name: DBG find build artifact
+        run: |
+          find backend -type f
 
       - name: Run tests
         run: |
