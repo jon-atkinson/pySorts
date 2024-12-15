@@ -155,7 +155,8 @@ is the recommended approach if local setup has specific and challenging issues
 
 ## Testing the Application
 
-Currently all backend modules are fully tested but the frontend is not.
+Currently all backend modules are fully tested (including mocking Redis DB
+interactions) but the frontend is not.
 
 ### Running the backend tests
 
