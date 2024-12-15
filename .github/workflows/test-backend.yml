@@ -27,9 +27,10 @@ jobs:
       - name: Build compiled components
         shell: bash
         run: |
-          pwd
-          chmod +x backend/compile.sh
-          ./backend/compile.sh
+          pwd &&
+          cd backend &&
+          chmod +x compile.sh &&
+          ./compile.sh
 
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@v4
