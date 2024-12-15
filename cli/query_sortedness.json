@@ -1,0 +1,11 @@
+{
+  "algorithm": {
+    "algorithm": "bubble sort",
+    "language": "python"
+  },
+  "low": 1,
+  "high": 1000,
+  "array types": ["random", "sorted", "reverse sorted"],
+  "number repetitions": 1,
+  "step": 1
+}

@@ -1,8 +1,9 @@
-# pySorts v0
+# pySorts v1
 
-This branch contains the first iteration of pySorts.
-It lacks a few features provided in later iterations including hardware abstraction, comprehensive testing, database-level storage persistance and a web frontend.
-If you are not specifically interested in a version that supports running the tkinter GUI I recommend checking out a branch with a later version and running the application using docker-compose.
+This branch contains the first stable iteration of pySorts.
+It depricates the tkinter gui due to instability on some OS configurations and a dependance on tk-tcl which makes it impossible to run in some environments.
+V1 is fully containerized using docker-compose and can be deployed in any environment with a working docker-compose configuration.
+Alteratively, running the database, backend and frontend in that order in seperate local terminals is also supported.
 
 Simple collection of sorts, testing and comparison CLI for comparing the
 implementations of many commonly used and some more complex sorting algorithms.
@@ -10,67 +11,160 @@ Algorithm implementations available only in python and C for the moment.
 
 ## Requirements
 
-To use pySorts, you'll need git and a compatible python3 and pip3 installed.
+To use pySorts, you'll need git and a compatible python version/package manager.
 
 Ctypes is used to call C algorithm implementations from python, it requires an up
 to date cSorts.so. A bash script for library compilation is included
-(pySorts/src/c/buildCLib.sh) if you would like to rebuild `cSorts.so` but an
-up to date version should exist in that directory already.
+(pySorts/backend/c/buildCLib.sh) if you would like to rebuild `cSorts.so`. If you
+deploy the backend using the included dockerfile rebuilding the C binaries is handled
+for you.
 
-## Getting Set Up
+## Getting pySorts Running
 
-To use pySorts just clone this repo into a local directory.
+### Deploying with Docker
+
+Ensure you have docker-compose installed and working by running the following command.
+
+```
+docker-compose version
+```
+
+Start by cloning this repo into a local directory.
 
 ```
 git clone https://github.com/jon-atkinson/pySorts.git
 ```
 
-Then run the following command from the pySorts directory to build the package.
+Then run the following command from the pySorts directory to build the containers, create the image and start the server.
+
+```
+docker-compose up --build
+```
+
+### Running in Local Environment Without Containers
+
+Start by cloning this repo into a local directory.
+
+```
+git clone https://github.com/jon-atkinson/pySorts.git
+```
+
+#### Build the components
+
+Ensure the C binaries are built for your archtecture by running the following command (this may require installing build dependencies).
+
+```
+cd backend && chmod +x ./compile.sh && ./compile
+```
+
+Install redis-server using one of the following commands depending on your package manager.
+
+```
+brew install redis
+```
+
+```
+sudo snap apt update
+sudo apt install redis-tools
+sudo snap install redis
+```
+
+```
+sudo apt-get install lsb-release curl gpg
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+sudo apt-get update
+sudo apt-get install redis
+```
+
+Install dependencies for pySorts/backend. This will be different depending on your package manager (uv and pip examples shown).
+
+```
+uv sync
+```
 
 ```
 pip install .
 ```
 
-## Running
+Install dependencies for pySorts/frontend.
 
-### Running pySorts using the GUI
+```
+npm i
+```
 
-After building, run the command `pySortsApp` to run the GUI interface (note that whatever directory your python3 version installs binaries into must be added to your path to run the script).
+#### Running the different components
 
-Note that the GUI relies on tkinter tcl-tk which is only provided by the system python.
-This is a limitation of the v1 design and procludes containerization or running on certain operating systems where this isn't provided.
-In such cases I recommend running a later version using docker-compose.
+Start the database server.
 
-### Running pySorts from the terminal
+```
+redis-server
+```
 
-After building, run the command `pySortsCli` to run the CLI interface (see the note in parentheses above, the same issue is relevant here).
+```
+sudo snap start redis
+```
 
-I recommend starting with the command `algo -p -o` and then hitting enter for all other default options (shown below).
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/182abf9b-fd3e-4c00-8138-5afca3c9d1be)
+```
+sudo systemctl enable redis-server
+sudo systemctl start redis-server
+```
 
-You can compare multiple algorithms using `algo`, compare the performance of one algorithm on different input types with `sorting`, or plot the response of some combination of algorithms using `plot`. See `h` command for more information.
+Start the backend server in a new terminal from pySorts/backend (again, this is different depending on the python package manager you're using).
 
-Use the `clear` command to reset the terminal view and the `q` command to exit.
+```
+uv run fastapi run src/main.py
+```
 
-### Running pySorts using a GUI
+```
+python3 src/main.py
+```
 
-After building, run the command `pySortsApp` to open the GUI interface.
-Pick an option from the buttons on the front page, then set the comparison you
-want using the widgets and hit plot.
-Everything's single threaded at the moment so more complex/larger sorts may take
-a longer time depending on your hardware.
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/53b573f1-0dd4-473b-af1e-d657c7afad60)
+Start the React frontend server in a new terminal from pySorts/frontend.
 
-#### Example flow for comparing algorithms
+```
+npm run start
+```
 
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/0d299c11-b2a7-44e2-a53e-17e7d107ae88)
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/d3da567a-01d2-41e8-90c4-237db82ee2c6)
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/f0a75c7e-43d5-4541-9eec-97b5a61ee682)
+## Using the Application
 
-#### Example flow for comparing input types
+Once you have a database, backend and frontend server running, navigate to
+`localhost:3000` or `127.0.0.1:3000` in a browser.
 
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/0678efe8-74ff-477e-b414-36fb68688869)
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/77686944-72e6-43f4-bb27-51458256777c)
-![image](https://github.com/jon-atkinson/pySorts/assets/95665780/5903eb09-026e-4800-8164-5d61538d5b69)
+The important options are located in the sidebar. There are seperate pages for
+comparing different algorithm implementations and comparing the performance of
+a single algorithm on differently sorted arrays.
 
-Happy Sorting!
+Generating results is also relatively expensive so results of previous runs are
+cached in the Redis database and an outline of all stored results is located on
+another page. Here you can delete or choose to graph any stored result.
+
+### Troubleshooting
+
+If you see `Error: Network Error` in the frontend UI, the frontend can't connect
+to the backend to get a config packet that tells it what algorithms and arrays
+are available.
+
+Redis uses the default port, if you already run Redis for something else and have
+key clashes, a non-containerized method may require some tweaking of environment
+variables or source code.
+
+In general, the containerized method is much simpler and more robust and as such
+is the recommended approach if local setup has specific and challenging issues
+
+## Testing the Application
+
+Currently all backend modules are fully tested but the frontend is not.
+
+### Running the backend tests
+
+Depending on your python manager run one of the following from pySorts root.
+
+```
+cd backend && uv run pytest
+```
+
+```
+cd backend && python3 pytest
+```

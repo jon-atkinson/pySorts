@@ -1,0 +1,36 @@
+[project]
+name = "pySorts"
+version = "0.0.1"
+description = "An application that compares sorting algorithm implementations by language and algorithm."
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["sort", "sorts", "sorting", "complexity", "example", "teach", "learn"]
+authors = [{name = "Jon Atkinson", email = "95665780+jon-atkinson@users.noreply.github.com"}]
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "fastapi[standard]>=0.112.2",
+    "requests",
+    "redis",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+requires-python = ">= 3.11"
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "scipy",
+    "fakeredis",
+    "fastapi-cli>=0.0.5",
+]
+
+[tool.setuptools]
+packages = ["src", "tests"]
+
+[tool.setuptools.package-data]
+"sorts.c" = ["cSorts.so"]

@@ -1,0 +1,21 @@
+{
+  "algorithms": [
+    {
+      "algorithm": "bubble sort",
+      "language": "python"
+    },
+    {
+      "algorithm": "selection sort",
+      "language": "python"
+    },
+    {
+      "algorithm": "heap sort",
+      "language": "python"
+    }
+  ],
+  "low": 1,
+  "high": 100,
+  "array type": "random",
+  "number repetitions": 1,
+  "step": 1
+}

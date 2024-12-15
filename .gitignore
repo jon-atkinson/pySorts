@@ -1,5 +1,6 @@
 # python cache
-__pycache__/*
+__pycache__/
+.py[cod]
 
 # python, pip, misc.
 .Python
@@ -19,6 +20,16 @@ wheels/
 .installed.cfg
 *.egg
 
+# c binaries, build artifacts
+backend/src/sorts/c/cSorts
+backend/src/sorts/c/cSorts.so
+backend/src/sorts/c/cSorts.dSYM
+
+# redis
+dump.rdb
+
 # git
 .*
+!.github
+!.github/**
 !.gitignore

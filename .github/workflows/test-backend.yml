@@ -1,0 +1,52 @@
+name: Backend Tests
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build compiled components
+        shell: bash
+        run: |
+          pwd &&
+          cd backend &&
+          chmod +x compile.sh &&
+          ./compile.sh
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          uv venv
+          uv pip install ".[dev]"
+
+      - name: DBG find build artifact
+        run: |
+          find backend -type f
+
+      - name: Run tests
+        run: |
+          cd backend
+          uv run pytest --maxfail=5 --disable-warnings --junitxml=test-results.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results.xml
