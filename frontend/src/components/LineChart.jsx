@@ -63,7 +63,7 @@ const LineChart = ({ isDashboard = false, data = null }) => {
       }}
       enableGridX={false}
       enableGridY={false}
-      colors={{ scheme: "nivo" }}
+      colors={{ scheme: "category10" }}
       enablePoints={false}
       pointSize={10}
       pointColor={{ theme: "background" }}
