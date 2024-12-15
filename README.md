@@ -152,4 +152,19 @@ variables or source code.
 
 In general, the containerized method is much simpler and more robust and as such
 is the recommended approach if local setup has specific and challenging issues
-if your system supports docker-compose.
+
+## Testing the Application
+
+Currently all backend modules are fully tested but the frontend is not.
+
+### Running the backend tests
+
+Depending on your python manager run one of the following from pySorts root.
+
+```
+cd backend && uv run pytest
+```
+
+```
+cd backend && python3 pytest
+```
