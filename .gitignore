@@ -1,5 +1,7 @@
+# python cache
 __pycache__/*
 
+# python, pip, misc.
 .Python
 build/
 develop-eggs/
@@ -17,5 +19,6 @@ wheels/
 .installed.cfg
 *.egg
 
+# git
 .*
 !.gitignore
