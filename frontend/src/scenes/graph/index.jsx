@@ -30,6 +30,14 @@ const generateSobelKernel = (size) => {
   return Array.from({ length: size }, (_, i) => i - center);
 };
 
+const generateLaplacianKernel = (size) => {
+  const kernel = Array(size).fill(-1);
+  const centerIdx = Math.floor(size / 2);
+  kernel[centerIdx] = size - 1;
+
+  return kernel;
+};
+
 const kernels = [
   {
     name: "gaussian",
@@ -45,6 +53,11 @@ const kernels = [
     name: "sobel",
     label: "Sobel",
     function: generateSobelKernel,
+  },
+  {
+    name: "laplacian",
+    label: "Laplacian",
+    function: generateLaplacianKernel,
   },
 ];
 
