@@ -84,7 +84,12 @@ function App() {
               />
               <Route path="/about" element={<About />} />
               <Route path="/faq" element={<FAQ />} />
-              <Route path="/graph" element={<Graph graphData={graphData} />} />
+              <Route
+                path="/graph"
+                element={
+                  <Graph graphData={graphData} setGraphData={setGraphData} />
+                }
+              />
               {/* <Route path="/languages" element={<Languages />} /> */}
             </Routes>
           </main>

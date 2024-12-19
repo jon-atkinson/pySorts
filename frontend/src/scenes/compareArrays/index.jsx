@@ -16,61 +16,63 @@ import Header from "../../components/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const initialValues = {
-  algorithm: { language: "python", algorithm: "bubble sort" },
-  lowerBound: 1,
-  upperBound: 2,
-  step: 1,
-  repeats: 1,
-  arrayTypes: ["random"],
-};
-
-const compareSortednessFormSchema = yup.object().shape({
-  algorithm: yup.object().shape({
-    language: yup.string().required("Select a language"),
-    algorithm: yup.string().required("Select an algorithm"),
-  }),
-  lowerBound: yup
-    .number()
-    .min(initialValues.lowerBound, "Lower bound must be at least 1")
-    .required("Lower bound is required"),
-  upperBound: yup
-    .number()
-    .required("Upper bound is required")
-    .test(
-      "is-greater",
-      "Upper bound must be greater than lower bound",
-      function (value) {
-        const { lowerBound } = this.parent;
-        return value === undefined || value > lowerBound;
-      },
-    ),
-  step: yup
-    .number()
-    .min(initialValues.step, "Step must be at least 1")
-    .required("Step is required")
-    .test(
-      "step-limit",
-      "Step must be less than or equal to upper bound",
-      function (value) {
-        const { upperBound } = this.parent;
-        return upperBound === undefined || value <= upperBound;
-      },
-    ),
-  repeats: yup
-    .number()
-    .min(initialValues.repeats, "Number of repeats must be at least 1")
-    .required("Number of repeats is required"),
-  arrayTypes: yup
-    .array()
-    .of(yup.string())
-    .min(initialValues.arrayTypes.length, "Select at least one array type")
-    .required("Array types selection is required"),
-});
-
 const CompareSortedness = ({ config, setGraphData, setSelected }) => {
   const navigate = useNavigate();
   const theme = useTheme();
+
+  //  TODO: change hardcoded values here to the first algorithm in the config
+  // check performance hit for moving these functions into the component
+  const initialValues = {
+    algorithm: { language: "python", algorithm: "bubble sort" },
+    lowerBound: 1,
+    upperBound: 2,
+    step: 1,
+    repeats: 1,
+    arrayTypes: ["random"],
+  };
+
+  const compareSortednessFormSchema = yup.object().shape({
+    algorithm: yup.object().shape({
+      language: yup.string().required("Select a language"),
+      algorithm: yup.string().required("Select an algorithm"),
+    }),
+    lowerBound: yup
+      .number()
+      .min(initialValues.lowerBound, "Lower bound must be at least 1")
+      .required("Lower bound is required"),
+    upperBound: yup
+      .number()
+      .required("Upper bound is required")
+      .test(
+        "is-greater",
+        "Upper bound must be greater than lower bound",
+        function (value) {
+          const { lowerBound } = this.parent;
+          return value === undefined || value > lowerBound;
+        },
+      ),
+    step: yup
+      .number()
+      .min(initialValues.step, "Step must be at least 1")
+      .required("Step is required")
+      .test(
+        "step-limit",
+        "Step must be less than or equal to upper bound",
+        function (value) {
+          const { upperBound } = this.parent;
+          return upperBound === undefined || value <= upperBound;
+        },
+      ),
+    repeats: yup
+      .number()
+      .min(initialValues.repeats, "Number of repeats must be at least 1")
+      .required("Number of repeats is required"),
+    arrayTypes: yup
+      .array()
+      .of(yup.string())
+      .min(initialValues.arrayTypes.length, "Select at least one array type")
+      .required("Array types selection is required"),
+  });
   const colors = tokens(theme.palette.mode);
 
   const transformData = (data = null) => {

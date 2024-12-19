@@ -6,7 +6,6 @@ from typing import Dict, List, Optional
 import redis
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 class Database:
@@ -60,7 +59,6 @@ class Database:
                 )
                 pipe.rpush(self._generate_key("ids"), comparison_id)
                 pipe.execute()
-            logger.info(f"Stored comparison with id: {comparison_id}")
         except redis.exceptions.RedisError as e:
             raise RuntimeError(f"Failed to store comparison: {str(e)}")
 
@@ -73,7 +71,6 @@ class Database:
         try:
             data = self.client.get(self._generate_key("comparison", comparison_id))
             if data is None:
-                logger.warning(f"Comparison not found for id: {comparison_id}")
                 return None
             return json.loads(data)
         except redis.exceptions.RedisError as e:
@@ -110,12 +107,8 @@ class Database:
                 pipe.lrem(self._generate_key("ids"), 0, comparison_id)
                 results = pipe.execute()
             if all(result == 0 for result in results):
-                logger.warning(
-                    f"No values were deleted for comparison ID: {comparison_id}"
-                )
                 return 0
             else:
-                logger.info(f"Deleted comparison with ID: {comparison_id}")
                 return 1
 
         except redis.exceptions.RedisError as e:
@@ -128,7 +121,6 @@ class Database:
         try:
             metadata = self.client.hget(self._generate_key("metadata"), comparison_id)
             if metadata is None:
-                logger.warning(f"Metadata not found for id: {comparison_id}")
                 return None
             return json.loads(metadata)
         except redis.exceptions.RedisError as e:
