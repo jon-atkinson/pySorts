@@ -91,6 +91,15 @@ const Graph = ({ graphData, setGraphData }) => {
     const kernelSum =
       kernel.reduce((sum, value) => sum + Math.abs(value), 0) || 1;
 
+    const reflectIdx = (index, length) => {
+      if (index < 0) {
+        return -index - 1;
+      } else if (index >= length) {
+        return 2 * length - index - 1;
+      }
+      return index;
+    };
+
     const transformedData = [];
 
     for (let i = 0; i < seriesData.length; i++) {
@@ -98,9 +107,8 @@ const Graph = ({ graphData, setGraphData }) => {
 
       for (let j = 0; j < kernel.length; j++) {
         const dataIdx = i + j - halfKernelLength;
-        if (dataIdx >= 0 && dataIdx < seriesData.length) {
-          newY += seriesData[dataIdx].y * kernel[j];
-        }
+        newY +=
+          seriesData[reflectIdx(dataIdx, seriesData.length)].y * kernel[j];
       }
 
       transformedData.push({
