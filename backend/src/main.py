@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 import src.backend_config as config
 import src.sorter as sorter
+from src.arrays import deep_copy
 from src.db_interface import Database
 
 redis_host = os.getenv("REDIS_HOST", "localhost")
@@ -140,10 +141,11 @@ async def compare_algorithms(request: CompareAlgorithmsRequest):
             array = array_generator(current_length)
 
             for algorithm in algorithms:
+                copy_array = deep_copy(array)
                 _, time = sorter.call(
                     algorithm.algorithm,
                     algorithm.language,
-                    array,
+                    copy_array,
                 )
                 current_round[(algorithm.algorithm, algorithm.language)].append(time)
 
@@ -201,10 +203,11 @@ async def compare_sortedness(request: CompareSortednessRequest):
             for sortedness in arr_types:
                 array_generator = config.arrays[sortedness]
                 array = array_generator(current_length)
+                copy_array = deep_copy(array)
                 _, time = sorter.call(
                     algorithm.algorithm,
                     algorithm.language,
-                    array,
+                    copy_array,
                 )
                 current_round[sortedness].append(time)
 
