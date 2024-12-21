@@ -61,7 +61,7 @@ const kernels = [
   },
 ];
 
-const Graph = ({ graphData, setGraphData }) => {
+const Graph = ({ graphData, setGraphData, originalGraphData }) => {
   const navigate = useNavigate();
 
   const validationSchema = yup.object().shape({
@@ -200,6 +200,17 @@ const Graph = ({ graphData, setGraphData }) => {
               </form>
             )}
           </Formik>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              // require a deep copy here or useState will mangle our backup with a shallow ref
+              setGraphData(JSON.parse(JSON.stringify(originalGraphData)));
+              navigate("/graph");
+            }}
+          >
+            Reset Filters
+          </Button>
         </Box>
       </Box>
     </Box>

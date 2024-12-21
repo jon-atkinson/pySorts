@@ -22,6 +22,18 @@ function App() {
   const [graphData, setGraphData] = useState([
     { color: "black", data: [{ x: 0, y: 0 }], id: "empty" },
   ]);
+
+  // every time the raw comparison data is updated the processed data base should also update
+  // const [originalGraphData, setOriginalGraphDataBase] = useState([
+  const [originalGraphData, setOriginalGraphData] = useState([
+    { color: "black", data: [{ x: 0, y: 0 }], id: "empty" },
+  ]);
+  // const setOriginalGraphData = (newData) => {
+  //   console.log("updating original graph data");
+  //   setGraphData(newData);
+  //   setOriginalGraphDataBase(newData);
+  // };
+
   const [selected, setSelected] = useState("Dashboard");
 
   useEffect(() => {
@@ -63,6 +75,7 @@ function App() {
                 element={
                   <CompareAlgorithms
                     config={config}
+                    setOriginalGraphData={setOriginalGraphData}
                     setGraphData={setGraphData}
                     setSelected={setSelected}
                   />
@@ -73,6 +86,7 @@ function App() {
                 element={
                   <CompareArrays
                     config={config}
+                    setOriginalGraphData={setOriginalGraphData}
                     setGraphData={setGraphData}
                     setSelected={setSelected}
                   />
@@ -80,14 +94,23 @@ function App() {
               />
               <Route
                 path="/previous"
-                element={<Previous setGraphData={setGraphData} />}
+                element={
+                  <Previous
+                    setOriginalGraphData={setOriginalGraphData}
+                    setGraphData={setGraphData}
+                  />
+                }
               />
               <Route path="/about" element={<About />} />
               <Route path="/faq" element={<FAQ />} />
               <Route
                 path="/graph"
                 element={
-                  <Graph graphData={graphData} setGraphData={setGraphData} />
+                  <Graph
+                    graphData={graphData}
+                    setGraphData={setGraphData}
+                    originalGraphData={originalGraphData}
+                  />
                 }
               />
               {/* <Route path="/languages" element={<Languages />} /> */}

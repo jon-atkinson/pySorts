@@ -6,7 +6,7 @@ import axios from "axios";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 
-const Previous = ({ setGraphData }) => {
+const Previous = ({ setOriginalGraphData, setGraphData }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -111,6 +111,7 @@ const Previous = ({ setGraphData }) => {
       );
       const data = response.data;
 
+      setOriginalGraphData(transformData(data));
       setGraphData(transformData(data));
       navigate("/graph");
     } catch (error) {
