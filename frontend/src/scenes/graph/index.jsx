@@ -83,6 +83,10 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
           return true;
         },
       }),
+    numberFilterApplications: yup
+      .number()
+      .min(1, "Number of repeats must be at least 1")
+      .required("Number of repeats is required"),
     kernelType: yup.string().required("Kernel Type is required"),
   });
 
@@ -120,17 +124,25 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
     return transformedData;
   };
 
-  const applyFilterAllSeries = (data, kernel) => {
-    for (let seriesIdx = 0; seriesIdx < data.length; seriesIdx++) {
-      data[seriesIdx].data = applyConvolution(data[seriesIdx].data, kernel);
-    }
+  const applyFilterAllSeries = (data, kernel, numberFilterApplications) => {
+    for (let seriesIdx = 0; seriesIdx < data.length; seriesIdx++)
+      for (
+        let repeatCount = 0;
+        repeatCount < numberFilterApplications;
+        repeatCount++
+      )
+        data[seriesIdx].data = applyConvolution(data[seriesIdx].data, kernel);
 
     return data;
   };
 
   const handleSubmit = (values) => {
     const kernel = values.kernelType(parseInt(values.kernelSize, 10));
-    const newData = applyFilterAllSeries(graphData, kernel);
+    const newData = applyFilterAllSeries(
+      graphData,
+      kernel,
+      values.numberFilterApplications,
+    );
 
     setGraphData(newData);
     navigate("/graph");
@@ -151,7 +163,11 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
             Configure Kernel
           </Typography>
           <Formik
-            initialValues={{ kernelSize: 3, kernelType: kernels[0].function }}
+            initialValues={{
+              kernelSize: 3,
+              kernelType: kernels[0].function,
+              numberFilterApplications: 1,
+            }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
@@ -169,6 +185,18 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
                   name="kernelSize"
                   type="number"
                   value={values.kernelSize}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  variant="outlined"
+                  fullWidth
+                  error={!!touched.kernelSize && !!errors.kernelSize}
+                  helperText={touched.kernelSize && errors.kernelSize}
+                />
+                <TextField
+                  label="Number of Filter Application Repeats"
+                  name="numberFilterApplications"
+                  type="number"
+                  value={values.numberFilterApplications}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   variant="outlined"
@@ -196,21 +224,25 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
                   <Button type="submit" color="primary" variant="contained">
                     Apply Convolution Filter
                   </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={() => {
+                      // require a deep copy here or useState will mangle our backup with a shallow ref
+                      // consider Lodash migration for a cleaner deep-copy solution in future
+                      setGraphData(
+                        JSON.parse(JSON.stringify(originalGraphData)),
+                      );
+                      navigate("/graph");
+                    }}
+                  >
+                    Reset Filters
+                  </Button>
                 </Box>
               </form>
             )}
           </Formik>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              // require a deep copy here or useState will mangle our backup with a shallow ref
-              setGraphData(JSON.parse(JSON.stringify(originalGraphData)));
-              navigate("/graph");
-            }}
-          >
-            Reset Filters
-          </Button>
+          <Box display="flex" justifyContent="space-around" marginTop="2"></Box>
         </Box>
       </Box>
     </Box>

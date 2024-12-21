@@ -16,12 +16,7 @@ import Header from "../../components/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const CompareSortedness = ({
-  config,
-  setOriginalGraphData,
-  setGraphData,
-  setSelected,
-}) => {
+const CompareSortedness = ({ config, setOriginalGraphData, setSelected }) => {
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -115,7 +110,6 @@ const CompareSortedness = ({
       );
 
       setOriginalGraphData(transformData(response.data));
-      setGraphData(transformData(response.data));
       setSelected("Graph");
       navigate("/graph");
     } catch (error) {

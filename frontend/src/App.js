@@ -24,15 +24,15 @@ function App() {
   ]);
 
   // every time the raw comparison data is updated the processed data base should also update
-  // const [originalGraphData, setOriginalGraphDataBase] = useState([
-  const [originalGraphData, setOriginalGraphData] = useState([
+  const [originalGraphData, setOriginalGraphDataBase] = useState([
+    //const [originalGraphData, setOriginalGraphData] = useState([
     { color: "black", data: [{ x: 0, y: 0 }], id: "empty" },
   ]);
-  // const setOriginalGraphData = (newData) => {
-  //   console.log("updating original graph data");
-  //   setGraphData(newData);
-  //   setOriginalGraphDataBase(newData);
-  // };
+  const setOriginalGraphData = (newData) => {
+    setGraphData(newData);
+    setOriginalGraphDataBase(JSON.parse(JSON.stringify(newData)));
+    // setOriginalGraphDataBase(newData);
+  };
 
   const [selected, setSelected] = useState("Dashboard");
 
@@ -76,7 +76,6 @@ function App() {
                   <CompareAlgorithms
                     config={config}
                     setOriginalGraphData={setOriginalGraphData}
-                    setGraphData={setGraphData}
                     setSelected={setSelected}
                   />
                 }
@@ -87,7 +86,6 @@ function App() {
                   <CompareArrays
                     config={config}
                     setOriginalGraphData={setOriginalGraphData}
-                    setGraphData={setGraphData}
                     setSelected={setSelected}
                   />
                 }
@@ -97,7 +95,7 @@ function App() {
                 element={
                   <Previous
                     setOriginalGraphData={setOriginalGraphData}
-                    setGraphData={setGraphData}
+                    setSelected={setSelected}
                   />
                 }
               />
