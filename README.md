@@ -1,9 +1,9 @@
 # pySorts v1
 
 This branch contains the first stable iteration of pySorts.
-It depricates the tkinter gui due to instability on some OS configurations and a dependance on tk-tcl which makes it impossible to run in some environments.
+It depricates the tkinter gui due to instability on some OS configurations and a dependance on tk-tcl which made it impossible to run in some environments.
 V1 is fully containerized using docker-compose and can be deployed in any environment with a working docker-compose configuration.
-Alteratively, running the database, backend and frontend in that order in seperate local terminals is also supported.
+Alteratively, running the database, backend and frontend in seperate local terminals is also supported.
 
 Simple collection of sorts, testing and comparison CLI for comparing the
 implementations of many commonly used and some more complex sorting algorithms.
