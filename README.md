@@ -9,16 +9,6 @@ Simple collection of sorts, testing and comparison CLI for comparing the
 implementations of many commonly used and some more complex sorting algorithms.
 Algorithm implementations available only in python and C for the moment.
 
-## Requirements
-
-To use pySorts, you'll need git and a compatible python version/package manager.
-
-Ctypes is used to call C algorithm implementations from python, it requires an up
-to date cSorts.so. A bash script for library compilation is included
-(pySorts/backend/c/buildCLib.sh) if you would like to rebuild `cSorts.so`. If you
-deploy the backend using the included dockerfile rebuilding the C binaries is handled
-for you.
-
 ## Getting pySorts Running
 
 ### Deploying with Docker

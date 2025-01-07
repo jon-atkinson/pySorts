@@ -12,8 +12,8 @@ services:
     networks:
       - app-network
 
-  pysorts-backend:
-    container_name: pysorts-backend
+  backend:
+    container_name: backend
     build:
       context: ./backend/
       dockerfile: Dockerfile.backend
@@ -27,13 +27,13 @@ services:
     networks:
       - app-network
 
-  pysorts-frontend:
-    container_name: pysorts-frontend
+  frontend:
+    container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.frontend
     depends_on:
-      - pysorts-backend
+      - backend
     ports:
       - "3000:3000"
     networks:
