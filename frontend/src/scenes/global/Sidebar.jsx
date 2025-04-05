@@ -161,13 +161,6 @@ const Sidebar = ({ selected, setSelected }) => {
             selected={selected}
             setSelected={setSelected}
           />
-          <Item
-            title="FAQ"
-            to="/faq"
-            icon={<HelpOutlinedIcon />}
-            selected={selected}
-            setSelected={setSelected}
-          />
           <Typography
             variant="h6"
             color={colors.grey[600]}

@@ -10,7 +10,6 @@ import CompareAlgorithms from "./scenes/compareAlgorithms";
 import CompareArrays from "./scenes/compareArrays";
 import Previous from "./scenes/previous";
 import About from "./scenes/about";
-import FAQ from "./scenes/faq";
 import Graph from "./scenes/graph";
 // import Languages from "./scenes/Languages";
 
@@ -100,7 +99,6 @@ function App() {
                 }
               />
               <Route path="/about" element={<About />} />
-              <Route path="/faq" element={<FAQ />} />
               <Route
                 path="/graph"
                 element={
