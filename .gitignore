@@ -1,5 +1,5 @@
 # python cache
-__pycache__/
+e_pycache__/
 .py[cod]
 
 # python, pip, misc.
