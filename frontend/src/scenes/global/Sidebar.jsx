@@ -13,7 +13,6 @@ import FunctionIcon from "@mui/icons-material/Functions";
 import DataArrayIcon from "@mui/icons-material/DataArray";
 import StorageOutlinedIcon from "@mui/icons-material/StorageOutlined";
 import Info from "@mui/icons-material/Info";
-import HelpOutlinedIcon from "@mui/icons-material/HelpOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
