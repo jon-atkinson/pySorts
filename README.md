@@ -1,15 +1,26 @@
-# pySorts v1
+# pySorts
 
-This branch contains the first stable iteration of pySorts.
-It depricates the tkinter gui due to instability on some OS configurations and a dependance on tk-tcl which made it impossible to run in some environments.
-V1 is fully containerized using docker-compose and can be deployed in any environment with a working docker-compose configuration.
-Alteratively, running the database, backend and frontend in seperate local terminals is also supported.
+pySorts was designed to fill the gap between a textbook explanation of algorithmic
+complexity and websites or videos that show each animated step of a sorting algorithm.
 
-Simple collection of sorts, testing and comparison CLI for comparing the
-implementations of many commonly used and some more complex sorting algorithms.
-Algorithm implementations available only in python and C for the moment.
+The goal of the app is to demonstrate what the response curve of a simple algorithm
+looks like when run on actual hardware, and to expose the natural variations in real
+runtimes to students.
 
-## Getting pySorts Running
+Over time more features have been added but the core purpose of the tool is still
+to provide a responsive view into the asymptotic runtimes of a few common algorithms.
+
+Features:
+
+- Compare sort algorithms
+- Compare languages
+- Compare input array types
+
+## Set Up
+
+All of the following assumes you are set up in a unix-like environment. All common
+Linux, Mac-Os and WSL (windows) users should have minimal errata required for
+setting up.
 
 ### Deploying with Docker
 
@@ -28,93 +39,7 @@ git clone https://github.com/jon-atkinson/pySorts.git
 Then run the following command from the pySorts directory to build the containers, create the image and start the server.
 
 ```
-docker-compose up --build
-```
-
-### Running in Local Environment Without Containers
-
-Start by cloning this repo into a local directory.
-
-```
-git clone https://github.com/jon-atkinson/pySorts.git
-```
-
-#### Build the components
-
-Ensure the C binaries are built for your archtecture by running the following command (this may require installing build dependencies).
-
-```
-cd backend && chmod +x ./compile.sh && ./compile
-```
-
-Install redis-server using one of the following commands depending on your package manager.
-
-```
-brew install redis
-```
-
-```
-sudo snap apt update
-sudo apt install redis-tools
-sudo snap install redis
-```
-
-```
-sudo apt-get install lsb-release curl gpg
-curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
-sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
-sudo apt-get update
-sudo apt-get install redis
-```
-
-Install dependencies for pySorts/backend. This will be different depending on your package manager (uv and pip examples shown).
-
-```
-uv sync
-```
-
-```
-pip install .
-```
-
-Install dependencies for pySorts/frontend.
-
-```
-npm i
-```
-
-#### Running the different components
-
-Start the database server.
-
-```
-redis-server
-```
-
-```
-sudo snap start redis
-```
-
-```
-sudo systemctl enable redis-server
-sudo systemctl start redis-server
-```
-
-Start the backend server in a new terminal from pySorts/backend (again, this is different depending on the python package manager you're using).
-
-```
-uv run fastapi run src/main.py
-```
-
-```
-python3 src/main.py
-```
-
-Start the React frontend server in a new terminal from pySorts/frontend.
-
-```
-npm run start
+docker compose up --build
 ```
 
 ## Using the Application
@@ -129,33 +54,3 @@ a single algorithm on differently sorted arrays.
 Generating results is also relatively expensive so results of previous runs are
 cached in the Redis database and an outline of all stored results is located on
 another page. Here you can delete or choose to graph any stored result.
-
-### Troubleshooting
-
-If you see `Error: Network Error` in the frontend UI, the frontend can't connect
-to the backend to get a config packet that tells it what algorithms and arrays
-are available.
-
-Redis uses the default port, if you already run Redis for something else and have
-key clashes, a non-containerized method may require some tweaking of environment
-variables or source code.
-
-In general, the containerized method is much simpler and more robust and as such
-is the recommended approach if local setup has specific and challenging issues
-
-## Testing the Application
-
-Currently all backend modules are fully tested (including mocking Redis DB
-interactions) but the frontend is not.
-
-### Running the backend tests
-
-Depending on your python manager run one of the following from pySorts root.
-
-```
-cd backend && uv run pytest
-```
-
-```
-cd backend && python3 pytest
-```
