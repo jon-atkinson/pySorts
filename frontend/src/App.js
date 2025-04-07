@@ -1,5 +1,8 @@
 import { ColorModeContext, useMode } from "./theme.js";
-import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
@@ -11,6 +14,7 @@ import CompareArrays from "./scenes/compareArrays";
 import Previous from "./scenes/previous";
 import About from "./scenes/about";
 import Graph from "./scenes/graph";
+import Footer from "./components/Footer";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -60,10 +64,29 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
+        <Box
+          className="app"
+          sx={{
+            display: "flex",
+            height: "100vh",
+            overflow: "hidden",
+          }}
+        >
           <Sidebar selected={selected} setSelected={setSelected} />
-          <main className="content">
+
+          <Box
+            className="content"
+            display="flex"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              minHeight: "100vh",
+              overflowY: "auto",
+            }}
+          >
             <Topbar />
+
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route
@@ -107,8 +130,12 @@ function App() {
                 }
               />
             </Routes>
-          </main>
-        </div>
+
+            <Box sx={{ mt: "auto" }}>
+              <Footer />
+            </Box>
+          </Box>
+        </Box>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
