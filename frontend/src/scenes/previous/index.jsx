@@ -6,7 +6,7 @@ import axios from "axios";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 
-const Previous = ({ setGraphData }) => {
+const Previous = ({ setOriginalGraphData, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -111,7 +111,9 @@ const Previous = ({ setGraphData }) => {
       );
       const data = response.data;
 
-      setGraphData(transformData(data));
+      setOriginalGraphData(transformData(data));
+      setOriginalGraphData(transformData(data));
+      setSelected("Results");
       navigate("/graph");
     } catch (error) {
       console.error("Error fetching comparison data: ", error);

@@ -61,7 +61,7 @@ const compareAlgorithmsFormSchema = yup.object().shape({
     .required("Number of repeats is required"),
 });
 
-const CompareAlgorithms = ({ config, setGraphData, setSelected }) => {
+const CompareAlgorithms = ({ config, setOriginalGraphData, setSelected }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -101,7 +101,7 @@ const CompareAlgorithms = ({ config, setGraphData, setSelected }) => {
         requestBody,
         { timeout: 10000 },
       );
-      setGraphData(transformData(response.data["data_series"]));
+      setOriginalGraphData(transformData(response.data["data_series"]));
       setSelected("Results");
       navigate("/graph");
     } catch (error) {

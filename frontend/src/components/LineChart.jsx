@@ -45,14 +45,12 @@ const LineChart = ({ isDashboard = false, data = null }) => {
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",
-        min: "auto",
+        min: "0",
         max: "auto",
-        stacked: true,
+        stacked: false,
         reverse: false,
       }}
-      xFormat=" >-100.0"
-      yFormat=" >-.2f"
-      curve="basis"
+      xFormat=" <-1.100"
       axisTop={null}
       axisRight={null}
       axisBottom={null}
@@ -65,12 +63,7 @@ const LineChart = ({ isDashboard = false, data = null }) => {
       enableGridY={false}
       colors={{ scheme: "category10" }}
       enablePoints={false}
-      pointSize={10}
-      pointColor={{ theme: "background" }}
       pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
-      pointLabel="data.yFormatted"
-      pointLabelYOffset={-12}
       enableTouchCrosshair={true}
       useMesh={true}
       legends={[

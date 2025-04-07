@@ -1,5 +1,8 @@
 import { ColorModeContext, useMode } from "./theme.js";
-import { CssBaseline, ThemeProvider, Typography } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
@@ -10,9 +13,8 @@ import CompareAlgorithms from "./scenes/compareAlgorithms";
 import CompareArrays from "./scenes/compareArrays";
 import Previous from "./scenes/previous";
 import About from "./scenes/about";
-import FAQ from "./scenes/faq";
 import Graph from "./scenes/graph";
-// import Languages from "./scenes/Languages";
+import Footer from "./components/Footer";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -22,6 +24,16 @@ function App() {
   const [graphData, setGraphData] = useState([
     { color: "black", data: [{ x: 0, y: 0 }], id: "empty" },
   ]);
+
+  // every time the raw comparison data is updated the processed data base should also update
+  const [originalGraphData, setOriginalGraphDataBase] = useState([
+    { color: "black", data: [{ x: 0, y: 0 }], id: "empty" },
+  ]);
+  const setOriginalGraphData = (newData) => {
+    setGraphData(newData);
+    setOriginalGraphDataBase(JSON.parse(JSON.stringify(newData)));
+  };
+
   const [selected, setSelected] = useState("Dashboard");
 
   useEffect(() => {
@@ -52,10 +64,29 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
+        <Box
+          className="app"
+          sx={{
+            display: "flex",
+            height: "100vh",
+            overflow: "hidden",
+          }}
+        >
           <Sidebar selected={selected} setSelected={setSelected} />
-          <main className="content">
+
+          <Box
+            className="content"
+            display="flex"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              minHeight: "100vh",
+              overflowY: "auto",
+            }}
+          >
             <Topbar />
+
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route
@@ -63,7 +94,7 @@ function App() {
                 element={
                   <CompareAlgorithms
                     config={config}
-                    setGraphData={setGraphData}
+                    setOriginalGraphData={setOriginalGraphData}
                     setSelected={setSelected}
                   />
                 }
@@ -73,22 +104,38 @@ function App() {
                 element={
                   <CompareArrays
                     config={config}
-                    setGraphData={setGraphData}
+                    setOriginalGraphData={setOriginalGraphData}
                     setSelected={setSelected}
                   />
                 }
               />
               <Route
                 path="/previous"
-                element={<Previous setGraphData={setGraphData} />}
+                element={
+                  <Previous
+                    setOriginalGraphData={setOriginalGraphData}
+                    setSelected={setSelected}
+                  />
+                }
               />
               <Route path="/about" element={<About />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/graph" element={<Graph graphData={graphData} />} />
-              {/* <Route path="/languages" element={<Languages />} /> */}
+              <Route
+                path="/graph"
+                element={
+                  <Graph
+                    graphData={graphData}
+                    setGraphData={setGraphData}
+                    originalGraphData={originalGraphData}
+                  />
+                }
+              />
             </Routes>
-          </main>
-        </div>
+
+            <Box sx={{ mt: "auto" }}>
+              <Footer />
+            </Box>
+          </Box>
+        </Box>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

@@ -13,7 +13,6 @@ pySorts backend API address
 # load the c sorting algorithm implementations and expose in path
 script_dir = os.path.abspath(os.path.dirname(__file__))
 lib_path = os.path.join(script_dir, "sorts/c/cSorts.so")
-print("SEARCHING FOR CSORTS AT:", lib_path)
 cSorts = ctypes.cdll.LoadLibrary(lib_path)
 
 """
