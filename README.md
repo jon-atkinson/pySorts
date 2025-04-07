@@ -15,6 +15,8 @@ Features:
 - Compare sort algorithms
 - Compare languages
 - Compare input array types
+- Apply smoothing filters to graphs
+- Apply frequency analysis filters to graphs
 
 ## Set Up
 

@@ -20,8 +20,6 @@ const CompareSortedness = ({ config, setOriginalGraphData, setSelected }) => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  //  TODO: change hardcoded values here to the first algorithm in the config
-  // check performance hit for moving these functions into the component
   const initialValues = {
     algorithm: { language: "python", algorithm: "bubble sort" },
     lowerBound: 1,
