@@ -1,9 +1,9 @@
 import numpy as np
 import scipy.stats as stats
 
-import src.backend_config as config
+import core.backend_config as config
 import tests.helpers as helpers
-from src.arrays import deep_copy
+from core.arrays import deep_copy
 
 TEST_ARRAY_LEN = 100000
 

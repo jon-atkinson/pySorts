@@ -10,23 +10,23 @@ ENV PATH="/app/.venv/bin:$PATH"
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libc-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*;
 
 # sync for deps based on config files in local
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-dev
+    uv sync --frozen --no-install-project --no-dev;
 
 # add all locals into /app in the container and sync for deps
 ADD . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+    uv sync --frozen --no-dev;
 
 # compile c binaries
-RUN chmod +x /app/compile.sh && /app/compile.sh
+RUN chmod +x /app/compile.sh && /app/compile.sh;
 
 ENTRYPOINT []
 
-CMD ["fastapi", "dev", "--host", "0.0.0.0", "src/main.py"]
+CMD ["uvicorn", "src.main.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "8", "--log-level", "info"]
 

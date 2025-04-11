@@ -1,4 +1,4 @@
-from src.sorts.python.avl import avl_insert, avl_to_sorted_array
+from sorts.python.avl import avl_insert, avl_to_sorted_array
 
 
 def selection_sort(arr, n):

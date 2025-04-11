@@ -6,10 +6,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-import src.backend_config as config
-import src.sorter as sorter
-from src.arrays import deep_copy
-from src.db_interface import Database
+import core.backend_config as config
+import sorter.sorter as sorter
+from core.arrays import deep_copy
+from core.db_interface import Database
 
 redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_port = os.getenv("REDIS_PORT", 6379)
@@ -65,7 +65,7 @@ app.db = db
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

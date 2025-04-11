@@ -3,8 +3,8 @@ from typing import List
 import numpy as np
 import pytest
 
-import src.backend_config as config
-import src.sorter as sorter
+import core.backend_config as config
+import sorter.sorter as sorter
 
 TEST_ARRAY_LEN = 10
 

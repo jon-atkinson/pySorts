@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class AVL_Node(object):
     def __init__(self, data):
         self.data = data

@@ -47,7 +47,7 @@ docker compose up --build
 ## Using the Application
 
 Once you have a database, backend and frontend server running, navigate to
-`localhost:3000` or `127.0.0.1:3000` in a browser.
+`localhost:5173` or `127.0.0.1:5173` in a browser.
 
 The important options are located in the sidebar. There are seperate pages for
 comparing different algorithm implementations and comparing the performance of
