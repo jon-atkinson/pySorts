@@ -1,8 +1,8 @@
 import time
 from typing import List, Tuple
 
-import src.core.arrays as arrays
-import src.core.backend_config as config
+import core.arrays as arrays
+import core.backend_config as config
 
 
 def call(algorithm: str, language: str, array: List[int]) -> Tuple[List[int], float]:

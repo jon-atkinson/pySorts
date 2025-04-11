@@ -34,8 +34,8 @@ requires-python = ">= 3.11"
 [project.optional-dependencies]
 dev = ["pytest", "scipy", "fakeredis", "fastapi-cli>=0.0.5"]
 
-[tool.setuptools]
-packages = ["src", "tests"]
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
 "sorts.c" = ["cSorts.so"]

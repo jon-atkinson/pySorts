@@ -1,9 +1,9 @@
 import ctypes
 import os
 
-import src.core.arrays as arrays_manager
-import src.sorts.helpers as helpers
-import src.sorts.python.python_sorts as sort_impls
+import core.arrays as arrays_manager
+import sorts.helpers as helpers
+import sorts.python.python_sorts as sort_impls
 
 API_URL = "http://127.0.0.1:8000"
 """
