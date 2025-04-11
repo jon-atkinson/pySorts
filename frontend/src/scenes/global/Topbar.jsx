@@ -7,7 +7,7 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import Fuse from "fuse.js";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -58,10 +58,13 @@ const Topbar = () => {
     },
   ];
 
-  const fuse = new Fuse(searchableLinks, {
-    keys: ["title", "content"],
-    threshold: 0.3,
-  });
+  const fuse = useMemo(
+    () =>
+      new Fuse(searchableLinks, {
+        keys: ["title", "content"],
+        threshold: 0.3,
+      }),
+  );
 
   useEffect(() => {
     if (query) {
@@ -70,7 +73,7 @@ const Topbar = () => {
     } else {
       setResults([]);
     }
-  }, [query]);
+  }, [query, fuse]);
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>

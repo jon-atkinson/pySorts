@@ -1,11 +1,18 @@
-FROM node:16-slim
+# Build
+FROM node:18-slim as builder
 
-WORKDIR /
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install;
 
 COPY . .
+RUN npm run build;
 
-RUN npm install
+# Prod
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
 
-EXPOSE 3000
-
-CMD ["npm", "run", "start"]
+CMD ["nginx", "-g", "daemon off;"]
