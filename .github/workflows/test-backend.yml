@@ -42,7 +42,7 @@ jobs:
       - name: Run tests
         run: |
           cd backend
-          uv run pytest --maxfail=5 --disable-warnings --junitxml=test-results.xml
+          PYTHONPATH=src uv run pytest --maxfail=5 --disable-warnings --junitxml=test-results.xml
 
       - name: Upload test results
         if: always()

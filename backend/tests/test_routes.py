@@ -5,9 +5,9 @@ import pytest
 from fastapi.testclient import TestClient
 
 import tests.helpers as helpers
-from src.backend_config import algorithms, arrays
-from src.db_interface import Database
-from src.main import app
+from core.backend_config import algorithms, arrays
+from core.db_interface import Database
+from main.main import app
 from tests.helpers import first_algorithm, first_array_type, first_language
 
 

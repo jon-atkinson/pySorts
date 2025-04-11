@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 import scipy.stats as stats
 
-import src.backend_config as config
+import core.backend_config as config
 
 first_language = list(config.algorithms.keys())[0]
 first_algorithm = list(config.algorithms[first_language])[0]

@@ -1,7 +1,7 @@
 import fakeredis
 import pytest
 
-from src.db_interface import Database
+from core.db_interface import Database
 
 
 @pytest.fixture
