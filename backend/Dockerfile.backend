@@ -28,5 +28,5 @@ RUN chmod +x /app/compile.sh && /app/compile.sh;
 
 ENTRYPOINT []
 
-CMD ["uvicorn", "src.main.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "8", "--log-level", "info"]
+CMD ["gunicorn", "main.main:app", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8000", "--workers", "4", "--timeout", "0", "--log-level", "info"]
 
