@@ -99,12 +99,13 @@ const CompareAlgorithms = ({ config, setOriginalGraphData, setSelected }) => {
       const response = await axios.post(
         "http://127.0.0.1:8000/compare-algorithms",
         requestBody,
-        { timeout: 10000 },
+        { timeout: 180000 },
       );
       setOriginalGraphData(transformData(response.data["data_series"]));
       setSelected("Results");
       navigate("/graph");
     } catch (error) {
+      console.log(error);
       alert("Failed to compare algorithms. Please try again.");
     }
   };

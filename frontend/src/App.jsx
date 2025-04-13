@@ -87,49 +87,57 @@ function App() {
           >
             <Topbar />
 
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route
-                path="/algorithms"
-                element={
-                  <CompareAlgorithms
-                    config={config}
-                    setOriginalGraphData={setOriginalGraphData}
-                    setSelected={setSelected}
-                  />
-                }
-              />
-              <Route
-                path="/sortedness"
-                element={
-                  <CompareArrays
-                    config={config}
-                    setOriginalGraphData={setOriginalGraphData}
-                    setSelected={setSelected}
-                  />
-                }
-              />
-              <Route
-                path="/previous"
-                element={
-                  <Previous
-                    setOriginalGraphData={setOriginalGraphData}
-                    setSelected={setSelected}
-                  />
-                }
-              />
-              <Route path="/about" element={<About />} />
-              <Route
-                path="/graph"
-                element={
-                  <Graph
-                    graphData={graphData}
-                    setGraphData={setGraphData}
-                    originalGraphData={originalGraphData}
-                  />
-                }
-              />
-            </Routes>
+            <Box
+              sx={{
+                flex: 1,
+                overflowY: "auto",
+                paddingBottom: 2,
+              }}
+            >
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route
+                  path="/algorithms"
+                  element={
+                    <CompareAlgorithms
+                      config={config}
+                      setOriginalGraphData={setOriginalGraphData}
+                      setSelected={setSelected}
+                    />
+                  }
+                />
+                <Route
+                  path="/sortedness"
+                  element={
+                    <CompareArrays
+                      config={config}
+                      setOriginalGraphData={setOriginalGraphData}
+                      setSelected={setSelected}
+                    />
+                  }
+                />
+                <Route
+                  path="/previous"
+                  element={
+                    <Previous
+                      setOriginalGraphData={setOriginalGraphData}
+                      setSelected={setSelected}
+                    />
+                  }
+                />
+                <Route path="/about" element={<About />} />
+                <Route
+                  path="/graph"
+                  element={
+                    <Graph
+                      graphData={graphData}
+                      setGraphData={setGraphData}
+                      originalGraphData={originalGraphData}
+                    />
+                  }
+                />
+              </Routes>
+            </Box>
 
             <Box sx={{ mt: "auto" }}>
               <Footer />

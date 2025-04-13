@@ -16,13 +16,13 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2" color={colors.blueAccent[200]}>
-        MIT Licenced -{" "}
+        {"MIT Licence - "}
         <Link
           color={colors.blueAccent[400]}
           href="https://github.com/jon-atkinson/pySorts"
           target="_blank"
           rel="noopener noreferrer"
-          underline="hover"
+          underline="always"
         >
           Source Hosted on Github
         </Link>
