@@ -79,7 +79,7 @@ const CompareAlgorithms = ({ config, setOriginalGraphData, setSelected }) => {
 
       return {
         id: algorithmId,
-        color: colors.greenAccent[100],
+        color: colors.processCyan[100],
         data: dataPoints,
       };
     });

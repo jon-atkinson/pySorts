@@ -84,7 +84,7 @@ const CompareSortedness = ({ config, setOriginalGraphData, setSelected }) => {
 
       return {
         id: arrayType,
-        color: colors.greenAccent[100],
+        color: colors.processCyan[100],
         data: dataPoints,
       };
     });

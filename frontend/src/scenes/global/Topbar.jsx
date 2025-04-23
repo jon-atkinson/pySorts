@@ -123,7 +123,7 @@ const Topbar = () => {
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}
-        borderColor={colors.grey[600]}
+        borderColor={colors.darkPastelGreen[600]}
         borderRadius="3px"
         position="relative"
       >
@@ -166,9 +166,9 @@ const Topbar = () => {
                   cursor: "pointer",
                   backgroundColor:
                     index === highlightedIndex
-                      ? colors.greenAccent[600]
+                      ? colors.processCyan[600]
                       : "transparent",
-                  ":hover": { backgroundColor: colors.greenAccent[600] },
+                  ":hover": { backgroundColor: colors.processCyan[600] },
                 }}
                 onMouseEnter={() => setHighlightedIndex(index)}
                 onClick={() => {
