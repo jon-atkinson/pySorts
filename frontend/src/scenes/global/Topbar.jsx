@@ -137,7 +137,7 @@ const Topbar = ({ setSelected }) => {
           placeholder="Search"
           value={query}
           onFocus={() => setSearchBarFocussed(true)}
-          onBlur={() => setTimeout(() => setSearchBarFocussed(false), 50)}
+          onBlur={() => setTimeout(() => setSearchBarFocussed(false), 100)}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
