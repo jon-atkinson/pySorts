@@ -143,6 +143,8 @@ export const themeSettings = (mode) => {
               light: colors.darkPastelGreen[100],
             },
             accent: colors.primary[400],
+            selected: "#67d6f5",
+            subsection: "#062611",
             background: {
               default: colors.primary[500],
             },
@@ -157,11 +159,13 @@ export const themeSettings = (mode) => {
             neutral: {
               dark: colors.darkPastelGreen[700],
               main: colors.darkPastelGreen[500],
-              light: colors.darkPastelGreen[100],
+              light: colors.darkPastelGreen[300],
             },
-            accent: colors.primary[400],
+            accent: colors.primary[600],
+            selected: "#67d6f5",
+            subsection: "#062611",
             background: {
-              default: colors.primary[800],
+              default: colors.ghostWhite[500],
             },
           }),
     },

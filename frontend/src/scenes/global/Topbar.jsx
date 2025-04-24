@@ -122,7 +122,7 @@ const Topbar = () => {
       {/* Search Bar */}
       <Box
         display="flex"
-        backgroundColor={colors.primary[400]}
+        backgroundColor={theme.palette.accent}
         borderColor={colors.darkPastelGreen[600]}
         borderRadius="3px"
         position="relative"
@@ -152,11 +152,11 @@ const Topbar = () => {
             left={0}
             width="300px"
             border="1px solid"
-            borderColor={colors.primary[400]}
+            borderColor={theme.palette.accent}
             borderRadius="4px"
             boxShadow={3}
             zIndex={1300}
-            backgroundColor={colors.primary[400]}
+            backgroundColor={theme.palette.accent}
           >
             {results.map((result, index) => (
               <Box
@@ -179,7 +179,8 @@ const Topbar = () => {
               >
                 <strong>{result.title}</strong>
                 <div
-                  style={{ fontSize: "0.8em", color: colors.redAccent[400] }}
+                  // style={{ fontSize: "0.8em", color: colors.redAccent[400] }}
+                  style={{ fontSize: "0.8em", color: colors.processCyan[500] }}
                 >
                   {result.content}
                 </div>

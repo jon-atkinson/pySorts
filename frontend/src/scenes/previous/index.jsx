@@ -218,7 +218,7 @@ const Previous = ({ setOriginalGraphData, setSelected }) => {
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
+            backgroundColor: theme.palette.accent,
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
