@@ -12,6 +12,7 @@ const Topbar = ({ setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const ColorMode = useContext(ColorModeContext);
+  const [searchBarFocussed, setSearchBarFocussed] = useState(false);
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
@@ -135,6 +136,8 @@ const Topbar = ({ setSelected }) => {
           sx={{ ml: 2, flex: 1 }}
           placeholder="Search"
           value={query}
+          onFocus={() => setSearchBarFocussed(true)}
+          onBlur={() => setTimeout(() => setSearchBarFocussed(false), 50)}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
@@ -147,7 +150,7 @@ const Topbar = ({ setSelected }) => {
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
         </IconButton>
-        {results.length > 0 && (
+        {results.length > 0 && searchBarFocussed && (
           <Box
             position="absolute"
             top="100%"
@@ -168,7 +171,7 @@ const Topbar = ({ setSelected }) => {
                   cursor: "pointer",
                   backgroundColor:
                     index === highlightedIndex
-                      ? colors.processCyan[700]
+                      ? colors.processCyan[400]
                       : "transparent",
                   ":hover": { backgroundColor: colors.processCyan[600] },
                 }}
@@ -185,7 +188,7 @@ const Topbar = ({ setSelected }) => {
               >
                 <strong>{result.title}</strong>
                 <div
-                  style={{ fontSize: "0.8em", color: colors.ghostWhite[200] }}
+                  style={{ fontSize: "0.8em", color: colors.ghostWhite[500] }}
                 >
                   {result.content}
                 </div>
