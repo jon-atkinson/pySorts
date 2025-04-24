@@ -24,6 +24,7 @@ dependencies = [
     "requests",
     "redis",
     "gunicorn",
+    "pandas",
 ]
 
 [build-system]
