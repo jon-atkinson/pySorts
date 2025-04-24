@@ -8,7 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Fuse from "fuse.js";
 import { useNavigate } from "react-router-dom";
 
-const Topbar = () => {
+const Topbar = ({ setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const ColorMode = useContext(ColorModeContext);
@@ -110,8 +110,10 @@ const Topbar = () => {
     } else if (e.key === "Enter" && highlightedIndex >= 0) {
       const selected = results[highlightedIndex];
       if (selected) {
+        setSelected(selected.title);
         navigate(selected.path);
         setQuery("");
+        e.target.blur();
         setResults([]);
       }
     }
@@ -166,21 +168,24 @@ const Topbar = () => {
                   cursor: "pointer",
                   backgroundColor:
                     index === highlightedIndex
-                      ? colors.processCyan[600]
+                      ? colors.processCyan[700]
                       : "transparent",
                   ":hover": { backgroundColor: colors.processCyan[600] },
                 }}
                 onMouseEnter={() => setHighlightedIndex(index)}
                 onClick={() => {
-                  setQuery("");
-                  setResults([]);
-                  navigate(result.path);
+                  const selected = results[highlightedIndex];
+                  if (selected) {
+                    setSelected(selected.title);
+                    navigate(selected.path);
+                    setQuery("");
+                    setResults([]);
+                  }
                 }}
               >
                 <strong>{result.title}</strong>
                 <div
-                  // style={{ fontSize: "0.8em", color: colors.redAccent[400] }}
-                  style={{ fontSize: "0.8em", color: colors.processCyan[500] }}
+                  style={{ fontSize: "0.8em", color: colors.ghostWhite[200] }}
                 >
                   {result.content}
                 </div>

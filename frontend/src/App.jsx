@@ -85,7 +85,7 @@ function App() {
               overflowY: "auto",
             }}
           >
-            <Topbar />
+            <Topbar selected={selected} setSelected={setSelected} />
 
             <Box
               sx={{
