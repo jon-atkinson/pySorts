@@ -153,7 +153,12 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
       {/* Chart */}
       <Header title="Results" subtitle="Selected/Most Recent Run" />
       <Box display="flex" height="75vh" width="100%">
-        <Box flex="9" height="100%">
+        <Box
+          sx={{
+            flex: "9",
+            height: "100%",
+          }}
+        >
           <LineChart data={graphData} />
         </Box>
 
@@ -188,6 +193,7 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   variant="outlined"
+                  margin="dense"
                   fullWidth
                   error={!!touched.kernelSize && !!errors.kernelSize}
                   helperText={touched.kernelSize && errors.kernelSize}
@@ -200,6 +206,7 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   variant="outlined"
+                  margin="dense"
                   fullWidth
                   error={!!touched.kernelSize && !!errors.kernelSize}
                   helperText={touched.kernelSize && errors.kernelSize}
@@ -212,6 +219,7 @@ const Graph = ({ graphData, setGraphData, originalGraphData }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   variant="outlined"
+                  margin="dense"
                   fullWidth
                 >
                   {kernels.map((option) => (

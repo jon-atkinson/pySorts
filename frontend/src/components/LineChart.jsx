@@ -13,27 +13,27 @@ const LineChart = ({ isDashboard = false, data = null }) => {
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: colors.darkPastelGreen[100],
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: colors.darkPastelGreen[100],
             },
           },
           ticks: {
             line: {
-              stroke: colors.grey[100],
+              stroke: colors.darkPastelGreen[100],
               strokeWidth: 1,
             },
             text: {
-              fill: colors.grey[100],
+              fill: colors.darkPastelGreen[100],
             },
           },
         },
         legends: {
           text: {
-            fill: colors.grey[100],
+            fill: colors.darkPastelGreen[100],
           },
         },
         tooltip: {

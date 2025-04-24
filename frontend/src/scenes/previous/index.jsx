@@ -80,7 +80,7 @@ const Previous = ({ setOriginalGraphData, setSelected }) => {
 
         return {
           id: algorithmId,
-          color: colors.greenAccent[100],
+          color: colors.processCyan[100],
           data: dataPoints,
         };
       });
@@ -95,7 +95,7 @@ const Previous = ({ setOriginalGraphData, setSelected }) => {
 
         return {
           id: arrayType,
-          color: colors.greenAccent[100],
+          color: colors.processCyan[100],
           data: dataPoints,
         };
       });
@@ -214,7 +214,7 @@ const Previous = ({ setOriginalGraphData, setSelected }) => {
             borderBottom: "none",
           },
           "& .MuiDataGrid-columnHeader": {
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: colors.gray[700],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -222,10 +222,10 @@ const Previous = ({ setOriginalGraphData, setSelected }) => {
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
+            backgroundColor: colors.gray[700],
           },
           "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
+            color: `${colors.processCyan[200]} !important`,
           },
         }}
       >

@@ -23,6 +23,7 @@ dependencies = [
     "fastapi[standard]>=0.112.2",
     "requests",
     "redis",
+    "gunicorn",
 ]
 
 [build-system]

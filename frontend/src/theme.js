@@ -5,8 +5,7 @@ import { createTheme } from "@mui/material/styles";
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
-        // dark pastel green
-        grey: {
+        darkPastelGreen: {
           100: "#d2f2dd",
           200: "#a6e5bb",
           300: "#79d999",
@@ -29,8 +28,7 @@ export const tokens = (mode) => ({
           800: "#02202b",
           900: "#011016",
         },
-        // process cyan
-        greenAccent: {
+        processCyan: {
           100: "#ccf1fc",
           200: "#99e3f9",
           300: "#67d6f5",
@@ -41,8 +39,7 @@ export const tokens = (mode) => ({
           800: "#004a60",
           900: "#002530",
         },
-        // ghost white
-        redAccent: {
+        ghostWhite: {
           100: "#fefeff",
           200: "#fdfdff",
           300: "#fdfdff",
@@ -53,8 +50,7 @@ export const tokens = (mode) => ({
           800: "#646466",
           900: "#323233",
         },
-        // gray
-        blueAccent: {
+        gray: {
           100: "#e3e3e3",
           200: "#c8c8c8",
           300: "#acacac",
@@ -67,8 +63,7 @@ export const tokens = (mode) => ({
         },
       }
     : {
-        // ...
-        grey: {
+        darkPastelGreen: {
           100: "#062611",
           200: "#0d4c22",
           300: "#137333",
@@ -91,8 +86,7 @@ export const tokens = (mode) => ({
           800: "#9bb9c4",
           900: "#cddce2",
         },
-        // process cyan
-        greenAccent: {
+        processCyan: {
           100: "#002530",
           200: "#004a60",
           300: "#01708f",
@@ -103,8 +97,7 @@ export const tokens = (mode) => ({
           800: "#99e3f9",
           900: "#ccf1fc",
         },
-        // ghost white
-        redAccent: {
+        ghostWhite: {
           100: "#323233",
           200: "#646466",
           300: "#979799",
@@ -115,8 +108,7 @@ export const tokens = (mode) => ({
           800: "#fdfdff",
           900: "#fefeff",
         },
-        // gray
-        blueAccent: {
+        gray: {
           100: "#171717",
           200: "#2f2f2f",
           300: "#464646",
@@ -130,7 +122,7 @@ export const tokens = (mode) => ({
       }),
 });
 
-// mui theme settins
+// mui theme settings
 export const themeSettings = (mode) => {
   const colors = tokens(mode);
 
@@ -143,31 +135,33 @@ export const themeSettings = (mode) => {
               main: colors.primary[500],
             },
             secondary: {
-              main: colors.greenAccent[500],
+              main: colors.processCyan[500],
             },
             neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
+              dark: colors.darkPastelGreen[700],
+              main: colors.darkPastelGreen[500],
+              light: colors.darkPastelGreen[100],
             },
+            accent: colors.primary[400],
             background: {
               default: colors.primary[500],
             },
           }
         : {
             primary: {
-              main: colors.primary[100],
+              main: colors.primary[500],
             },
             secondary: {
-              main: colors.greenAccent[500],
+              main: colors.processCyan[400],
             },
             neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
+              dark: colors.darkPastelGreen[700],
+              main: colors.darkPastelGreen[500],
+              light: colors.darkPastelGreen[100],
             },
+            accent: colors.primary[400],
             background: {
-              default: "#fcfcfc",
+              default: colors.primary[800],
             },
           }),
     },
