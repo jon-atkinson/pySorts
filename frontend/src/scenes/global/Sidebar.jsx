@@ -20,13 +20,11 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const active = selected === title;
-  console.log(`theme is ${JSON.stringify(theme)}`);
   return (
     <MenuItem
       active={active}
       style={{
-        // color: active ? colors.gray[400] : colors.darkPastelGreen[100],
-        color: active ? colors.gray[400] : colors.ghostWhite[500],
+        color: active ? theme.palette.selected : colors.ghostWhite[500],
         backgroundColor: theme.palette.accent,
       }}
       onClick={() => setSelected(title)}
@@ -40,7 +38,6 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = ({ selected, setSelected }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
@@ -62,7 +59,6 @@ const Sidebar = ({ selected, setSelected }) => {
           icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
           style={{
             margin: "10px 0 20px 0",
-            color: colors.darkPastelGreen[100],
             backgroundColor: theme.palette.accent,
           }}
         >
@@ -73,9 +69,7 @@ const Sidebar = ({ selected, setSelected }) => {
               alignItems="center"
               ml="15px"
             >
-              <Typography variant="h3" color={colors.darkPastelGreen[100]}>
-                pySorts
-              </Typography>
+              <Typography variant="h3">pySorts</Typography>
               <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                 <MenuOutlinedIcon />
               </IconButton>
@@ -95,7 +89,7 @@ const Sidebar = ({ selected, setSelected }) => {
 
           <Typography
             variant="h6"
-            color={colors.darkPastelGreen[900]}
+            color={theme.palette.subsection}
             sx={{ m: "15px 0 5px 20px" }}
           >
             Data
@@ -123,7 +117,7 @@ const Sidebar = ({ selected, setSelected }) => {
           />
           <Typography
             variant="h6"
-            color={colors.darkPastelGreen[900]}
+            color={theme.palette.subsection}
             sx={{ m: "15px 0 5px 20px" }}
           >
             Pages
@@ -137,7 +131,7 @@ const Sidebar = ({ selected, setSelected }) => {
           />
           <Typography
             variant="h6"
-            color={colors.darkPastelGreen[900]}
+            color={theme.palette.subsection}
             sx={{ m: "15px 0 5px 20px" }}
           >
             Chart

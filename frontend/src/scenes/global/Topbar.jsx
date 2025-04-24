@@ -8,10 +8,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import Fuse from "fuse.js";
 import { useNavigate } from "react-router-dom";
 
-const Topbar = () => {
+const Topbar = ({ setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const ColorMode = useContext(ColorModeContext);
+  const [searchBarFocussed, setSearchBarFocussed] = useState(false);
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
@@ -110,8 +111,10 @@ const Topbar = () => {
     } else if (e.key === "Enter" && highlightedIndex >= 0) {
       const selected = results[highlightedIndex];
       if (selected) {
+        setSelected(selected.title);
         navigate(selected.path);
         setQuery("");
+        e.target.blur();
         setResults([]);
       }
     }
@@ -122,7 +125,7 @@ const Topbar = () => {
       {/* Search Bar */}
       <Box
         display="flex"
-        backgroundColor={colors.primary[400]}
+        backgroundColor={theme.palette.accent}
         borderColor={colors.darkPastelGreen[600]}
         borderRadius="3px"
         position="relative"
@@ -133,6 +136,8 @@ const Topbar = () => {
           sx={{ ml: 2, flex: 1 }}
           placeholder="Search"
           value={query}
+          onFocus={() => setSearchBarFocussed(true)}
+          onBlur={() => setTimeout(() => setSearchBarFocussed(false), 100)}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
@@ -145,18 +150,18 @@ const Topbar = () => {
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
         </IconButton>
-        {results.length > 0 && (
+        {results.length > 0 && searchBarFocussed && (
           <Box
             position="absolute"
             top="100%"
             left={0}
             width="300px"
             border="1px solid"
-            borderColor={colors.primary[400]}
+            borderColor={theme.palette.accent}
             borderRadius="4px"
             boxShadow={3}
             zIndex={1300}
-            backgroundColor={colors.primary[400]}
+            backgroundColor={theme.palette.accent}
           >
             {results.map((result, index) => (
               <Box
@@ -166,20 +171,24 @@ const Topbar = () => {
                   cursor: "pointer",
                   backgroundColor:
                     index === highlightedIndex
-                      ? colors.processCyan[600]
+                      ? colors.processCyan[400]
                       : "transparent",
                   ":hover": { backgroundColor: colors.processCyan[600] },
                 }}
                 onMouseEnter={() => setHighlightedIndex(index)}
                 onClick={() => {
-                  setQuery("");
-                  setResults([]);
-                  navigate(result.path);
+                  const selected = results[highlightedIndex];
+                  if (selected) {
+                    setSelected(selected.title);
+                    navigate(selected.path);
+                    setQuery("");
+                    setResults([]);
+                  }
                 }}
               >
                 <strong>{result.title}</strong>
                 <div
-                  style={{ fontSize: "0.8em", color: colors.redAccent[400] }}
+                  style={{ fontSize: "0.8em", color: colors.ghostWhite[500] }}
                 >
                   {result.content}
                 </div>
